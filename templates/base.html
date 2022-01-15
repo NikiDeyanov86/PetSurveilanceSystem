@@ -2,9 +2,52 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name='copyright' content=''>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+	<title>{% block title %}Title{% endblock %}</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/custom.css">
+
+    <!-- Make favicon -->
+    <link rel="icon" type="image/png" href="#">
+
+    <!-- Additional styles and scripts will go here -->
+	{% block head %}
+
+	{% endblock %}
+
 </head>
 
 <body>
+    <div class="main">
+        <div class="content">
+            <div class="stream_holder">
+                <!-- Stream container will go here -->
+            </div>
+            <div class="mode">
+                <div class="mode_holder">
+                    <div class="auto">
+                        <a href="#"> AUTO </a>
+                    </div>
+                </div>
+                <div class="mode_holder">
+                    <div class="manual">
+                        <a href="#"> MANUAL </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Content will go here -->
+    {% block content %}
+    {% endblock %}
+
 </body>
 
 </html>

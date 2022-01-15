@@ -1,3 +1,30 @@
-html {
+body {
    margin: 0;
+   width: 100vw;
+   height: 100vh;
+}
+
+.main {
+   width: 100vw;
+   height: 100vh;
+   outline: dashed 1px black;
+}
+.content {
+   width: 50vw;
+   height: 100vh;
+   margin: auto;
+   outline: dashed 1px black;
+}
+
+.mode {
+   display: flex;
+   margin-top: 3vh;
+   flex-direction: row;
+   justify-content: center;
+   outline: dashed 1px black;
+}
+.mode_holder {
+   width:100%;
+   text-align: center;
+   outline: dashed 1px black;
 }
