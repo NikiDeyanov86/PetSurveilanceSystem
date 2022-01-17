@@ -1,5 +1,5 @@
 from flask import Flask, render_template, Response
-# import picamera
+import picamera
 import cv2
 import socket
 import io
@@ -11,7 +11,6 @@ vc = cv2.VideoCapture(0)
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 def gen():
     """Video streaming generator function."""
@@ -30,4 +29,4 @@ def video_feed():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=81, host='0.0.0.0', threaded=True)
+    app.run(port=80, host='0.0.0.0', threaded=True)
