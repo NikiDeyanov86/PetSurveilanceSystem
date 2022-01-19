@@ -49,6 +49,17 @@
                 return false;
               });
             });
+
+            $(function() {
+              $('a#stop').on('click', function(e) {
+                e.preventDefault()
+                $.getJSON('/stop',
+                    function(data) {
+                  //do nothing
+                });
+                return false;
+              });
+            });
     </script>
 
     <p> this is manual mode</p>
@@ -56,5 +67,6 @@
     <a href=# id="left"><button class='btn btn-default'>Left</button></a>
     <a href=# id="right"><button class='btn btn-default'>Right</button></a>
     <a href=# id="backward"><button class='btn btn-default'>Backward</button></a>
+    <a href=# id="stop"><button class='btn btn-default'>Stop</button></a>
 
 {% endblock %}

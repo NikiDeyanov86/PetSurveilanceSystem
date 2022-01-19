@@ -63,21 +63,31 @@ def on_message(client, userdata, message):
 @app.route('/forward')
 def forward():
     mqtt_client.publish(topic_rc, "forward")
+    print("Move forward")
 
 
 @app.route('/left')
 def left():
     mqtt_client.publish(topic_rc, "left")
+    print("Move left")
 
 
 @app.route('/right')
 def left():
     mqtt_client.publish(topic_rc, "right")
+    print("Move right")
 
 
 @app.route('/backward')
 def left():
     mqtt_client.publish(topic_rc, "backward")
+    print("Move backward")
+
+
+@app.route('/stop')
+def left():
+    mqtt_client.publish(topic_rc, "stop")
+    print("Stop motors")
 
 
 if __name__ == '__main__':
