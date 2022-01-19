@@ -7,7 +7,8 @@ from huskylib import HuskyLensLibrary
 clientName = "Huskylens"
 serverAddress = "localhost"
 mqttClient = mqtt.Client(clientName)
-topic = "movement/auto"
+topic_publish = "pss/movement/auto"
+topic_subscribe = "pss/huskylens"
 
 
 def on_connect(client, userdata, flags, rc):
@@ -19,9 +20,16 @@ def on_publish(client, userdata, result):
     pass
 
 
+def message_decoder(client, userdata, msg):
+    message = msg.payload.decode(encoding='UTF-8')
+    # decode the message from the server
+    pass
+
+
 mqttClient.on_connect = on_connect
 mqttClient.on_publish = on_publish
-mqttClient.will_set(topic, "disconnected", qos=1, retain=False)
+mqttClient.on_subscribe = message_decoder
+mqttClient.will_set(topic_publish, "disconnected", qos=1, retain=False)
 mqttClient.connect(serverAddress, 1883)
 mqttClient.loop_start()
 
@@ -45,7 +53,7 @@ except:
         hl = HuskyLensLibrary("SERIAL", "/dev/ttyUSB1", 115200)
     except:
         print("Cannot create serial communication, check your hardware connections!")
-        mqttClient.publish(topic, "disconnected")
+        mqttClient.publish(topic_publish, "disconnected")
         sys.exit(1)
 
 
@@ -66,53 +74,53 @@ def tracking():
     while hl.knock() == "Knock Recieved":
 
         # Check for read response error 
-        if hl.learnedBlocks() != None:
+        if hl.learnedBlocks() is not None:
             target = hl.getObjectByID(1)
-            if (target == None):
+            if target is None:
                 continue
             if counter == 0:
                 prev_target = target
 
             if target.width < optWidthLow:
                 diff = optWidthLow - target.width
-                mqttClient.publish(topic, "forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
+                mqttClient.publish(topic_publish, "forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
                 print("Huskylens published: forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
                 time.sleep(diff / 25)
 
             elif target.width > optWidthHigh:
                 diff = target.width - optWidthHigh
-                mqttClient.publish(topic, "backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
+                mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
                 print("Huskylens published: backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
                 time.sleep(diff / 25)
 
             if target.x < leftOffset:
                 diff = leftOffset - target.x
-                mqttClient.publish(topic, "left,{sec},{speed}".format(sec=diff / 20, speed=100))
+                mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / 20, speed=100))
                 print("Huskylens published: left,{sec},{speed}".format(sec=diff / 20, speed=100))
                 time.sleep(diff / 20)
 
             elif target.x > rightOffset:
                 diff = target.x - rightOffset
-                mqttClient.publish(topic, "right,{sec},{speed}".format(sec=diff / 20, speed=100))
+                mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / 20, speed=100))
                 print("Huskylens published: right,{sec},{speed}".format(sec=diff / 20, speed=100))
                 time.sleep(diff / 20)
 
             if target.y < topOffset:
                 if target.width < prev_target.width:
                     diff = topOffset - target.y
-                    mqttClient.publish(topic, "forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
+                    mqttClient.publish(topic_publish, "forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
                     print("Huskylens published: forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
                     time.sleep(diff / 25)
 
                 elif target.width > prev_target.width:
                     diff = topOffset - target.y
-                    mqttClient.publish(topic, "backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
+                    mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
                     print("Huskylens published: backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
                     time.sleep(diff / 25)
 
             elif target.y > bottomOffset:
                 diff = target.y - bottomOffset
-                mqttClient.publish(topic, "backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
+                mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
                 print("Huskylens published: backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
                 time.sleep(diff / 25)
 
@@ -121,11 +129,12 @@ def tracking():
 
         else:
             print("Object lost")
-            mqttClient.publish(topic, "object_lost")
+            mqttClient.publish(topic_publish, "object_lost")
             time.sleep(1)
 
     print("Connection error occured")
-    mqttClient.publish(topic, "disconnected")
+    mqttClient.publish(topic_publish, "disconnected")
+    sys.exit(1)
 
 
 if __name__ == '__main__':
@@ -138,11 +147,11 @@ if __name__ == '__main__':
                     tracking()
                 else:
                     print("Failed to connect with huskylens, check hardware")
-                    mqttClient.publish(topic, "disconnected")
+                    mqttClient.publish(topic_publish, "disconnected")
                     sys.exit(1)
         else:
             print("Failed to connect with huskylens, check hardware")
-            mqttClient.publish(topic, "disconnected")
+            mqttClient.publish(topic_publish, "disconnected")
             sys.exit(1)
     except KeyboardInterrupt:
         print('Interrupted')

@@ -3,9 +3,58 @@
 {% block title %} Index {% endblock %}
 
 {% block content %}
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type=text/javascript>
+            $(function() {
+              $('a#forward').on('click', function(e) {
+                e.preventDefault()
+                $.getJSON('/forward',
+                    function(data) {
+                  //do nothing
+                });
+                return false;
+              });
+            });
+
+            $(function() {
+              $('a#left').on('click', function(e) {
+                e.preventDefault()
+                $.getJSON('/left',
+                    function(data) {
+                  //do nothing
+                });
+                return false;
+              });
+            });
+
+            $(function() {
+              $('a#right').on('click', function(e) {
+                e.preventDefault()
+                $.getJSON('/right',
+                    function(data) {
+                  //do nothing
+                });
+                return false;
+              });
+            });
+
+            $(function() {
+              $('a#backward').on('click', function(e) {
+                e.preventDefault()
+                $.getJSON('/backward',
+                    function(data) {
+                  //do nothing
+                });
+                return false;
+              });
+            });
+    </script>
+
     <p> this is manual mode</p>
-    <a href=# id=test><button class='btn btn-default'>Forward</button></a>
-    <a href=# id=test><button class='btn btn-default'>Left</button></a>
-    <a href=# id=test><button class='btn btn-default'>Right</button></a>
-    <a href=# id=test><button class='btn btn-default'>Backward</button></a>
+    <a href=# id="forward"><button class='btn btn-default'>Forward</button></a>
+    <a href=# id="left"><button class='btn btn-default'>Left</button></a>
+    <a href=# id="right"><button class='btn btn-default'>Right</button></a>
+    <a href=# id="backward"><button class='btn btn-default'>Backward</button></a>
+
 {% endblock %}

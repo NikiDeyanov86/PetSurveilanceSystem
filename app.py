@@ -60,6 +60,26 @@ def on_message(client, userdata, message):
     pass
 
 
+@app.route('/forward')
+def forward():
+    mqtt_client.publish(topic_rc, "forward")
+
+
+@app.route('/left')
+def left():
+    mqtt_client.publish(topic_rc, "left")
+
+
+@app.route('/right')
+def left():
+    mqtt_client.publish(topic_rc, "right")
+
+
+@app.route('/backward')
+def left():
+    mqtt_client.publish(topic_rc, "backward")
+
+
 if __name__ == '__main__':
     app.run(port=80, host='0.0.0.0', threaded=True)
     mqtt_client.init_app(app)

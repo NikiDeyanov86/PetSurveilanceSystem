@@ -8,12 +8,13 @@ motors = MotorDriver(left, right)
 clientName = "Movement"
 serverAddress = "localhost"
 mqttClient = mqtt.Client(clientName)
+topics = "pss/movement/+"
 
 
 def connect(client, userdata, flags, rc):
     print("subscribing")
-    mqttClient.subscribe("movement/+")
-    print("subscribed to <movement/+>")
+    mqttClient.subscribe(topics)
+    print("subscribed to <pss/movement/+>")
 
 
 def message_decoder(client, userdata, msg):
@@ -21,7 +22,7 @@ def message_decoder(client, userdata, msg):
     topic = msg.topic
     # Syncronize auto and manual
 
-    if topic == "movement/auto":
+    if topic == "pss/movement/auto":
         # Data from Huskylens, ex. "<direction>,<seconds>,<speed>"
         if message == "disconnected":
             print("Connection with huskylens ended")
@@ -61,9 +62,7 @@ def message_decoder(client, userdata, msg):
                 motors.turn_right_hl(seconds, speed)
                 motors.stop()
 
-
-
-    elif topic == "movement/manual":
+    elif topic == "pss/movement/manual":
         # Data from remote client, ex. "left" ---- time ----> "stop"
         direction = message
         if direction == "forward":
