@@ -65,20 +65,21 @@ def message_decoder(client, userdata, msg):
     elif topic == "pss/movement/manual":
         # Data from remote client, ex. "left" ---- time ----> "stop"
         direction = message
+        speed = 100
         if direction == "forward":
-            # motors.forward(speed)
+            motors.forward(speed)
             pass
         elif direction == "backward":
-            # motors.backward(speed)
+            motors.backward(speed)
             pass
         elif direction == "left":
-            # motors.left(speed)
+            motors.left(speed)
             pass
         elif direction == "right":
-            # motors.right(speed)
+            motors.right(speed)
             pass
         elif direction == "stop":
-            # motors.stop()
+            motors.stop()
             pass
 
 
