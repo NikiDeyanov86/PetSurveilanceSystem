@@ -99,7 +99,7 @@ def stop():
     pass
 
 
-@app.route('/change_to_auto_mode')
+@app.route('/automated_mode')
 def change_to_auto_mode():
     # Check if it is possible
     if Check.manual is True:
@@ -109,7 +109,7 @@ def change_to_auto_mode():
         return render_template('auto.html')
 
 
-@app.route('/change_to_manual_mode')
+@app.route('/manual_mode')
 def change_to_manual_mode():
     if Check.manual is not True:
         flask_client.publish(topic_mode, "manual")
