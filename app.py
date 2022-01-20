@@ -4,6 +4,7 @@ import picamera
 import cv2
 import socket
 import io
+
 # from flask_mqtt import Mqtt
 
 app = Flask(__name__)
@@ -16,13 +17,16 @@ app.config['MQTT_TLS_ENABLED'] = True
 mqtt_client = Mqtt()'''
 vc = cv2.VideoCapture(0)
 
-auto = False
-manual = True
 
-# SUBSCRIBE TOPICS
+class Check:
+    manual = True
+
+
+# PUBLISH AND SUBSCRIBE TOPICS
 topic_feedback = "pss/feedback"
 
 # PUBLISH TOPICS
+topic_mode = "pss/movement/mode"
 topic_rc = "pss/movement/manual"
 topic_hl = "pss/huskylens"
 
@@ -64,30 +68,54 @@ def on_message(client, userdata, message):
 def forward():
     flask_client.publish(topic_rc, "forward")
     print("Move forward")
+    pass
 
 
 @app.route('/left')
 def left():
     flask_client.publish(topic_rc, "left")
     print("Move left")
+    pass
 
 
 @app.route('/right')
 def right():
     flask_client.publish(topic_rc, "right")
     print("Move right")
+    pass
 
 
 @app.route('/backward')
 def backward():
     flask_client.publish(topic_rc, "backward")
     print("Move backward")
+    pass
 
 
 @app.route('/stop')
 def stop():
     flask_client.publish(topic_rc, "stop")
     print("Stop motors")
+    pass
+
+
+@app.route('/change_to_auto_mode')
+def change_to_auto_mode():
+    # Check if it is possible
+    if Check.manual is True:
+        flask_client.publish(topic_mode, "auto")
+        print("Switch to auto")
+        Check.manual = False
+        return render_template('auto.html')
+
+
+@app.route('/change_to_manual_mode')
+def change_to_manual_mode():
+    if Check.manual is not True:
+        flask_client.publish(topic_mode, "manual")
+        print("Switch to manual")
+        Check.manual = True
+        return render_template('manual.html')
 
 
 if __name__ == '__main__':

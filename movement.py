@@ -9,6 +9,11 @@ clientName = "Movement"
 serverAddress = "localhost"
 mqttClient = mqtt.Client(clientName)
 topics = "pss/movement/+"
+topic_feedback = "pss/feedback"
+
+
+class Check:
+    manual = True
 
 
 def connect(client, userdata, flags, rc):
@@ -22,18 +27,20 @@ def message_decoder(client, userdata, msg):
     topic = msg.topic
     # Syncronize auto and manual
 
-    if topic == "pss/movement/auto":
+    if topic == "pss/movement/auto" and Check.manual is False:
         # Data from Huskylens, ex. "<direction>,<seconds>,<speed>"
         if message == "disconnected":
             print("Connection with huskylens ended")
             # huskylens is down
             # switch to manual mode
+            mqttClient.publish(topic_feedback, "huskylens_disconnected")
             pass
 
         elif message == "object_lost":
             print("Object lost")
             # object is lost
             # switch to manual mode
+            mqttClient.publish(topic_feedback, "object_lost")
             pass
 
         else:
@@ -43,44 +50,55 @@ def message_decoder(client, userdata, msg):
             speed = int(split[2])
 
             if direction == "forward":
-                print("Forward")
+                print("AUTO: Forward")
                 motors.move_forward_hl(seconds, speed)
                 motors.stop()
 
             elif direction == "backward":
-                print("Backward")
+                print("AUTO: Backward")
                 motors.move_backward_hl(seconds, speed)
                 motors.stop()
 
             elif direction == "left":
-                print("Left")
+                print("AUTO: Left")
                 motors.turn_left_hl(seconds, speed)
                 motors.stop()
 
             elif direction == "right":
-                print("Right")
+                print("AUTO: Right")
                 motors.turn_right_hl(seconds, speed)
                 motors.stop()
 
-    elif topic == "pss/movement/manual":
+    elif topic == "pss/movement/manual" and Check.manual is True:
         # Data from remote client, ex. "left" ---- time ----> "stop"
         direction = message
         speed = 100
         if direction == "forward":
+            print("MANUAL: forward")
             motors.forward(speed)
             pass
         elif direction == "backward":
+            print("MANUAL: forward")
             motors.backward(speed)
             pass
         elif direction == "left":
+            print("MANUAL: forward")
             motors.left(speed)
             pass
         elif direction == "right":
+            print("MANUAL: forward")
             motors.right(speed)
             pass
         elif direction == "stop":
+            print("MANUAL: forward")
             motors.stop()
             pass
+
+    elif topic == "pss/movement/mode":
+        if message == "auto":
+            Check.manual = False
+        elif message == "manual":
+            Check.manual = True
 
 
 mqttClient.on_connect = connect
@@ -89,4 +107,4 @@ mqttClient.on_message = message_decoder
 # Connect to the MQTT server & loop forever.
 # CTRL-C will stop the program from running.
 mqttClient.connect(serverAddress)
-mqttClient.loop_forever()
+mqttClient.loop_start()

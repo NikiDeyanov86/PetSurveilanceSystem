@@ -25,6 +25,30 @@
 </head>
 
 <body>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type=text/javascript>
+            $(function() {
+              $('a#auto_switch').on('click', function(e) {
+                e.preventDefault()
+                $.getJSON('/change_mode_to_auto',
+                    function(data) {
+                  //do nothing
+                });
+                return false;
+              });
+            });
+
+            $(function() {
+              $('a#manual_switch').on('click', function(e) {
+                e.preventDefault()
+                $.getJSON('/change_mode_to_manual',
+                    function(data) {
+                  //do nothing
+                });
+                return false;
+              });
+            });
+    </script>
     <div class="main">
         <div class="content">
             <div class="stream_holder">
@@ -34,12 +58,12 @@
             <div class="mode">
                 <div class="mode_holder">
                     <div class="auto">
-                        <a href="#"> AUTO </a>
+                        <a href="#" id="auto_switch"> AUTO </a>
                     </div>
                 </div>
                 <div class="mode_holder">
                     <div class="manual">
-                        <a href="#"> MANUAL </a>
+                        <a href="#" id="manual_switch"> MANUAL </a>
                     </div>
                 </div>
             </div>

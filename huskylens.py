@@ -9,6 +9,7 @@ serverAddress = "localhost"
 mqttClient = mqtt.Client(clientName)
 topic_publish = "pss/movement/auto"
 topic_subscribe = "pss/huskylens"
+topic_feedback = "pss/feedback"
 
 
 def on_connect(client, userdata, flags, rc):
@@ -75,6 +76,7 @@ def tracking():
 
         # Check for read response error 
         if hl.learnedBlocks() is not None:
+            mqttClient.publish(topic_feedback, "object_visible")
             target = hl.getObjectByID(1)
             if target is None:
                 continue
