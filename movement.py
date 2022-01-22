@@ -17,7 +17,6 @@ class Check:
 
 
 def connect(client, userdata, flags, rc):
-    print("subscribing")
     mqttClient.subscribe(topics)
     print("subscribed to <pss/movement/+>")
 
@@ -34,13 +33,6 @@ def message_decoder(client, userdata, msg):
             # huskylens is down
             # switch to manual mode
             mqttClient.publish(topic_feedback, "huskylens_disconnected")
-            pass
-
-        elif message == "object_lost":
-            print("Object lost")
-            # object is lost
-            # switch to manual mode
-            mqttClient.publish(topic_feedback, "object_lost")
             pass
 
         else:

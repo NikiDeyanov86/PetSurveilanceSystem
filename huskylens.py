@@ -43,6 +43,12 @@ optWidthLow = 50
 optWidthHigh = 80
 prev_target = None
 
+
+class Visible:
+    prev_state = False  # false for not visible
+    first_time = True
+
+
 hl = None
 
 # make an if that catches exception if serial connection
@@ -70,18 +76,22 @@ def try_connection(timeout):
 
 def tracking():
     hl.algorthim("ALGORITHM_OBJECT_TRACKING")
-
+    Visible.first_time = True
     counter = 0
     while hl.knock() == "Knock Recieved":
 
         # Check for read response error 
         if hl.learnedBlocks() is not None:
-            mqttClient.publish(topic_feedback, "object_visible")
             target = hl.getObjectByID(1)
             if target is None:
                 continue
             if counter == 0:
                 prev_target = target
+
+            if Visible.prev_state is False or Visible.first_time is True:
+                Visible.first_time = False
+                print("Object visible")
+                mqttClient.publish(topic_feedback, "object_visible")
 
             if target.width < optWidthLow:
                 diff = optWidthLow - target.width
@@ -130,11 +140,14 @@ def tracking():
             counter = counter + 1
 
         else:
-            print("Object lost")
-            mqttClient.publish(topic_publish, "object_lost")
+            if Visible.prev_state is True or Visible.first_time is True:
+                Visible.first_time = False
+                print("Object lost")
+                mqttClient.publish(topic_feedback, "object_lost")
+
             time.sleep(1)
 
-    print("Connection error occured")
+    print("Connection error occurred")
     mqttClient.publish(topic_publish, "disconnected")
     sys.exit(1)
 

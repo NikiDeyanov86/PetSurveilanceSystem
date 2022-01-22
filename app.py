@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, flash
 import paho.mqtt.client as mqtt
 import picamera
 import cv2
@@ -61,42 +61,50 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, message):
     payload = message.payload.decode(encoding='UTF-8')
     print("Received message: ", payload)
-    pass
+    if payload == "object_visible":
+        flash("Your pet is now visible. Would you like to switch to automated mode?")
+    elif payload == "object_lost":
+        flash("Unfortunately, your pet got away from the robot.")
 
 
 @app.route('/forward')
 def forward():
     flask_client.publish(topic_rc, "forward")
     print("Move forward")
-    pass
+
+    return Response(status=201)
 
 
 @app.route('/left')
 def left():
     flask_client.publish(topic_rc, "left")
     print("Move left")
-    pass
+
+    return Response(status=201)
 
 
 @app.route('/right')
 def right():
     flask_client.publish(topic_rc, "right")
     print("Move right")
-    pass
+
+    return Response(status=201)
 
 
 @app.route('/backward')
 def backward():
     flask_client.publish(topic_rc, "backward")
     print("Move backward")
-    pass
+
+    return Response(status=201)
 
 
 @app.route('/stop')
 def stop():
     flask_client.publish(topic_rc, "stop")
     print("Stop motors")
-    pass
+
+    return Response(status=201)
 
 
 @app.route('/automated_mode')
