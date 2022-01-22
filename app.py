@@ -1,13 +1,16 @@
 from flask import Flask, render_template, Response, flash
+import eventlet
+from flask_socketio import SocketIO, emit
 import paho.mqtt.client as mqtt
 import picamera
 import cv2
 import socket
 import io
 
-# from flask_mqtt import Mqtt
+eventlet.monkey_patch()
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 
 '''app.config['MQTT_BROKER_URL'] = 'localhost'
 app.config['MQTT_BROKER_PORT'] = 1883
@@ -62,9 +65,15 @@ def on_message(client, userdata, message):
     payload = message.payload.decode(encoding='UTF-8')
     print("Received message: ", payload)
     if payload == "object_visible":
-        flash("Your pet is now visible. Would you like to switch to automated mode?")
+        # flash("Your pet is now visible. Would you like to switch to automated mode?")
+        # emit a mqtt_message event to the socket containing the message data
+        alert = "object_visible"
+        socketio.emit('mqtt_message', alert=alert)
+
     elif payload == "object_lost":
-        flash("Unfortunately, your pet got away from the robot.")
+        # flash("Unfortunately, your pet got away from the robot.")
+        alert = "object_lost"
+        socketio.emit('mqtt_message', alert=alert)
 
 
 @app.route('/forward')

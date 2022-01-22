@@ -10,17 +10,31 @@
         </symbol>
     </svg>
 
-    {% for message in get_flashed_messages() %}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // listen for mqtt_message events
+        // when a new message is received, log and append the data to the page
+        socket.on('mqtt_message', function(alert) {
+          console.log(alert);
+          var text;
+          if (alert === "object_visible")  text = "Your pet is now visible. Would you like to switch to automated mode?"
+          $('#message').append(text);
+        })
+      });
+    </script>
 
     <div class="alert alert-primary d-flex align-items-center alert-dismissible fade show" role="alert">
         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
-        <div>
-            {{ message }}
+        <div id="message">
+
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    {% endfor %}
 
 {% endblock %}
 
