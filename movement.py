@@ -78,19 +78,19 @@ def message_decoder(client, userdata, msg):
             motors.forward(speed)
             pass
         elif direction == "backward":
-            print("MANUAL: forward")
+            print("MANUAL: backward")
             motors.backward(speed)
             pass
         elif direction == "left":
-            print("MANUAL: forward")
+            print("MANUAL: left")
             motors.left(speed)
             pass
         elif direction == "right":
-            print("MANUAL: forward")
+            print("MANUAL: right")
             motors.right(speed)
             pass
         elif direction == "stop":
-            print("MANUAL: forward")
+            print("MANUAL: stop")
             motors.stop()
             pass
 
@@ -107,4 +107,5 @@ mqttClient.on_message = message_decoder
 # Connect to the MQTT server & loop forever.
 # CTRL-C will stop the program from running.
 mqttClient.connect(serverAddress)
-mqttClient.loop_start()
+# mqttClient.loop_start()
+mqttClient.loop_forever()
