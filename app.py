@@ -86,6 +86,8 @@ def on_message(client, userdata, message):
 @mqtt_client.on_log()
 def handle_logging(client, userdata, level, buf):
     print(level, buf)
+    print("Client connected to broker with response code ")
+    mqtt_client.subscribe(topic_feedback)
 
 
 @app.route('/forward')
