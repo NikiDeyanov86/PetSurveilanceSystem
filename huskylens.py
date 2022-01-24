@@ -90,6 +90,7 @@ def tracking():
 
             if Visible.prev_state is False or Visible.first_time is True:
                 Visible.first_time = False
+                Visible.prev_state = True
                 print("Object visible")
                 mqttClient.publish(topic_feedback, "object_visible")
 
@@ -142,6 +143,7 @@ def tracking():
         else:
             if Visible.prev_state is True or Visible.first_time is True:
                 Visible.first_time = False
+                Visible.prev_state = False
                 print("Object lost")
                 mqttClient.publish(topic_feedback, "object_lost")
 
