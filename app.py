@@ -1,31 +1,25 @@
 import sys
-import json
 from flask import Flask, render_template, Response, flash
-import eventlet
-from flask_mqtt import Mqtt
-from flask_socketio import SocketIO, emit
-from flask_bootstrap import Bootstrap
-# import paho.mqtt.client as mqtt
+# import eventlet
+# from flask_socketio import SocketIO, emit
+import paho.mqtt.client as mqtt
 import picamera
 import cv2
 import socket
 import io
 
-eventlet.monkey_patch()
+# eventlet.monkey_patch()
 
 app = Flask(__name__)
 app.config['SECRET'] = 'pissi-pissi'
-app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['MQTT_BROKER_URL'] = 'localhost'
-app.config['MQTT_BROKER_PORT'] = 1883
-app.config['MQTT_USERNAME'] = ''
-app.config['MQTT_PASSWORD'] = ''
-app.config['MQTT_KEEPALIVE'] = 60
-app.config['MQTT_TLS_ENABLED'] = False
-app.config['MQTT_CLEAN_SESSION'] = True
-socketio = SocketIO(app)
+# app.config['TEMPLATES_AUTO_RELOAD'] = True
+# socketio = SocketIO(app)
 
-mqtt_client = Mqtt(app)
+'''app.config['MQTT_BROKER_URL'] = 'localhost'
+app.config['MQTT_BROKER_PORT'] = 1883
+# app.config['MQTT_KEEPALIVE'] = 60
+app.config['MQTT_TLS_ENABLED'] = True
+'''
 vc = cv2.VideoCapture(0)
 
 
@@ -64,35 +58,31 @@ def video_feed():
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-@mqtt_client.on_connect()
 def on_connect(client, userdata, flags, rc):
     print("Client connected to broker with response code ", rc)
-    mqtt_client.subscribe(topic_feedback)
+    flask_client.subscribe(topic_feedback)
 
 
-@mqtt_client.on_message()
 def on_message(client, userdata, message):
-    data = dict(
-        topic=message.topic,
-        payload=message.payload.decode()
-    )
-    # payload = message.payload.decode(encoding='UTF-8')
-    print("Received message: ", data['payload'])
+    payload = message.payload.decode(encoding='UTF-8')
+    print("Received message: ", payload)
+    if payload == "object_visible":
+        # flash("Your pet is now visible. Would you like to switch to automated mode?")
+        # emit a mqtt_message event to the socket containing the message data
+        alert = "object_visible"
+        # socketio.emit('mqtt_message', alert=alert)
+        print(alert)
 
-    # emit a mqtt_message event to the socket containing the message data
-    socketio.emit('mqtt_message', data=data)
-
-
-@mqtt_client.on_log()
-def handle_logging(client, userdata, level, buf):
-    print(level, buf)
-    print("Client connected to broker with response code ")
-    mqtt_client.subscribe(topic_feedback)
+    elif payload == "object_lost":
+        # flash("Unfortunately, your pet got away from the robot.")
+        alert = "object_lost"
+        # socketio.emit('mqtt_message', alert=alert)
+        print(alert)
 
 
 @app.route('/forward')
 def forward():
-    mqtt_client.publish(topic_rc, "forward")
+    flask_client.publish(topic_rc, "forward")
     print("Move forward")
 
     return Response(status=201)
@@ -100,7 +90,7 @@ def forward():
 
 @app.route('/left')
 def left():
-    mqtt_client.publish(topic_rc, "left")
+    flask_client.publish(topic_rc, "left")
     print("Move left")
 
     return Response(status=201)
@@ -108,7 +98,7 @@ def left():
 
 @app.route('/right')
 def right():
-    mqtt_client.publish(topic_rc, "right")
+    flask_client.publish(topic_rc, "right")
     print("Move right")
 
     return Response(status=201)
@@ -116,7 +106,7 @@ def right():
 
 @app.route('/backward')
 def backward():
-    mqtt_client.publish(topic_rc, "backward")
+    flask_client.publish(topic_rc, "backward")
     print("Move backward")
 
     return Response(status=201)
@@ -124,7 +114,7 @@ def backward():
 
 @app.route('/stop')
 def stop():
-    mqtt_client.publish(topic_rc, "stop")
+    flask_client.publish(topic_rc, "stop")
     print("Stop motors")
 
     return Response(status=201)
@@ -134,7 +124,7 @@ def stop():
 def change_to_auto_mode():
     # Check if it is possible
     if Check.manual is True:
-        mqtt_client.publish(topic_mode, "auto")
+        flask_client.publish(topic_mode, "auto")
         print("Switch to auto")
         Check.manual = False
 
@@ -144,7 +134,7 @@ def change_to_auto_mode():
 @app.route('/manual_mode')
 def change_to_manual_mode():
     if Check.manual is not True:
-        mqtt_client.publish(topic_mode, "manual")
+        flask_client.publish(topic_mode, "manual")
         print("Switch to manual")
         Check.manual = True
 
@@ -153,16 +143,14 @@ def change_to_manual_mode():
 
 if __name__ == '__main__':
     try:
-        '''flask_client = mqtt.Client("Flask")
+        flask_client = mqtt.Client("Flask")
         # client.username_pw_set(username, password)
         flask_client.on_connect = on_connect
         flask_client.on_message = on_message
         flask_client.connect('localhost', 1883)
-        flask_client.loop_start()'''
+        flask_client.loop_start()
 
-        socketio.run(app, host='0.0.0.0', port=80, use_reloader=False, debug=False)
-        # mqtt_client.init_app(app)
-        # app.run(port=80, host='0.0.0.0', threaded=True, debug=False)
+        app.run(port=80, host='0.0.0.0', threaded=True)
 
     except KeyboardInterrupt:
         print("Interrupted by console")
