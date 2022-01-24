@@ -8,22 +8,30 @@ clientName = "Huskylens"
 serverAddress = "localhost"
 mqttClient = mqtt.Client(clientName)
 topic_publish = "pss/movement/auto"
-topic_subscribe = "pss/huskylens"
+topic_hl = "pss/huskylens"
 topic_feedback = "pss/feedback"
 
 
 def on_connect(client, userdata, flags, rc):
     print("Huskylens connected!")
-
-
-def on_publish(client, userdata, result):
-    # print("Huskylens published \n")
-    pass
+    mqttClient.subscribe(topic_hl)
+    print("Subscribed to ", topic_hl)
 
 
 def message_decoder(client, userdata, msg):
     message = msg.payload.decode(encoding='UTF-8')
-    # decode the message from the server
+    topic = msg.topic
+    if topic == topic_hl:
+        if message == "start":
+            Sleep.sleep = False
+            print("Starting")
+        elif message == "sleep":
+            Sleep.sleep = True
+            print("Sleeping")
+
+
+def on_publish(client, userdata, result):
+    # print("Huskylens published \n")
     pass
 
 
@@ -47,6 +55,10 @@ prev_target = None
 class Visible:
     prev_state = False  # false for not visible
     first_time = True
+
+
+class Sleep:
+    sleep = False
 
 
 hl = None
@@ -79,75 +91,77 @@ def tracking():
     Visible.first_time = True
     counter = 0
     while hl.knock() == "Knock Recieved":
+        if Sleep.sleep is False:
+            # Check for read response error
+            if hl.learnedBlocks() is not None:
+                target = hl.getObjectByID(1)
+                if target is None:
+                    continue
+                if counter == 0:
+                    prev_target = target
 
-        # Check for read response error 
-        if hl.learnedBlocks() is not None:
-            target = hl.getObjectByID(1)
-            if target is None:
-                continue
-            if counter == 0:
-                prev_target = target
+                if Visible.prev_state is False or Visible.first_time is True:
+                    Visible.first_time = False
+                    Visible.prev_state = True
+                    print("Object visible")
+                    mqttClient.publish(topic_feedback, "object_visible")
 
-            if Visible.prev_state is False or Visible.first_time is True:
-                Visible.first_time = False
-                Visible.prev_state = True
-                print("Object visible")
-                mqttClient.publish(topic_feedback, "object_visible")
-
-            if target.width < optWidthLow:
-                diff = optWidthLow - target.width
-                mqttClient.publish(topic_publish, "forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                print("Huskylens published: forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                time.sleep(diff / 25)
-
-            elif target.width > optWidthHigh:
-                diff = target.width - optWidthHigh
-                mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                print("Huskylens published: backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                time.sleep(diff / 25)
-
-            if target.x < leftOffset:
-                diff = leftOffset - target.x
-                mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / 20, speed=100))
-                print("Huskylens published: left,{sec},{speed}".format(sec=diff / 20, speed=100))
-                time.sleep(diff / 20)
-
-            elif target.x > rightOffset:
-                diff = target.x - rightOffset
-                mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / 20, speed=100))
-                print("Huskylens published: right,{sec},{speed}".format(sec=diff / 20, speed=100))
-                time.sleep(diff / 20)
-
-            if target.y < topOffset:
-                if target.width < prev_target.width:
-                    diff = topOffset - target.y
+                if target.width < optWidthLow:
+                    diff = optWidthLow - target.width
                     mqttClient.publish(topic_publish, "forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
                     print("Huskylens published: forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
                     time.sleep(diff / 25)
 
-                elif target.width > prev_target.width:
-                    diff = topOffset - target.y
+                elif target.width > optWidthHigh:
+                    diff = target.width - optWidthHigh
                     mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
                     print("Huskylens published: backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
                     time.sleep(diff / 25)
 
-            elif target.y > bottomOffset:
-                diff = target.y - bottomOffset
-                mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                print("Huskylens published: backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                time.sleep(diff / 25)
+                if target.x < leftOffset:
+                    diff = leftOffset - target.x
+                    mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / 20, speed=100))
+                    print("Huskylens published: left,{sec},{speed}".format(sec=diff / 20, speed=100))
+                    time.sleep(diff / 20)
 
-            prev_target = target
-            counter = counter + 1
+                elif target.x > rightOffset:
+                    diff = target.x - rightOffset
+                    mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / 20, speed=100))
+                    print("Huskylens published: right,{sec},{speed}".format(sec=diff / 20, speed=100))
+                    time.sleep(diff / 20)
 
-        else:
-            if Visible.prev_state is True or Visible.first_time is True:
-                Visible.first_time = False
-                Visible.prev_state = False
-                print("Object lost")
-                mqttClient.publish(topic_feedback, "object_lost")
+                if target.y < topOffset:
+                    if target.width < prev_target.width:
+                        diff = topOffset - target.y
+                        mqttClient.publish(topic_publish,
+                                           "forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
+                        print("Huskylens published: forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
+                        time.sleep(diff / 25)
 
-            time.sleep(1)
+                    elif target.width > prev_target.width:
+                        diff = topOffset - target.y
+                        mqttClient.publish(topic_publish,
+                                           "backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
+                        print("Huskylens published: backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
+                        time.sleep(diff / 25)
+
+                elif target.y > bottomOffset:
+                    diff = target.y - bottomOffset
+                    mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
+                    print("Huskylens published: backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
+                    time.sleep(diff / 25)
+
+                prev_target = target
+                counter = counter + 1
+
+            else:
+                if Visible.prev_state is True or Visible.first_time is True:
+                    Visible.first_time = False
+                    Visible.prev_state = False
+                    print("Object lost")
+                    mqttClient.publish(topic_feedback, "object_lost")
+
+                time.sleep(1)
 
     print("Connection error occurred")
     mqttClient.publish(topic_publish, "disconnected")

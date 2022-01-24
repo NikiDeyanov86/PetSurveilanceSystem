@@ -125,6 +125,7 @@ def change_to_auto_mode():
     # Check if it is possible
     if Check.manual is True:
         flask_client.publish(topic_mode, "auto")
+        flask_client.publish(topic_hl, "start")
         print("Switch to auto")
         Check.manual = False
 
@@ -135,6 +136,7 @@ def change_to_auto_mode():
 def change_to_manual_mode():
     if Check.manual is not True:
         flask_client.publish(topic_mode, "manual")
+        flask_client.publish(topic_hl, "sleep")
         print("Switch to manual")
         Check.manual = True
 
