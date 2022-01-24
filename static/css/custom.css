@@ -28,3 +28,13 @@ body {
    text-align: center;
    outline: dashed 1px black;
 }
+.stream_holder {
+   display: flex;
+   justify-content: center;
+   flex-direction: row;
+   flex-wrap: nowrap;
+}
+img {
+   margin-top: 3vh;
+   display: block;
+}
