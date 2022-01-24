@@ -73,12 +73,12 @@ class MotorDriver():
         self.right_side.reverse(speed)
 
     def left(self, speed):
-        self.left_side.reverse(speed)
+        # self.left_side.reverse(speed)
         self.right_side.forward(speed)
 
     def right(self, speed):
         self.left_side.forward(speed)
-        self.right_side.reverse(speed)
+        # self.right_side.reverse(speed)
 
     def stop(self):
         self.left_side.stop()
