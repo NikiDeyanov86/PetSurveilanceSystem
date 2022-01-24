@@ -37,7 +37,7 @@ def on_publish(client, userdata, result):
 
 mqttClient.on_connect = on_connect
 mqttClient.on_publish = on_publish
-mqttClient.on_subscribe = message_decoder
+mqttClient.on_message = message_decoder
 mqttClient.will_set(topic_publish, "disconnected", qos=1, retain=False)
 mqttClient.connect(serverAddress, 1883)
 mqttClient.loop_start()
