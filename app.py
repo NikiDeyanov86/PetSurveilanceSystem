@@ -18,8 +18,8 @@ app.config['SECRET'] = 'pissi-pissi'
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['MQTT_BROKER_URL'] = 'localhost'
 app.config['MQTT_BROKER_PORT'] = 1883
-# app.config['MQTT_USERNAME'] = ''
-# app.config['MQTT_PASSWORD'] = ''
+app.config['MQTT_USERNAME'] = ''
+app.config['MQTT_PASSWORD'] = ''
 app.config['MQTT_KEEPALIVE'] = 60
 app.config['MQTT_TLS_ENABLED'] = False
 app.config['MQTT_CLEAN_SESSION'] = True
@@ -67,7 +67,7 @@ def video_feed():
 @mqtt_client.on_connect()
 def on_connect(client, userdata, flags, rc):
     print("Client connected to broker with response code ", rc)
-    flask_client.subscribe(topic_feedback)
+    mqtt_client.subscribe(topic_feedback)
 
 
 @mqtt_client.on_message()
@@ -81,6 +81,11 @@ def on_message(client, userdata, message):
 
     # emit a mqtt_message event to the socket containing the message data
     socketio.emit('mqtt_message', data=data)
+
+
+@mqtt_client.on_log()
+def handle_logging(client, userdata, level, buf):
+    print(level, buf)
 
 
 @app.route('/forward')
@@ -154,7 +159,7 @@ if __name__ == '__main__':
         flask_client.loop_start()'''
 
         socketio.run(app, host='0.0.0.0', port=80, use_reloader=False, debug=False)
-        mqtt_client.init_app(app)
+        # mqtt_client.init_app(app)
         # app.run(port=80, host='0.0.0.0', threaded=True, debug=False)
 
     except KeyboardInterrupt:
