@@ -19,10 +19,10 @@
 
         // listen for mqtt_message events
         // when a new message is received, log and append the data to the page
-        socket.on('mqtt_message', function(alert) {
-          console.log(alert);
+        socket.on('mqtt_message', function(data) {
+          console.log(data);
           var text;
-          if (alert === "object_visible")  text = "Your pet is now visible. Would you like to switch to automated mode?"
+          if (data['payload'] === "object_visible")  text = "Your pet is now visible. Would you like to switch to automated mode?"
           $('#message').append(text);
         })
       });
