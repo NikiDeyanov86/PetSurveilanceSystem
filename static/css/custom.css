@@ -38,3 +38,8 @@ img {
    margin-top: 3vh;
    display: block;
 }
+.voice_recorder {
+   display: flex;
+   justify-content: center;
+   width: 100%;
+}

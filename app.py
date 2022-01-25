@@ -1,5 +1,6 @@
 import sys
-from flask import Flask, render_template, Response, flash
+import os
+from flask import Flask, render_template, Response, flash, request, redirect
 # import eventlet
 # from flask_socketio import SocketIO, emit
 import paho.mqtt.client as mqtt
@@ -12,6 +13,7 @@ import io
 
 app = Flask(__name__)
 app.config['SECRET'] = 'pissi-pissi'
+app.config['UPLOAD_FOLDER'] = "voice_files"
 # app.config['TEMPLATES_AUTO_RELOAD'] = True
 # socketio = SocketIO(app)
 
@@ -141,6 +143,25 @@ def change_to_manual_mode():
         Check.manual = True
 
     return render_template('manual.html')
+
+
+@app.route('/save-record', methods=['POST'])
+def save_record():
+    # check if the post request has the file part
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    # if user does not select file, browser also
+    # submit an empty part without filename
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+
+    file_name = "voice.wav"
+    full_file_name = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+    file.save(full_file_name)
+    return '<h1>Success</h1>'
 
 
 if __name__ == '__main__':
