@@ -29,6 +29,8 @@ class Check:
     manual = True
 
 
+flask_client = mqtt.Client("Flask")
+
 # PUBLISH AND SUBSCRIBE TOPICS
 topic_feedback = "pss/feedback"
 
@@ -166,7 +168,7 @@ def save_record():
 
 if __name__ == '__main__':
     try:
-        flask_client = mqtt.Client("Flask")
+        
         # client.username_pw_set(username, password)
         flask_client.on_connect = on_connect
         flask_client.on_message = on_message
