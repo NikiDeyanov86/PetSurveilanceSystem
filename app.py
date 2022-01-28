@@ -86,9 +86,11 @@ def gen():
     """Video streaming generator function."""
     while True:
         rval, frame = vc.read()
-        cv2.imwrite('t.jpg', frame)
+        if frame is None or rval is None:
+            print("Frame/rval is none")
+        cv2.imwrite('/home/pi/Projects/PetSurveilanceSystem/t.jpg', frame)
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + open('t.jpg', 'rb').read() + b'\r\n')
+               b'Content-Type: image/jpeg\r\n\r\n' + open('/home/pi/Projects/PetSurveilanceSystem/t.jpg', 'rb').read() + b'\r\n')
 
 
 @app.route('/video_feed')
