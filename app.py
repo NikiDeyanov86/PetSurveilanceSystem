@@ -62,10 +62,18 @@ def on_message(client, userdata, message):
         print(alert)
 
 
+def on_publish(client, userdata, result):
+    print("Published to broker")
+    pass
+
+
 # client.username_pw_set(username, password)
 flask_client.on_connect = on_connect
 flask_client.on_message = on_message
+flask_client.on_publish = on_publish
 flask_client.connect('localhost', 1883)
+
+
 # flask_client.loop_start()
 
 
