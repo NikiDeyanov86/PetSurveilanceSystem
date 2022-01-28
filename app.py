@@ -40,28 +40,6 @@ topic_rc = "pss/movement/manual"
 topic_hl = "pss/huskylens"
 
 
-@app.route('/')
-def index():
-    # check in which mode is the robot
-    return render_template('manual.html')
-
-
-def gen():
-    """Video streaming generator function."""
-    while True:
-        rval, frame = vc.read()
-        cv2.imwrite('t.jpg', frame)
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + open('t.jpg', 'rb').read() + b'\r\n')
-
-
-@app.route('/video_feed')
-def video_feed():
-    """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(gen(),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
 def on_connect(client, userdata, flags, rc):
     print("Client connected to broker with response code ", rc)
     flask_client.subscribe(topic_feedback)
@@ -82,6 +60,35 @@ def on_message(client, userdata, message):
         alert = "object_lost"
         # socketio.emit('mqtt_message', alert=alert)
         print(alert)
+
+
+# client.username_pw_set(username, password)
+flask_client.on_connect = on_connect
+flask_client.on_message = on_message
+flask_client.connect('localhost', 1883)
+flask_client.loop_start()
+
+
+@app.route('/')
+def index():
+    # check in which mode is the robot
+    return render_template('manual.html')
+
+
+def gen():
+    """Video streaming generator function."""
+    while True:
+        rval, frame = vc.read()
+        cv2.imwrite('t.jpg', frame)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + open('t.jpg', 'rb').read() + b'\r\n')
+
+
+@app.route('/video_feed')
+def video_feed():
+    """Video streaming route. Put this in the src attribute of an img tag."""
+    return Response(gen(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/forward')
@@ -167,16 +174,4 @@ def save_record():
 
 
 if __name__ == '__main__':
-    try:
-        
-        # client.username_pw_set(username, password)
-        flask_client.on_connect = on_connect
-        flask_client.on_message = on_message
-        flask_client.connect('localhost', 1883)
-        flask_client.loop_start()
-
-        app.run(port=80, host='0.0.0.0', threaded=True)
-
-    except KeyboardInterrupt:
-        print("Interrupted by console")
-        sys.exit(0)
+    app.run(port=80, host='0.0.0.0', threaded=True)
