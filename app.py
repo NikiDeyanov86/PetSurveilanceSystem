@@ -72,7 +72,7 @@ flask_client.on_connect = on_connect
 flask_client.on_message = on_message
 flask_client.on_publish = on_publish
 flask_client.connect('localhost', 1883)
-flask_client.loop_start()
+flask_client.loop_forever()
 
 # flask_client.loop_start()
 
