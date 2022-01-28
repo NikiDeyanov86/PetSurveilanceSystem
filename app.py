@@ -66,7 +66,7 @@ def on_message(client, userdata, message):
 flask_client.on_connect = on_connect
 flask_client.on_message = on_message
 flask_client.connect('localhost', 1883)
-flask_client.loop_start()
+# flask_client.loop_start()
 
 
 @app.route('/')
@@ -174,4 +174,5 @@ def save_record():
 
 
 if __name__ == '__main__':
+    flask_client.loop_start()
     app.run(port=80, host='0.0.0.0', threaded=True)
