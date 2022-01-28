@@ -184,5 +184,5 @@ def save_record():
 
 if __name__ == '__main__':
     flask_client.loop_start()
-    # app.run(port=80, host='0.0.0.0', threaded=True)
-    app.run(port=80, host='0.0.0.0')
+    app.run(port=80, host='0.0.0.0', threaded=True)
+    # app.run(port=80, host='0.0.0.0')
