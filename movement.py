@@ -98,6 +98,6 @@ mqttClient.on_message = message_decoder
 
 # Connect to the MQTT server & loop forever.
 # CTRL-C will stop the program from running.
-mqttClient.connect(serverAddress)
+mqttClient.connect(serverAddress, 1883)
 # mqttClient.loop_start()
 mqttClient.loop_forever()

@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 app.config['SECRET'] = 'pissi-pissi'
 app.config['UPLOAD_FOLDER'] = "voice_files"
-app.config['MQTT_BROKER_URL'] = 'localhost'
+app.config['MQTT_BROKER_URL'] = '192.168.1.4'
 app.config['MQTT_BROKER_PORT'] = 1883
 app.config['MQTT_USERNAME'] = ''
 app.config['MQTT_PASSWORD'] = ''
@@ -112,6 +112,7 @@ def gen():
         rval, frame = vc.read()
         if frame is None or rval is None:
             print("Frame/rval is none")
+            continue
         cv2.imwrite('t.jpg', frame)
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + open('t.jpg', 'rb').read() + b'\r\n')
@@ -208,5 +209,5 @@ def save_record():
 
 if __name__ == '__main__':
     # flask_client.loop_start()
-    app.run(port=80, host='0.0.0.0', threaded=True, use_reloader=False, debug=True)
+    app.run(port=80, host='0.0.0.0', threaded=True, use_reloader=False, debug=False)
     # app.run(port=80, host='0.0.0.0')
