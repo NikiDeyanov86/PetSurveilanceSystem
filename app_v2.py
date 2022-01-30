@@ -49,7 +49,7 @@ topic_hl = "pss/huskylens"
 
 @flask_client.on_connect()
 def handle_connect(client, userdata, flags, rc):
-    print("Client connected to broker with response code ", rc)
+    print(" * Client connected to broker with response code ", rc)
     flask_client.subscribe(topic_feedback)
 
 
@@ -208,5 +208,5 @@ def save_record():
 
 if __name__ == '__main__':
     # flask_client.loop_start()
-    app.run(port=80, host='0.0.0.0', threaded=True, use_reloader=False)
+    app.run(port=80, host='0.0.0.0', threaded=True, use_reloader=False, debug=True)
     # app.run(port=80, host='0.0.0.0')
