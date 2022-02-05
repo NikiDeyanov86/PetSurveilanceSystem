@@ -17,11 +17,6 @@ app.config['UPLOAD_FOLDER'] = "voice_files"
 # app.config['TEMPLATES_AUTO_RELOAD'] = True
 # socketio = SocketIO(app)
 
-'''app.config['MQTT_BROKER_URL'] = 'localhost'
-app.config['MQTT_BROKER_PORT'] = 1883
-# app.config['MQTT_KEEPALIVE'] = 60
-app.config['MQTT_TLS_ENABLED'] = True
-'''
 vc = cv2.VideoCapture(0)
 
 
@@ -29,7 +24,7 @@ class Check:
     manual = True
 
 
-flask_client = mqtt.Client("Flask")
+# flask_client = mqtt.Client("Flask")
 
 # PUBLISH AND SUBSCRIBE TOPICS
 topic_feedback = "pss/feedback"
@@ -65,15 +60,6 @@ def on_message(client, userdata, message):
 def on_publish(client, userdata, result):
     print("Published to broker")
     pass
-
-
-# client.username_pw_set(username, password)
-flask_client.on_connect = on_connect
-flask_client.on_message = on_message
-flask_client.on_publish = on_publish
-flask_client.connect('localhost', 1883)
-
-# flask_client.loop_start()
 
 
 @app.route('/')
@@ -183,6 +169,12 @@ def save_record():
 
 
 if __name__ == '__main__':
-    # flask_client.loop_start()
-    app.run(port=8080, host='0.0.0.0', threaded=True)
-    # app.run(port=80, host='0.0.0.0')
+    flask_client = mqtt.Client("Flask")
+    # client.username_pw_set(username, password)
+    flask_client.on_connect = on_connect
+    flask_client.on_message = on_message
+    flask_client.on_publish = on_publish
+    flask_client.connect('localhost', 1883)
+    flask_client.loop_start()
+    app.run(port=8080, host='0.0.0.0', threaded=True, debug=False)
+
