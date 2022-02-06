@@ -185,5 +185,5 @@ if __name__ == '__main__':
     flask_client.connect('localhost', 1883)
     flask_client.loop_start()
     # app.run(port=8080, host='0.0.0.0', threaded=True, debug=False)
-    socketio.run(app, port=8080, host='0.0.0.0', threaded=True, debug=True, use_reloader=True)
+    socketio.run(app, port=8080, host='0.0.0.0', debug=True, use_reloader=True)
 
