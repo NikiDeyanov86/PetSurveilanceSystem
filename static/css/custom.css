@@ -37,6 +37,7 @@ body {
 img {
    margin-top: 3vh;
    display: block;
+   width: 50vw;
 }
 .voice_recorder {
    display: flex;
