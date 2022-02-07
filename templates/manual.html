@@ -28,7 +28,7 @@
           if (data['payload'] === "object_visible")  text = "Your pet is now visible. Would you like to switch to automated mode?"
           //$('#subscribe_messages').append(text + '<br><br>');
             $('#subscribe_messages').append('<div class="alert alert-primary d-flex align-items-center alert-dismissible fade show" role="alert"> <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg> <div id="message">'
-            + text + '</div> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">Dismiss</button> </div>');
+            + text + '</div> <a href="/automated_mode" style="margin-right: 1vw;"><button type="button" class="btn btn-outline-dark">Yes</button></a> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> </div>');
         })
       });
     </script>
