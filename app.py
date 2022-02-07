@@ -1,15 +1,13 @@
 import sys
 import os
 from flask import Flask, render_template, Response, flash, request, redirect
-# import eventlet
-# from flask_socketio import SocketIO, emit
 import paho.mqtt.client as mqtt
 import picamera
 import cv2
 import socket
 import io
+import requests
 
-# eventlet.monkey_patch()
 
 app = Flask(__name__)
 app.config['SECRET'] = 'pissi-pissi'
@@ -48,11 +46,13 @@ def on_message(client, userdata, message):
     print("Received message: ", data['payload'])
     if data['payload'] == "object_visible":
         # flash("Your pet is now visible. Would you like to switch to automated mode?")
-        change_to_auto_mode()
+        # change_to_auto_mode()
+        requests.get("http://petbot.ddns.net:8080/automated_mode")
 
     elif data['payload'] == "object_lost":
         # flash("Unfortunately, your pet got away from the robot.")
-        change_to_manual_mode()
+        # change_to_manual_mode()
+        requests.get("http://petbot.ddns.net:8080/manual_mode")
 
 
 def on_publish(client, userdata, result):
