@@ -79,6 +79,7 @@ def gen():
         rval, frame = vc.read()
         if frame is None or rval is None:
             print("Frame/rval is none")
+            continue
         cv2.imwrite('/home/pi/Projects/PetSurveilanceSystem/t.jpg', frame)
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + open('/home/pi/Projects/PetSurveilanceSystem/t.jpg',
