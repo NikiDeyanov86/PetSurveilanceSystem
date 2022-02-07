@@ -1,21 +1,21 @@
 import sys
 import os
 from flask import Flask, render_template, Response, flash, request, redirect
-import eventlet
-from flask_socketio import SocketIO, emit
+# import eventlet
+# from flask_socketio import SocketIO, emit
 import paho.mqtt.client as mqtt
 import picamera
 import cv2
-# import socket
-# import io
+import socket
+import io
 
-eventlet.monkey_patch()
+# eventlet.monkey_patch()
 
 app = Flask(__name__)
 app.config['SECRET'] = 'pissi-pissi'
 app.config['UPLOAD_FOLDER'] = "voice_files"
 # app.config['TEMPLATES_AUTO_RELOAD'] = True
-socketio = SocketIO(app)
+# socketio = SocketIO(app)
 
 vc = cv2.VideoCapture(0)
 
@@ -41,28 +41,18 @@ def on_connect(client, userdata, flags, rc):
 
 
 def on_message(client, userdata, message):
-    # payload = message.payload.decode(encoding='UTF-8')
-
     data = dict(
         topic=message.topic,
         payload=message.payload.decode()
     )
     print("Received message: ", data['payload'])
-    # emit a mqtt_message event to the socket containing the message data
-    socketio.emit('mqtt_message', data=data)
-
-    '''if payload == "object_visible":
+    if data['payload'] == "object_visible":
         # flash("Your pet is now visible. Would you like to switch to automated mode?")
-        # emit a mqtt_message event to the socket containing the message data
-        alert = "object_visible"
-        # socketio.emit('mqtt_message', alert=alert)
-        print(alert)
+        change_to_auto_mode()
 
-    elif payload == "object_lost":
+    elif data['payload'] == "object_lost":
         # flash("Unfortunately, your pet got away from the robot.")
-        alert = "object_lost"
-        # socketio.emit('mqtt_message', alert=alert)
-        print(alert)'''
+        change_to_manual_mode()
 
 
 def on_publish(client, userdata, result):
@@ -184,6 +174,5 @@ if __name__ == '__main__':
     flask_client.on_publish = on_publish
     flask_client.connect('localhost', 1883)
     flask_client.loop_start()
-    # app.run(port=8080, host='0.0.0.0', threaded=True, debug=False)
-    socketio.run(app, port=8080, host='0.0.0.0', debug=True, use_reloader=False)
+    app.run(port=8080, host='0.0.0.0', threaded=True, debug=False)
 
