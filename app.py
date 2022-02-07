@@ -8,7 +8,6 @@ import socket
 import io
 import requests
 
-
 app = Flask(__name__)
 app.config['SECRET'] = 'pissi-pissi'
 app.config['UPLOAD_FOLDER'] = "voice_files"
@@ -60,6 +59,14 @@ def on_publish(client, userdata, result):
     pass
 
 
+flask_client = mqtt.Client("Flask")
+# client.username_pw_set(username, password)
+flask_client.on_connect = on_connect
+flask_client.on_message = on_message
+flask_client.on_publish = on_publish
+flask_client.connect('localhost', 1883)
+
+
 @app.route('/')
 def index():
     # check in which mode is the robot
@@ -74,7 +81,8 @@ def gen():
             print("Frame/rval is none")
         cv2.imwrite('/home/pi/Projects/PetSurveilanceSystem/t.jpg', frame)
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + open('/home/pi/Projects/PetSurveilanceSystem/t.jpg', 'rb').read() + b'\r\n')
+               b'Content-Type: image/jpeg\r\n\r\n' + open('/home/pi/Projects/PetSurveilanceSystem/t.jpg',
+                                                          'rb').read() + b'\r\n')
 
 
 @app.route('/video_feed')
@@ -167,12 +175,5 @@ def save_record():
 
 
 if __name__ == '__main__':
-    flask_client = mqtt.Client("Flask")
-    # client.username_pw_set(username, password)
-    flask_client.on_connect = on_connect
-    flask_client.on_message = on_message
-    flask_client.on_publish = on_publish
-    flask_client.connect('localhost', 1883)
     flask_client.loop_start()
     app.run(port=8080, host='0.0.0.0', threaded=True, debug=False)
-
