@@ -57,10 +57,10 @@ img {
    position: absolute;
    left: 0px;
    top: 0px;
-   margin-left: 40%;
-   margin-top: 40%;
-   width: 20%;
-   height: 20%;
+   margin-left: 43%;
+   margin-top: 32%;
+   width: 23%;
+   height: 27%;
    z-index: 1000;
    outline: solid 2px orange;
 }
