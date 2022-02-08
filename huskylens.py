@@ -21,6 +21,24 @@ def on_connect(client, userdata, flags, rc):
 def message_decoder(client, userdata, msg):
     message = msg.payload.decode(encoding='UTF-8')
     topic = msg.topic
+    if topic == topic_hl:
+        if message == "learn":
+            hl.algorthim("ALGORITHM_OBJECT_TRACKING")
+
+            if hl.learn(1) == "Knock Recieved":
+                mqttClient.publish(topic_feedback, "object_learned")
+            else:
+                mqttClient.publish(topic_feedback, "unable_to_learn_object")
+        elif message == "forget":
+            to_forget = hl.getObjectByID(1)
+            if to_forget is None:
+                mqttClient.publish(topic_feedback, "object_lost")
+            else:
+                if hl.forget() == "Knock Recieved":
+                    mqttClient.publish(topic_feedback, "object_forgotten")
+                else:
+                    mqttClient.publish(topic_feedback, "unable_to_forget_object")
+
     '''
     if topic == topic_hl:
         if message == "start":

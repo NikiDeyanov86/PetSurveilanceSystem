@@ -81,6 +81,8 @@
     <div class="main">
         <div class="content">
             <div class="stream_holder">
+                {% block learn_target %}
+                {% endblock %}
                 <!-- Stream container will go here -->
                 <img src="{{ url_for('video_feed') }}">
             </div>

@@ -33,6 +33,8 @@ body {
    justify-content: center;
    flex-direction: row;
    flex-wrap: nowrap;
+   outline: dashed 1px black;
+   position: relative;
 }
 img {
    margin-top: 3vh;
@@ -43,4 +45,20 @@ img {
    display: flex;
    justify-content: center;
    width: 100%;
+   outline: dashed 1px black;
+}
+.controls {
+   display: flex;
+   justify-content: center;
+   width: 100%;
+   outline: dashed 1px black;
+}
+#target {
+   position: absolute;
+   left: 0px;
+   top: 0px;
+   width: 20%;
+   height: 20%;
+   z-index: 1000;
+   outline: solid 2px orange;
 }

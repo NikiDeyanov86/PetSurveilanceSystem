@@ -133,6 +133,22 @@ def stop():
     return Response(status=201)
 
 
+@app.route('/learn_object')
+def learn():
+    flask_client.publish(topic_hl, "learn")
+    print("Telling HL to learn the current object")
+
+    return Response(status=201)
+
+
+@app.route('/forget_object')
+def forget():
+    flask_client.publish(topic_hl, "forget")
+    print("Telling HL to forget the current object")
+
+    return Response(status=201)
+
+
 @app.route('/automated_mode')
 def change_to_auto_mode():
     # Check if it is possible
