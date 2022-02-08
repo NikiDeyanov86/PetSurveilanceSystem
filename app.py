@@ -7,6 +7,7 @@ import cv2
 import socket
 import io
 import requests
+import logging
 
 app = Flask(__name__)
 app.config['SECRET'] = 'pissi-pissi'
@@ -43,6 +44,7 @@ def on_message(client, userdata, message):
         payload=message.payload.decode()
     )
     print("Received message: ", data['payload'])
+    app.logger.info('Received message: ', data['payload'])
     if data['payload'] == "object_visible":
         # flash("Your pet is now visible. Would you like to switch to automated mode?")
         # change_to_auto_mode()
@@ -56,6 +58,7 @@ def on_message(client, userdata, message):
 
 def on_publish(client, userdata, result):
     print("Published to broker")
+    app.logger.info('Published to broker')
     pass
 
 
@@ -65,6 +68,9 @@ flask_client.on_connect = on_connect
 flask_client.on_message = on_message
 flask_client.on_publish = on_publish
 flask_client.connect('localhost', 1883)
+
+logging.basicConfig(filename='record.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %('
+                                                                       f'threadName)s : %(message)s')
 
 
 @app.route('/')
@@ -97,6 +103,7 @@ def video_feed():
 def forward():
     flask_client.publish(topic_rc, "forward")
     print("Move forward")
+    app.logger.info('Move forward')
 
     return Response(status=201)
 
@@ -105,6 +112,7 @@ def forward():
 def left():
     flask_client.publish(topic_rc, "left")
     print("Move left")
+    app.logger.info('Move left')
 
     return Response(status=201)
 
@@ -113,6 +121,7 @@ def left():
 def right():
     flask_client.publish(topic_rc, "right")
     print("Move right")
+    app.logger.info('Move right')
 
     return Response(status=201)
 
@@ -121,6 +130,7 @@ def right():
 def backward():
     flask_client.publish(topic_rc, "backward")
     print("Move backward")
+    app.logger.info('Move backward')
 
     return Response(status=201)
 
@@ -129,6 +139,7 @@ def backward():
 def stop():
     flask_client.publish(topic_rc, "stop")
     print("Stop motors")
+    app.logger.info('Stop motors')
 
     return Response(status=201)
 
@@ -137,6 +148,7 @@ def stop():
 def learn():
     flask_client.publish(topic_hl, "learn")
     print("Telling HL to learn the current object")
+    app.logger.info('Telling HL to learn the current object')
 
     return Response(status=201)
 
@@ -145,6 +157,7 @@ def learn():
 def forget():
     flask_client.publish(topic_hl, "forget")
     print("Telling HL to forget the current object")
+    app.logger.info('Telling HL to forget the current object')
 
     return Response(status=201)
 
@@ -154,8 +167,9 @@ def change_to_auto_mode():
     # Check if it is possible
     if Check.manual is True:
         flask_client.publish(topic_mode, "auto")
-        flask_client.publish(topic_hl, "start")
+        # flask_client.publish(topic_hl, "start")
         print("Switch to auto")
+        app.logger.info('Switch to auto')
         Check.manual = False
 
     return render_template('auto.html')
@@ -165,8 +179,9 @@ def change_to_auto_mode():
 def change_to_manual_mode():
     if Check.manual is not True:
         flask_client.publish(topic_mode, "manual")
-        flask_client.publish(topic_hl, "sleep")
+        # flask_client.publish(topic_hl, "sleep")
         print("Switch to manual")
+        app.logger.info('Switch to manual')
         Check.manual = True
 
     return render_template('manual.html')
@@ -193,4 +208,4 @@ def save_record():
 
 if __name__ == '__main__':
     flask_client.loop_start()
-    app.run(port=8080, host='0.0.0.0', threaded=True, debug=False)
+    app.run(port=8080, host='0.0.0.0', threaded=True, debug=True)
