@@ -167,11 +167,13 @@ def forget():
 def check():
     if Check.manual is True and Check.visible is True:
         app.logger.info('Switch to auto (AJAX)')
+        print('Switch to auto (AJAX)')
         Check.manual = False
         # return render_template('auto.html', status="visible")
         return "visible"
     elif Check.manual is False and Check.visible is False:
         app.logger.info('Switch to manual (AJAX)')
+        print('Switch to manual (AJAX)')
         Check.manual = True
         # return render_template('manual.html', status="not_visible")
         return "not_visible"
