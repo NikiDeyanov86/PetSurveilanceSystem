@@ -76,13 +76,21 @@
             stopRecording.disabled = true;
             rec.stop();
         };
+
+        $(document).ready(function() {
+            setInterval("check_vis()",5000); // call every 10 seconds
+        });
+
+        function check_vis() {
+
+            $("#status").load("/check_status", function() {  console.log( "Checking status." ); });
+
+        }
     </script>
 
     <div class="main">
         <div class="content">
             <div class="stream_holder">
-                {% block learn_target %}
-                {% endblock %}
                 <!-- Stream container will go here -->
                 <img src="{{ url_for('video_feed') }}">
             </div>
@@ -98,8 +106,8 @@
                     </div>
                 </div>
             </div>
-            <div class="alerts">
-
+            <div id="status">
+                {{ status }}
             </div>
             <div class="voice_recorder">
                 <button id="startRecording">Start recording</button>

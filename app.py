@@ -20,6 +20,7 @@ vc = cv2.VideoCapture(0)
 
 class Check:
     manual = True
+    visible = None
 
 
 # flask_client = mqtt.Client("Flask")
@@ -44,16 +45,14 @@ def on_message(client, userdata, message):
         payload=message.payload.decode()
     )
     print("Received message: ", data['payload'])
-    app.logger.info('Received message: ', data['payload'])
+    app.logger.info('Received message: ')
     if data['payload'] == "object_visible":
         # flash("Your pet is now visible. Would you like to switch to automated mode?")
-        # change_to_auto_mode()
-        requests.get("http://petbot.ddns.net:8080/automated_mode")
+        Check.visible = True
 
     elif data['payload'] == "object_lost":
         # flash("Unfortunately, your pet got away from the robot.")
-        # change_to_manual_mode()
-        requests.get("http://petbot.ddns.net:8080/manual_mode")
+        Check.visible = False
 
 
 def on_publish(client, userdata, result):
@@ -143,7 +142,7 @@ def stop():
 
     return Response(status=201)
 
-
+'''
 @app.route('/learn_object')
 def learn():
     flask_client.publish(topic_hl, "learn")
@@ -160,6 +159,19 @@ def forget():
     app.logger.info('Telling HL to forget the current object')
 
     return Response(status=201)
+'''
+
+
+@app.route('/check_status')
+def check():
+    if Check.manual is True and Check.visible is True:
+        app.logger.info('Switch to auto (AJAX)')
+
+        return render_template('auto.html', status="visible")
+    elif Check.manual is False and Check.visible is False:
+        app.logger.info('Switch to manual (AJAX)')
+
+        return render_template('manual.html', status="not_visible")
 
 
 @app.route('/automated_mode')
@@ -170,8 +182,8 @@ def change_to_auto_mode():
         # flask_client.publish(topic_hl, "start")
         print("Switch to auto")
         app.logger.info('Switch to auto')
-        Check.manual = False
 
+    Check.manual = False
     return render_template('auto.html')
 
 
@@ -182,8 +194,8 @@ def change_to_manual_mode():
         # flask_client.publish(topic_hl, "sleep")
         print("Switch to manual")
         app.logger.info('Switch to manual')
-        Check.manual = True
 
+    Check.manual = True
     return render_template('manual.html')
 
 
