@@ -77,7 +77,7 @@
             stopRecording.disabled = true;
             rec.stop();
         };*/
-
+        /*
         $(document).ready(function() {
             setInterval("check_vis()",5000); // call every 10 seconds
         });
@@ -92,6 +92,20 @@
             // $("#status").load("/check_status", function() {  console.log( "Checking status." ); });
 
         }
+        */
+
+        var check_status = function () {
+        $.ajax({
+            url: '/check_status',
+            success: function (data) {
+                 console.log('Checking status');
+            //$('#data').html(data['data']);
+            check_status(); // this calls the function again
+            }
+        });
+        }
+        check_status();
+
     </script>
 
     <div class="main">
