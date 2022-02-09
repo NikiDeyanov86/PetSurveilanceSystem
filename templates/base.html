@@ -84,7 +84,12 @@
 
         function check_vis() {
 
-            $("#status").load("/check_status", function() {  console.log( "Checking status." ); });
+            $.getJSON('/check_status',
+                function(data) {
+                    //do nothing
+                });
+                return false;
+            // $("#status").load("/check_status", function() {  console.log( "Checking status." ); });
 
         }
     </script>
