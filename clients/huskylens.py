@@ -25,9 +25,9 @@ def message_decoder(client, userdata, msg):
         if message == "learn":
             print("before switching algorithm")
             hl.algorthim("ALGORITHM_OBJECT_TRACKING")
-
+            print(hl.requestAll())
             if hl.learn(1) == "Knock Recieved":
-                hl.learn(1)
+                # hl.learn(1)
                 print("Check if learned: ", hl.getObjectByID(1))
                 mqttClient.publish(topic_feedback, "object_learned")
             else:
