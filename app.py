@@ -1,6 +1,7 @@
 import sys
 import os
 from flask import Flask, render_template, Response, flash, request, redirect
+from flask_sqlalchemy import SQLAlchemy
 import paho.mqtt.client as mqtt
 import picamera
 import cv2
@@ -9,11 +10,15 @@ import io
 import requests
 import logging
 
+# db = SQLAlchemy()
+
 app = Flask(__name__)
 app.config['SECRET'] = 'pissi-pissi'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['UPLOAD_FOLDER'] = "voice_files"
 # app.config['TEMPLATES_AUTO_RELOAD'] = True
-# socketio = SocketIO(app)
+db = SQLAlchemy(app)
+# db.init_app(app)
 
 vc = cv2.VideoCapture(0)
 
@@ -75,7 +80,22 @@ logging.basicConfig(filename='record.log', level=logging.DEBUG, format=f'%(ascti
 @app.route('/')
 def index():
     # check in which mode is the robot
-    return render_template('manual.html')
+    return render_template('index.html')
+
+
+@app.route('/login')
+def login():
+    return 'Login'
+
+
+@app.route('/signup')
+def signup():
+    return 'Signup'
+
+
+@app.route('/logout')
+def logout():
+    return 'Logout'
 
 
 def gen():
@@ -144,15 +164,6 @@ def stop():
 
 
 '''
-@app.route('/learn_object')
-def learn():
-    flask_client.publish(topic_hl, "learn")
-    print("Telling HL to learn the current object")
-    app.logger.info('Telling HL to learn the current object')
-
-    return Response(status=201)
-
-
 @app.route('/forget_object')
 def forget():
     flask_client.publish(topic_hl, "forget")
