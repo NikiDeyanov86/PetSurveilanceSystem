@@ -79,20 +79,8 @@
         };*/
 
         $(document).ready(function() {
-            setInterval("check_vis()",5000); // call every 10 seconds
+            setInterval("check_vis()",5000); // call every 5 seconds
         });
-        /*
-
-        function check_vis() {
-
-            $.getJSON('/check_status',
-                function(data) {
-                    //do nothing
-                    console.log(data)
-                });
-            // $("#status").load("/check_status", function() {  console.log( "Checking status." ); });
-
-        } */
 
 
         function check_vis() {
@@ -110,11 +98,16 @@
         });
         }
 
-
     </script>
 
     <div class="main">
         <div class="content">
+            <nav class="navbar navbar-light bg-light">
+                <div class="container-fluid">
+                    <span class="navbar-brand mb-0 h1">PetSurveillanceSystem</span>
+                    <a class="nav-link active" aria-current="page" href="/logout">Log out</a>
+                </div>
+            </nav>
             <div class="stream_holder">
                 <!-- Stream container will go here -->
                 <img src="{{ url_for('video_feed') }}">
@@ -145,7 +138,5 @@
             </div>
         </div>
     </div>
-
-
 </body>
 </html>

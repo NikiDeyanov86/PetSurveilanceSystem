@@ -2,9 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name='copyright' content=''>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Sign up</title>
 </head>
 <body>
+    <div class="main">
+        <h3 class="title">Login</h3>
+        <div class="form_holder">
+            <form method="POST" action="/signup">
+                <div class="mb-3">
+                    <label for="inputUsername" class="form-label">Username</label>
+                    <input class="form-control" type="text" name="username" placeholder="Your Username" id="inputUsername" aria-describedby="emailHelp">
+                </div>
 
+                <div class="mb-3">
+                    <label for="inputPassword" class="form-label">Password</label>
+                    <input class="form-control" type="password" name="password" id="inputPassword" placeholder="Your Password">
+                </div>
+                <div class="mb-3">
+                    <label for="inputAccessKey" class="form-label">Access key</label>
+                    <input class="form-control" type="password" name="access_key" id="inputAccessKey">
+                </div>
+                <button type="submit" class="btn btn-primary">Sign up</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
