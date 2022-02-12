@@ -44,27 +44,10 @@
 
 {% block content %}
 
-    <p> this is automated mode</p>
-    <!--
-    <a href=# id="learn"><button class='btn btn-default'>Learn</button></a>
     <a href=# id="forget"><button class='btn btn-default'>Forget</button></a>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type=text/javascript>
-            $(function() {
-              $('a#learn').on('click', function(e) {
-                e.preventDefault()
-                $.getJSON('/learn_object',
-                    function(data) {
-                  //do nothing
-                });
-                const img_target = document.getElementById("target")
-                  if (img_target.style.display !== "none") {
-                        img_target.style.display = "none";
-                  }
-                return false;
-              });
-            });
 
             $(function() {
               $('a#forget').on('click', function(e) {
@@ -73,14 +56,9 @@
                     function(data) {
                   //do nothing
                 });
-                const img_target = document.getElementById("target")
-                  if (img_target.style.display === "none") {
-                        img_target.style.display = "block";
-                  }
                 return false;
               });
             });
     </script>
-    -->
 
 {% endblock %}
