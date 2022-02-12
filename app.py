@@ -1,7 +1,10 @@
 import sys
 import os
-from flask import Flask, render_template, Response, flash, request, redirect
+from flask import Flask, render_template, Response, flash, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import login_user, login_required, current_user, logout_user, LoginManager
+from werkzeug.security import generate_password_hash, check_password_hash
+from models import User
 import paho.mqtt.client as mqtt
 import picamera
 import cv2
@@ -19,6 +22,8 @@ app.config['UPLOAD_FOLDER'] = "voice_files"
 # app.config['TEMPLATES_AUTO_RELOAD'] = True
 db = SQLAlchemy(app)
 # db.init_app(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 
 vc = cv2.VideoCapture(0)
 
@@ -28,7 +33,7 @@ class Check:
     visible = None
 
 
-# flask_client = mqtt.Client("Flask")
+access_key = "Mac-Pissi-Pissi-86"
 
 # PUBLISH AND SUBSCRIBE TOPICS
 topic_feedback = "pss/feedback"
@@ -77,20 +82,83 @@ logging.basicConfig(filename='record.log', level=logging.DEBUG, format=f'%(ascti
                                                                        f'threadName)s : %(message)s')
 
 
+@login_manager.user_loader
+def load_user(user_id):
+    # since the user_id is just the primary key of our user table, use it in the query for the user
+    return User.query.get(int(user_id))
+
+
 @app.route('/')
 def index():
     # check in which mode is the robot
     return render_template('index.html')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    if 'id' in current_user.__dict__:
+        if Check.manual is True:
+            return redirect(url_for('change_to_manual_mode'))
+        else:
+            return redirect(url_for('change_to_auto_mode'))
+
+    if request.method == 'GET':
+        return render_template('login.html')
+    else:
+        username = request.form.get('username')
+        password = request.form.get('password')
+        remember = True if request.form.get('remember') else False
+
+        user = User.query.filter_by(username=username).first()
+
+        if not user or not check_password_hash(user.password, password):
+            flash('Invalid username or password. Please, try again.')
+            return redirect(url_for('login'))
+
+        login_user(user, remember=remember)
+        if Check.manual is True:
+            return redirect(url_for('change_to_manual_mode'))
+        else:
+            return redirect(url_for('change_to_auto_mode'))
 
 
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    return render_template('signup.html')
+    if 'id' in current_user.__dict__:
+        if Check.manual is True:
+            return redirect(url_for('change_to_manual_mode'))
+        else:
+            return redirect(url_for('change_to_auto_mode'))
+
+    # OR
+    '''user = User.query.filter_by(username=username).first() # if this returns a user, then the email already exists in database
+
+    if user: # if a user is found, we want to redirect back to signup page so user can try again
+        return redirect(url_for('signup'))'''
+
+    if request.method == 'GET':
+        return render_template('signup.html')
+    else:
+        username = request.form['username']
+        temp_user = User.query.filter_by(username=username).first()
+        if temp_user:
+            flash('Username already exists')
+            return redirect(url_for('signup'))
+
+        password = generate_password_hash(request.form['password'], method='sha256')
+        a_key = request.form['access_key']
+
+        if a_key != access_key:
+            flash('Wrong access key, try again.')
+            return redirect(url_for('signup'))
+
+        user = User(username=username, password=password)
+
+        db.session.add(user)
+        db.session.commit()
+
+        flash("You were successfully signed up!")
+        return redirect(url_for('login'))
 
 
 @app.route('/logout')
@@ -163,7 +231,6 @@ def stop():
     return Response(status=201)
 
 
-'''
 @app.route('/forget_object')
 def forget():
     flask_client.publish(topic_hl, "forget")
@@ -171,7 +238,6 @@ def forget():
     app.logger.info('Telling HL to forget the current object')
 
     return Response(status=201)
-'''
 
 
 @app.route('/check_status')
