@@ -107,9 +107,9 @@ def login():
     if request.method == 'GET':
         return render_template('login.html')
     else:
-        username = request.form.get('username')
-        password = request.form.get('password')
-        remember = True if request.form.get('remember') else False
+        username = request.form['username']
+        password = request.form['password']
+        # remember = True if request.form.get('remember') else False
 
         user = User.query.filter_by(username=username).first()
 
@@ -119,9 +119,9 @@ def login():
 
         login_user(user)
         if Check.manual is True:
-            return redirect(url_for('change_to_manual_mode'))
+            return render_template("manual.html", name=username)
         else:
-            return redirect(url_for('change_to_auto_mode'))
+            return render_template("auto.html", name=username)
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -182,6 +182,7 @@ def gen():
 
 
 @app.route('/video_feed')
+@login_required
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     return Response(gen(),
@@ -189,6 +190,7 @@ def video_feed():
 
 
 @app.route('/forward')
+@login_required
 def forward():
     flask_client.publish(topic_rc, "forward")
     print("Move forward")
@@ -198,6 +200,7 @@ def forward():
 
 
 @app.route('/left')
+@login_required
 def left():
     flask_client.publish(topic_rc, "left")
     print("Move left")
@@ -207,6 +210,7 @@ def left():
 
 
 @app.route('/right')
+@login_required
 def right():
     flask_client.publish(topic_rc, "right")
     print("Move right")
@@ -216,6 +220,7 @@ def right():
 
 
 @app.route('/backward')
+@login_required
 def backward():
     flask_client.publish(topic_rc, "backward")
     print("Move backward")
@@ -225,6 +230,7 @@ def backward():
 
 
 @app.route('/stop')
+@login_required
 def stop():
     flask_client.publish(topic_rc, "stop")
     print("Stop motors")
@@ -234,6 +240,7 @@ def stop():
 
 
 @app.route('/forget_object')
+@login_required
 def forget():
     flask_client.publish(topic_hl, "forget")
     print("Telling HL to forget the current object")
@@ -261,6 +268,7 @@ def check():
 
 
 @app.route('/automated_mode')
+@login_required
 def change_to_auto_mode():
     # Check if it is possible
     if Check.manual is True:
@@ -270,10 +278,11 @@ def change_to_auto_mode():
         app.logger.info('Switch to auto')
 
     Check.manual = False
-    return render_template('auto.html')
+    return render_template('auto.html', name=current_user.username)
 
 
 @app.route('/manual_mode')
+@login_required
 def change_to_manual_mode():
     if Check.manual is not True:
         flask_client.publish(topic_mode, "manual")
@@ -282,10 +291,11 @@ def change_to_manual_mode():
         app.logger.info('Switch to manual')
 
     Check.manual = True
-    return render_template('manual.html')
+    return render_template('manual.html', name=current_user.username)
 
 
 @app.route('/save-record', methods=['POST'])
+@login_required
 def save_record():
     # check if the post request has the file part
     if 'file' not in request.files:
