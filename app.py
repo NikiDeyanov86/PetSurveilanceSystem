@@ -159,7 +159,7 @@ def signup():
         db.session.add(user)
         db.session.commit()
 
-        flash("You were successfully signed up!")
+        # flash("You were successfully signed up!")
         return redirect(url_for('login'))
 
 
