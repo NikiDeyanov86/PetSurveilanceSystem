@@ -117,7 +117,7 @@ def login():
             # flash('Invalid username or password. Please, try again.')
             return redirect(url_for('login'))
 
-        login_user(user, remember=remember)
+        login_user(user)
         if Check.manual is True:
             return redirect(url_for('change_to_manual_mode'))
         else:
