@@ -30,3 +30,5 @@ opencv-python~=4.5.4.58
 Flask~=1.0
 paho-mqtt~=1.6.1
 pyserial~=3.5
+Werkzeug~=1.0.1
+SQLAlchemy~=1.4.31

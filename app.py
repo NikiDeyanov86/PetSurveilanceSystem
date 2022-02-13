@@ -30,6 +30,7 @@ def create_table():
 # login_manager = LoginManager(app)
 login.login_view = 'login'
 
+
 vc = cv2.VideoCapture(0)
 
 
