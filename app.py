@@ -3,6 +3,7 @@ import os
 from flask import Flask, render_template, Response, flash, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, login_required, current_user, logout_user, LoginManager
+from database import db_session,init_db
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User
 import paho.mqtt.client as mqtt
