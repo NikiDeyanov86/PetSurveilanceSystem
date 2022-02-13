@@ -1,5 +1,11 @@
-from app import db
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager
+
+
+login = LoginManager()
+db = SQLAlchemy()
 
 
 class User(UserMixin, db.Model):
@@ -13,3 +19,7 @@ class User(UserMixin, db.Model):
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
 
+
+@login.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))

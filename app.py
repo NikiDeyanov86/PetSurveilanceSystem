@@ -1,10 +1,9 @@
 import sys
 import os
 from flask import Flask, render_template, Response, flash, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, login_required, current_user, logout_user, LoginManager
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import User
+from models import db, login, User
 import paho.mqtt.client as mqtt
 import picamera
 import cv2
@@ -17,13 +16,19 @@ import logging
 
 app = Flask(__name__)
 app.config['SECRET'] = 'pissi-pissi'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = "voice_files"
 # app.config['TEMPLATES_AUTO_RELOAD'] = True
-db = SQLAlchemy(app)
-# db.init_app(app)
-login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+
+db.init_app(app)
+login.init_app(app)
+'''
+@app.before_first_request
+def create_table():
+    db.create_all()'''
+# login_manager = LoginManager(app)
+login.login_view = 'login'
 
 vc = cv2.VideoCapture(0)
 
