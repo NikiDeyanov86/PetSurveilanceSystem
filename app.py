@@ -30,7 +30,6 @@ def create_table():
 # login_manager = LoginManager(app)
 login.login_view = 'login'
 
-
 vc = cv2.VideoCapture(0)
 
 
@@ -86,12 +85,6 @@ flask_client.connect('localhost', 1883)
 
 logging.basicConfig(filename='record.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %('
                                                                        f'threadName)s : %(message)s')
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    # since the user_id is just the primary key of our user table, use it in the query for the user
-    return User.query.get(int(user_id))
 
 
 @app.route('/')
