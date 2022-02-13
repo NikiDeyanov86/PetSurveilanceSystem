@@ -18,13 +18,14 @@ import logging
 
 app = Flask(__name__)
 app.config['SECRET'] = 'pissi-pissi'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['UPLOAD_FOLDER'] = "voice_files"
 # app.config['TEMPLATES_AUTO_RELOAD'] = True
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
 # db.init_app(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
+init_db()
 
 vc = cv2.VideoCapture(0)
 
@@ -155,8 +156,8 @@ def signup():
 
         user = User(username=username, password=password)
 
-        db.session.add(user)
-        db.session.commit()
+        db_session.add(user)
+        db_session.commit()
 
         flash("You were successfully signed up!")
         return redirect(url_for('login'))
