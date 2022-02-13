@@ -23,10 +23,13 @@ app.config['UPLOAD_FOLDER'] = "voice_files"
 
 db.init_app(app)
 login.init_app(app)
-'''
+
+
 @app.before_first_request
 def create_table():
-    db.create_all()'''
+    db.create_all()
+
+
 # login_manager = LoginManager(app)
 login.login_view = 'login'
 
