@@ -1,7 +1,7 @@
 import sys
 import os
 from flask import Flask, render_template, Response, flash, request, redirect, url_for
-from flask_login import login_user, login_required, current_user, logout_user, LoginManager
+from flask_login import login_user, login_required, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import db, login, User
 import paho.mqtt.client as mqtt
@@ -31,7 +31,7 @@ def create_table():
 
 
 # login_manager = LoginManager(app)
-login.login_view = 'login'
+# login.login_view = 'login'
 
 vc = cv2.VideoCapture(0)
 
