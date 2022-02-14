@@ -126,9 +126,9 @@ def login():
         db_session.commit()
         login_user(user)
         if Check.manual is True:
-            return render_template("manual.html", name=username)
+            return redirect(url_for('change_to_manual_mode'))
         else:
-            return render_template("auto.html", name=username)
+            return redirect(url_for('change_to_auto_mode'))
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -165,8 +165,13 @@ def signup():
 
 
 @app.route('/logout')
+@login_required
 def logout():
-    return 'Logout'
+    current_user.login_id = None
+    db_session.commit()
+    logout_user()
+
+    return redirect(url_for('index'))
 
 
 def gen():
