@@ -88,8 +88,10 @@ def message_decoder(client, userdata, msg):
 
     elif topic == "pss/movement/mode":
         if message == "auto":
+            print("<<<<<<<< AUTO MODE >>>>>>>>>")
             Check.manual = False
         elif message == "manual":
+            print("<<<<<<<< MANUAL MODE >>>>>>>>>")
             Check.manual = True
 
 

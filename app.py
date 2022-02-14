@@ -261,14 +261,14 @@ def check():
         app.logger.info('Switch to auto (AJAX)')
         print('Switch to auto (AJAX)')
         Check.manual = False
-        return redirect(url_for('change_to_auto_mode'))
-        # return "visible"
+        flask_client.publish(topic_mode, "auto")
+        return "visible"
     elif Check.manual is False and Check.visible is False:
         app.logger.info('Switch to manual (AJAX)')
         print('Switch to manual (AJAX)')
         Check.manual = True
-        return redirect(url_for('change_to_manual_mode'))
-        # return "not_visible"
+        flask_client.publish(topic_mode, "manual")
+        return "not_visible"
 
     return Response(status=200)
 

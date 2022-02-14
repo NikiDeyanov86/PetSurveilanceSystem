@@ -87,14 +87,14 @@
         $.ajax({
             url: '/check_status',
             success: function (data) {
-                 console.log(data);
-                 /*
+                 // console.log(data);
+
                  if(data === "not_visible") {
                      window.location.replace("http://petbot.ddns.net:8080/manual_mode")
                  }
                  else if(data === "visible") {
                      window.location.replace("http://petbot.ddns.net:8080/automated_mode")
-                 }*/
+                 }
             }
         });
         }
