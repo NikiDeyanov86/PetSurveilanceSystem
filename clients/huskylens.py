@@ -56,7 +56,7 @@ mqttClient.will_set(topic_publish, "disconnected", qos=1, retain=False)
 mqttClient.connect(serverAddress, 1883)
 mqttClient.loop_start()
 
-motorSpeed = 80
+motorSpeed = 50
 leftOffset = 125
 rightOffset = 185
 topOffset = 80
@@ -134,14 +134,14 @@ def tracking():
 
             if target.x < leftOffset:
                 diff = leftOffset - target.x
-                mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / 20, speed=100))
-                print("Huskylens published: left,{sec},{speed}".format(sec=diff / 20, speed=100))
+                mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / 20, speed=motorSpeed))
+                print("Huskylens published: left,{sec},{speed}".format(sec=diff / 20, speed=motorSpeed))
                 time.sleep(diff / 20)
 
             elif target.x > rightOffset:
                 diff = target.x - rightOffset
-                mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / 20, speed=100))
-                print("Huskylens published: right,{sec},{speed}".format(sec=diff / 20, speed=100))
+                mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / 20, speed=motorSpeed))
+                print("Huskylens published: right,{sec},{speed}".format(sec=diff / 20, speed=motorSpeed))
                 time.sleep(diff / 20)
 
             if target.y < topOffset:

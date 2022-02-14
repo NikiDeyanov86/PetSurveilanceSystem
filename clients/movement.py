@@ -64,7 +64,7 @@ def message_decoder(client, userdata, msg):
     elif topic == "pss/movement/manual" and Check.manual is True:
         # Data from remote client, ex. "left" ---- time ----> "stop"
         direction = message
-        speed = 100
+        speed = 50
         if direction == "forward":
             print("MANUAL: forward")
             motors.forward(speed)
