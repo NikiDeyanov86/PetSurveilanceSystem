@@ -1,9 +1,13 @@
 import sys
 import os
+import uuid
+
 from flask import Flask, render_template, Response, flash, request, redirect, url_for
-from flask_login import login_user, login_required, current_user, logout_user, LoginManager
+from flask_login import login_user, login_required, current_user, logout_user
+from database import db_session, init_db
+from login import login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, login, User
+from models import User
 import paho.mqtt.client as mqtt
 import picamera
 import cv2
@@ -15,28 +19,19 @@ import logging
 # db = SQLAlchemy()
 
 app = Flask(__name__)
-app.config['SECRET'] = 'pissi-pissi'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'pissi-pissi'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['UPLOAD_FOLDER'] = "voice_files"
 # app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-db.init_app(app)
-login = LoginManager(app)
+login_manager.init_app(app)
+init_db()
 
 
-@login.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+@app.teardown_appcontext
+def shutdown_context(exception=None):
+    db_session.remove()
 
-
-@app.before_first_request
-def create_table():
-    db.create_all()
-
-
-# login_manager = LoginManager(app)
-# login.login_view = 'login'
 
 vc = cv2.VideoCapture(0)
 
@@ -46,7 +41,7 @@ class Check:
     visible = None
 
 
-access_key = "Mac-Pissi-Pissi-86"
+access_key = "gain_access"
 
 # PUBLISH AND SUBSCRIBE TOPICS
 topic_feedback = "pss/feedback"
@@ -97,7 +92,12 @@ logging.basicConfig(filename='record.log', level=logging.DEBUG, format=f'%(ascti
 
 @app.route('/')
 def index():
-    # check in which mode is the robot
+    if 'id' in current_user.__dict__:
+        if Check.manual is True:
+            return redirect(url_for('change_to_manual_mode'))
+        else:
+            return redirect(url_for('change_to_auto_mode'))
+
     return render_template('index.html')
 
 
@@ -122,6 +122,8 @@ def login():
             # flash('Invalid username or password. Please, try again.')
             return redirect(url_for('login'))
 
+        user.login_id = str(uuid.uuid4())
+        db_session.commit()
         login_user(user)
         if Check.manual is True:
             return render_template("manual.html", name=username)
@@ -131,17 +133,11 @@ def login():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    if 'id' in current_user.__dict__:
+    if 'login_id' in current_user.__dict__:
         if Check.manual is True:
             return redirect(url_for('change_to_manual_mode'))
         else:
             return redirect(url_for('change_to_auto_mode'))
-
-    # OR
-    '''user = User.query.filter_by(username=username).first() # if this returns a user, then the email already exists in database
-
-    if user: # if a user is found, we want to redirect back to signup page so user can try again
-        return redirect(url_for('signup'))'''
 
     if request.method == 'GET':
         return render_template('signup.html')
@@ -161,8 +157,8 @@ def signup():
 
         user = User(username=username, password=password)
 
-        db.session.add(user)
-        db.session.commit()
+        db_session.add(user)
+        db_session.commit()
 
         # flash("You were successfully signed up!")
         return redirect(url_for('login'))
