@@ -1,7 +1,7 @@
 import sys
 import os
 from flask import Flask, render_template, Response, flash, request, redirect, url_for
-from flask_login import login_user, login_required, current_user, logout_user
+from flask_login import login_user, login_required, current_user, logout_user, LoginManager
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import db, login, User
 import paho.mqtt.client as mqtt
@@ -22,7 +22,12 @@ app.config['UPLOAD_FOLDER'] = "voice_files"
 # app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 db.init_app(app)
-login.init_app(app)
+login = LoginManager(app)
+
+
+@login.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 @app.before_first_request
