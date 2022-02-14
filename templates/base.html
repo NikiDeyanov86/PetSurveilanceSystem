@@ -79,7 +79,7 @@
         };*/
 
         $(document).ready(function() {
-            setInterval("check_vis()",5000); // call every 5 seconds
+            setInterval("check_vis()",10000); // call every 10 seconds
         });
 
 
@@ -88,12 +88,13 @@
             url: '/check_status',
             success: function (data) {
                  console.log(data);
+                 /*
                  if(data === "not_visible") {
                      window.location.replace("http://petbot.ddns.net:8080/manual_mode")
                  }
                  else if(data === "visible") {
                      window.location.replace("http://petbot.ddns.net:8080/automated_mode")
-                 }
+                 }*/
             }
         });
         }
