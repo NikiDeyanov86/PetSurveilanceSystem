@@ -119,7 +119,7 @@ def login():
         user = User.query.filter_by(username=username).first()
 
         if not user or not check_password_hash(user.password, password):
-            # flash('Invalid username or password. Please, try again.')
+            flash('Invalid username or password. Please, try again.')
             return redirect(url_for('login'))
 
         user.login_id = str(uuid.uuid4())
@@ -145,14 +145,14 @@ def signup():
         username = request.form['username']
         temp_user = User.query.filter_by(username=username).first()
         if temp_user:
-            # flash('Username already exists')
+            flash('Username already exists')
             return redirect(url_for('signup'))
 
         password = generate_password_hash(request.form['password'], method='sha256')
         a_key = request.form['access_key']
 
         if a_key != access_key:
-            # flash('Wrong access key, try again.')
+            flash('Wrong access key, try again.')
             return redirect(url_for('signup'))
 
         user = User(username=username, password=password)
@@ -160,7 +160,7 @@ def signup():
         db_session.add(user)
         db_session.commit()
 
-        # flash("You were successfully signed up!")
+        flash("You were successfully signed up!")
         return redirect(url_for('login'))
 
 
