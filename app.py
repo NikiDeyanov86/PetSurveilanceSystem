@@ -322,4 +322,4 @@ def save_record():
 
 if __name__ == '__main__':
     flask_client.loop_start()
-    app.run(port=8080, host='0.0.0.0', threaded=True, debug=False, ssl_context='adhoc')
+    app.run(port=8080, host='0.0.0.0', threaded=True, debug=False)
