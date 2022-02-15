@@ -50,7 +50,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type=text/javascript>
             $(function() {
-              $('a#forward').mousedown(function(e) {
+              $('button#forward').mousedown(function(e) {
                 e.preventDefault()
                 $.getJSON('/forward',
                     function(data) {
@@ -61,7 +61,7 @@
             });
 
             $(function() {
-              $('a#left').mousedown(function(e) {
+              $('button#left').mousedown(function(e) {
                 e.preventDefault()
                 $.getJSON('/left',
                     function(data) {
@@ -72,7 +72,7 @@
             });
 
             $(function() {
-              $('a#right').mousedown(function(e) {
+              $('button#right').mousedown(function(e) {
                 e.preventDefault()
                 $.getJSON('/right',
                     function(data) {
@@ -83,7 +83,7 @@
             });
 
             $(function() {
-              $('a#backward').mousedown(function(e) {
+              $('button#backward').mousedown(function(e) {
                 e.preventDefault()
                 $.getJSON('/backward',
                     function(data) {
@@ -94,7 +94,7 @@
             });
 
             $(function() {
-              $('a.direction').mouseup(function(e) {
+              $('button.direction').mouseup(function(e) {
                 e.preventDefault()
                 $.getJSON('/stop',
                     function(data) {
@@ -107,7 +107,7 @@
             // FOR MOBILE
 
             $(function() {
-              $('a#forward').ontouchstart(function(e) {
+              $('button#forward').ontouchstart(function(e) {
                 e.preventDefault()
                 $.getJSON('/forward',
                     function(data) {
@@ -118,7 +118,7 @@
             });
 
             $(function() {
-              $('a#left').ontouchstart(function(e) {
+              $('button#left').ontouchstart(function(e) {
                 e.preventDefault()
                 $.getJSON('/left',
                     function(data) {
@@ -129,7 +129,7 @@
             });
 
             $(function() {
-              $('a#right').ontouchstart(function(e) {
+              $('button#right').ontouchstart(function(e) {
                 e.preventDefault()
                 $.getJSON('/right',
                     function(data) {
@@ -140,7 +140,7 @@
             });
 
             $(function() {
-              $('a#backward').ontouchstart(function(e) {
+              $('button#backward').ontouchstart(function(e) {
                 e.preventDefault()
                 $.getJSON('/backward',
                     function(data) {
@@ -151,7 +151,7 @@
             });
 
             $(function() {
-              $('a.direction').ontouchend(function(e) {
+              $('button.direction').ontouchend(function(e) {
                 e.preventDefault()
                 $.getJSON('/stop',
                     function(data) {
@@ -162,10 +162,16 @@
             });
     </script>
 
+    <button id="forward" class='btn btn-default direction'>Forward</button>
+    <button id="left" class='btn btn-default direction'>Left</button>
+    <button id="right" class='btn btn-default direction'>Right</button>
+    <button id="backward" class='btn btn-default direction'>Backward</button>
+    <!--
     <a href=# id="forward" class="direction"><button class='btn btn-default'>Forward</button></a>
     <a href=# id="left" class="direction"><button class='btn btn-default'>Left</button></a>
     <a href=# id="right" class="direction"><button class='btn btn-default'>Right</button></a>
     <a href=# id="backward" class="direction"><button class='btn btn-default'>Backward</button></a>
+    -->
     <!--<a href=# id="stop"><button class='btn btn-default'>Stop</button></a>-->
 
 {% endblock %}
