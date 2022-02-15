@@ -50,7 +50,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type=text/javascript>
             $(function() {
-              $('a#forward').on('focus', function(e) {
+              $('a#forward').on('click', function(e) {
                 e.preventDefault()
                 $.getJSON('/forward',
                     function(data) {
@@ -61,7 +61,7 @@
             });
 
             $(function() {
-              $('a#left').on('focus', function(e) {
+              $('a#left').on('click', function(e) {
                 e.preventDefault()
                 $.getJSON('/left',
                     function(data) {
@@ -72,7 +72,7 @@
             });
 
             $(function() {
-              $('a#right').on('focus', function(e) {
+              $('a#right').on('click', function(e) {
                 e.preventDefault()
                 $.getJSON('/right',
                     function(data) {
@@ -83,7 +83,7 @@
             });
 
             $(function() {
-              $('a#backward').on('focus', function(e) {
+              $('a#backward').on('click', function(e) {
                 e.preventDefault()
                 $.getJSON('/backward',
                     function(data) {
@@ -94,7 +94,7 @@
             });
 
             $(function() {
-              $('a.control_button').on('blur', function(e) {
+              $('a#stop').on('click', function(e) {
                 e.preventDefault()
                 $.getJSON('/stop',
                     function(data) {
@@ -105,10 +105,10 @@
             });
     </script>
 
-    <a href=# id="forward" class="control_button"><button class='btn btn-default'>Forward</button></a>
-    <a href=# id="left" class="control_button"><button class='btn btn-default'>Left</button></a>
-    <a href=# id="right" class="control_button"><button class='btn btn-default'>Right</button></a>
-    <a href=# id="backward" class="control_button"><button class='btn btn-default'>Backward</button></a>
-    <!--<a href=# id="stop"><button class='btn btn-default'>Stop</button></a>-->
+    <a href=# id="forward"><button class='btn btn-default'>Forward</button></a>
+    <a href=# id="left"><button class='btn btn-default'>Left</button></a>
+    <a href=# id="right"><button class='btn btn-default'>Right</button></a>
+    <a href=# id="backward"><button class='btn btn-default'>Backward</button></a>
+    <a href=# id="stop"><button class='btn btn-default'>Stop</button></a>
 
 {% endblock %}
