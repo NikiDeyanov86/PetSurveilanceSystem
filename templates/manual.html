@@ -107,7 +107,7 @@
             // FOR MOBILE
 
             $(function() {
-              $('button#forward').ontouchstart(function(e) {
+              $('button#forward').on('touchstart', function(e) {
                 e.preventDefault()
                 $.getJSON('/forward',
                     function(data) {
@@ -118,7 +118,7 @@
             });
 
             $(function() {
-              $('button#left').ontouchstart(function(e) {
+              $('button#left').on('touchstart', function(e) {
                 e.preventDefault()
                 $.getJSON('/left',
                     function(data) {
@@ -129,7 +129,7 @@
             });
 
             $(function() {
-              $('button#right').ontouchstart(function(e) {
+              $('button#right').on('touchstart', function(e) {
                 e.preventDefault()
                 $.getJSON('/right',
                     function(data) {
@@ -140,7 +140,7 @@
             });
 
             $(function() {
-              $('button#backward').ontouchstart(function(e) {
+              $('button#backward').on('touchstart', function(e) {
                 e.preventDefault()
                 $.getJSON('/backward',
                     function(data) {
@@ -151,7 +151,7 @@
             });
 
             $(function() {
-              $('button.direction').ontouchend(function(e) {
+              $('button.direction').on('touchend', function(e) {
                 e.preventDefault()
                 $.getJSON('/stop',
                     function(data) {
