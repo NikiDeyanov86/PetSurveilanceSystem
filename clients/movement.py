@@ -64,7 +64,7 @@ def message_decoder(client, userdata, msg):
     elif topic == "pss/movement/manual" and Check.manual is True:
         # Data from remote client, ex. "left" ---- time ----> "stop"
         direction = message
-        speed = 50
+        speed = 60
         if direction == "forward":
             print("MANUAL: forward")
             motors.forward(speed)
@@ -75,11 +75,11 @@ def message_decoder(client, userdata, msg):
             pass
         elif direction == "left":
             print("MANUAL: left")
-            motors.left(speed)
+            motors.left(speed+10)
             pass
         elif direction == "right":
             print("MANUAL: right")
-            motors.right(speed)
+            motors.right(speed+10)
             pass
         elif direction == "stop":
             print("MANUAL: stop")
