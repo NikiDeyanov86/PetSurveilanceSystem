@@ -133,3 +133,7 @@ dmypy.json
 
 # Video Stream
 t.jpg
+
+# Database 
+test.db
+.0.0.0.0.swp
