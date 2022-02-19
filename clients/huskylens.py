@@ -22,8 +22,10 @@ def message_decoder(client, userdata, msg):
     message = msg.payload.decode(encoding='UTF-8')
     topic = msg.topic
     if topic == topic_hl:
-
-        if message == "forget":
+        if message == "take_photo":
+            if hl.savePictureToSDCard() == "Knock Recieved":
+                print("Saved photo")
+        elif message == "forget":
             to_forget = hl.getObjectByID(1)
             if to_forget is None:
                 mqttClient.publish(topic_feedback, "object_lost")

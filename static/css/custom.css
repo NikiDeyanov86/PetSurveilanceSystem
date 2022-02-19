@@ -53,14 +53,8 @@ img {
    width: 100%;
    outline: dashed 1px black;
 }
-#target {
-   position: absolute;
-   left: 0px;
-   top: 0px;
-   margin-left: 43%;
-   margin-top: 32%;
-   width: 23%;
-   height: 27%;
-   z-index: 1000;
-   outline: solid 2px orange;
+.stream_holder .take_photo_holder {
+   display: flex;
+   justify-content: center;
+   flex-direction: row;
 }

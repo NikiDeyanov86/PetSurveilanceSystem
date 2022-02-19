@@ -255,6 +255,16 @@ def forget():
     return Response(status=201)
 
 
+@app.route('/take_photo')
+@login_required
+def take_photo():
+    flask_client.publish(topic_hl, "take_photo")
+    print("Taking photo")
+    app.logger.info('Taking photo')
+
+    return Response(status=201)
+
+
 @app.route('/check_status')
 def check():
     if Check.manual is True and Check.visible is True:

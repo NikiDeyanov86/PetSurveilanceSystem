@@ -99,6 +99,17 @@
         });
         }
 
+        $(function() {
+              $('button.take_photo').on('click', function(e) {
+                e.preventDefault()
+                $.getJSON('/take_photo',
+                    function(data) {
+                  //do nothing
+                });
+                //return false;
+              });
+        });
+
     </script>
 
     <div class="main">
@@ -113,6 +124,9 @@
             <div class="stream_holder">
                 <!-- Stream container will go here -->
                 <img src="{{ url_for('video_feed') }}">
+                <div class="take_photo_holder">
+                    <button id="take_photo" class='btn btn-default direction'>Take photo</button>
+                </div>
             </div>
             <div class="mode">
                 <div class="mode_holder">
@@ -127,7 +141,7 @@
                 </div>
             </div>
             <div id="status">
-                {{ status }}
+
             </div>
             <div class="voice_recorder">
                 <button id="startRecording">Start recording</button>
