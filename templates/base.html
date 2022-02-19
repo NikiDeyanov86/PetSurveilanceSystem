@@ -100,7 +100,7 @@
         }
 
         $(function() {
-              $('button.take_photo').on('click', function(e) {
+              $('button#take_photo').on('click', function(e) {
                 e.preventDefault()
                 $.getJSON('/take_photo',
                     function(data) {
