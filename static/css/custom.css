@@ -31,7 +31,7 @@ body {
 .stream_holder {
    display: flex;
    justify-content: center;
-   flex-direction: row;
+   flex-direction: column;
    flex-wrap: nowrap;
    outline: dashed 1px black;
    position: relative;
@@ -56,5 +56,4 @@ img {
 .stream_holder .take_photo_holder {
    display: flex;
    justify-content: center;
-   flex-direction: row;
 }
