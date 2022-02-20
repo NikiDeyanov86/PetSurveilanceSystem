@@ -62,9 +62,9 @@ leftOffset = 80
 rightOffset = 240
 # topOffset = 80
 # bottomOffset = 160
-optWidthLow = 40
-optWidthHigh = 70
-div = 50
+optWidthLow = 30
+optWidthHigh = 60
+div = 70
 prev_target = None
 
 
@@ -126,13 +126,13 @@ def tracking():
             if target.width < optWidthLow:
                 diff = optWidthLow - target.width
                 if 0 < diff <= 10:
-                    div = 50
-                elif 0 < diff <= 15:
                     div = 70
+                elif 0 < diff <= 15:
+                    div = 100
                 elif 0 < diff <= 20:
-                    div = 90
+                    div = 120
                 else:
-                    div = 110
+                    div = 150
 
                 mqttClient.publish(topic_publish, "forward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 print("Huskylens published: forward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
@@ -141,13 +141,13 @@ def tracking():
             elif target.width > optWidthHigh:
                 diff = target.width - optWidthHigh
                 if 0 < diff <= 10:
-                    div = 50
-                elif 0 < diff <= 15:
                     div = 70
+                elif 0 < diff <= 15:
+                    div = 100
                 elif 0 < diff <= 20:
-                    div = 90
+                    div = 120
                 else:
-                    div = 110
+                    div = 150
 
                 mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 print("Huskylens published: backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
