@@ -3,6 +3,11 @@ import paho.mqtt.client as mqtt
 import time
 import json
 from clients.huskylib import HuskyLensLibrary
+from clients.motorslib import MotorSide, MotorDriver, in1, in2, in3, in4, ena, enb
+
+left = MotorSide(ena, in1, in2)
+right = MotorSide(enb, in3, in4)
+motors = MotorDriver(left, right)
 
 try:
     hl = HuskyLensLibrary("SERIAL", "/dev/ttyUSB0", 115200)
@@ -14,6 +19,8 @@ except:
         sys.exit(1)
 
 hl.algorthim("ALGORITHM_OBJECT_TRACKING")
+
+motors.move_forward_hl(0.2, 50)
 
 while hl.knock() == "Knock Recieved":
 
