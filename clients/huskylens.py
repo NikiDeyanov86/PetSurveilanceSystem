@@ -101,6 +101,17 @@ def try_connection(timeout):
     return False
 
 
+def calculate_div(difference):
+    if 0 < difference <= 10:
+        return 70
+    elif 0 < difference <= 15:
+        return 100
+    elif 0 < difference <= 20:
+        return 120
+
+    return 150
+
+
 def tracking():
     global prev_target
     global div
@@ -125,42 +136,28 @@ def tracking():
 
             if target.width < optWidthLow:
                 diff = optWidthLow - target.width
-                if 0 < diff <= 10:
-                    div = 70
-                elif 0 < diff <= 15:
-                    div = 100
-                elif 0 < diff <= 20:
-                    div = 120
-                else:
-                    div = 150
-
+                div = calculate_div(diff)
                 mqttClient.publish(topic_publish, "forward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 print("Huskylens published: forward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 time.sleep(diff / div)
 
             elif target.width > optWidthHigh:
                 diff = target.width - optWidthHigh
-                if 0 < diff <= 10:
-                    div = 70
-                elif 0 < diff <= 15:
-                    div = 100
-                elif 0 < diff <= 20:
-                    div = 120
-                else:
-                    div = 150
-
+                div = calculate_div(diff)
                 mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 print("Huskylens published: backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 time.sleep(diff / div)
 
             if target.x < leftOffset:
                 diff = leftOffset - target.x
+                div = calculate_div(diff)
                 mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 print("Huskylens published: left,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 time.sleep(diff / div)
 
             elif target.x > rightOffset:
                 diff = target.x - rightOffset
+                div = calculate_div(diff)
                 mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 print("Huskylens published: right,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 time.sleep(diff / div)
