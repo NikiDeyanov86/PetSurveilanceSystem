@@ -57,7 +57,7 @@ mqttClient.will_set(topic_publish, "disconnected", qos=1, retain=False)
 mqttClient.connect(serverAddress, 1883)
 mqttClient.loop_start()
 
-motorSpeed = 60
+motorSpeed = 40
 leftOffset = 125
 rightOffset = 185
 topOffset = 80
