@@ -23,8 +23,7 @@ def message_decoder(client, userdata, msg):
     topic = msg.topic
     if topic == topic_hl:
         if message == "take_photo":
-            if hl.savePictureToSDCard() == "Knock Recieved":
-                print("Saved photo")
+            print(hl.savePictureToSDCard())
         elif message == "forget":
             to_forget = hl.getObjectByID(1)
             if to_forget is None:
@@ -58,13 +57,14 @@ mqttClient.will_set(topic_publish, "disconnected", qos=1, retain=False)
 mqttClient.connect(serverAddress, 1883)
 mqttClient.loop_start()
 
-motorSpeed = 50
+motorSpeed = 60
 leftOffset = 125
 rightOffset = 185
 topOffset = 80
 bottomOffset = 160
 optWidthLow = 50
 optWidthHigh = 80
+div = 30
 prev_target = None
 
 
@@ -103,6 +103,7 @@ def try_connection(timeout):
 
 
 def tracking():
+    global prev_target
     hl.algorthim("ALGORITHM_OBJECT_TRACKING")
     Visible.first_time = True
     counter = 0
@@ -124,48 +125,48 @@ def tracking():
 
             if target.width < optWidthLow:
                 diff = optWidthLow - target.width
-                mqttClient.publish(topic_publish, "forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                print("Huskylens published: forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                time.sleep(diff / 25)
+                mqttClient.publish(topic_publish, "forward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                print("Huskylens published: forward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                time.sleep(diff / div)
 
             elif target.width > optWidthHigh:
                 diff = target.width - optWidthHigh
-                mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                print("Huskylens published: backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                time.sleep(diff / 25)
+                mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                print("Huskylens published: backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                time.sleep(diff / div)
 
             if target.x < leftOffset:
                 diff = leftOffset - target.x
-                mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / 20, speed=motorSpeed))
-                print("Huskylens published: left,{sec},{speed}".format(sec=diff / 20, speed=motorSpeed))
+                mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / 20, speed=motorSpeed+10))
+                print("Huskylens published: left,{sec},{speed}".format(sec=diff / 20, speed=motorSpeed+10))
                 time.sleep(diff / 20)
 
             elif target.x > rightOffset:
                 diff = target.x - rightOffset
-                mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / 20, speed=motorSpeed))
-                print("Huskylens published: right,{sec},{speed}".format(sec=diff / 20, speed=motorSpeed))
+                mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / div, speed=motorSpeed+10))
+                print("Huskylens published: right,{sec},{speed}".format(sec=diff / div, speed=motorSpeed+10))
                 time.sleep(diff / 20)
 
             if target.y < topOffset:
                 if target.width < prev_target.width:
                     diff = topOffset - target.y
                     mqttClient.publish(topic_publish,
-                                       "forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                    print("Huskylens published: forward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                    time.sleep(diff / 25)
+                                       "forward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                    print("Huskylens published: forward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                    time.sleep(diff / div)
 
                 elif target.width > prev_target.width:
                     diff = topOffset - target.y
                     mqttClient.publish(topic_publish,
-                                       "backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                    print("Huskylens published: backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                    time.sleep(diff / 25)
+                                       "backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                    print("Huskylens published: backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                    time.sleep(diff / div)
 
             elif target.y > bottomOffset:
                 diff = target.y - bottomOffset
-                mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                print("Huskylens published: backward,{sec},{speed}".format(sec=diff / 25, speed=motorSpeed))
-                time.sleep(diff / 25)
+                mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                print("Huskylens published: backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                time.sleep(diff / div)
 
             prev_target = target
             counter = counter + 1
