@@ -44,22 +44,22 @@ def message_decoder(client, userdata, msg):
             if direction == "forward":
                 print("AUTO: Forward")
                 motors.move_forward_hl(seconds, speed)
-                motors.stop()
+                # motors.stop()
 
             elif direction == "backward":
                 print("AUTO: Backward")
                 motors.move_backward_hl(seconds, speed)
-                motors.stop()
+                # motors.stop()
 
             elif direction == "left":
                 print("AUTO: Left")
                 motors.turn_left_hl(seconds, speed)
-                motors.stop()
+                # motors.stop()
 
             elif direction == "right":
                 print("AUTO: Right")
                 motors.turn_right_hl(seconds, speed)
-                motors.stop()
+                # motors.stop()
 
     elif topic == "pss/movement/manual" and Check.manual is True:
         # Data from remote client, ex. "left" ---- time ----> "stop"

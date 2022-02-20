@@ -12,7 +12,7 @@ gpio.setmode(gpio.BCM)
 gpio.setwarnings(False)
 
 
-class MotorSide():
+class MotorSide:
     def __init__(self, en, in1, in2):
         self.en = en
         self.in1 = in1
@@ -39,7 +39,7 @@ class MotorSide():
         gpio.output(self.in2, False)
 
 
-class MotorDriver():
+class MotorDriver:
     def __init__(self, left, right):
         self.right_side = right
         self.left_side = left
@@ -48,21 +48,25 @@ class MotorDriver():
         self.left_side.forward(speed)
         self.right_side.forward(speed)
         time.sleep(sec)
+        self.stop()
 
     def move_backward_hl(self, sec, speed):
         self.left_side.reverse(speed)
         self.right_side.reverse(speed)
         time.sleep(sec)
+        self.stop()
 
     def turn_left_hl(self, sec, speed):
         self.left_side.reverse(speed)
         self.right_side.forward(speed)
         time.sleep(sec)
+        self.stop()
 
     def turn_right_hl(self, sec, speed):
         self.left_side.forward(speed)
         self.right_side.reverse(speed)
         time.sleep(sec)
+        self.stop()
 
     def forward(self, speed):
         self.left_side.forward(speed)

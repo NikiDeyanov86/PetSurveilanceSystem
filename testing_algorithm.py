@@ -20,6 +20,7 @@ except:
 
 hl.algorthim("ALGORITHM_OBJECT_TRACKING")
 
+motors.stop()
 motors.move_forward_hl(0.2, 50)
 
 while hl.knock() == "Knock Recieved":
