@@ -62,8 +62,8 @@ leftOffset = 80
 rightOffset = 240
 # topOffset = 80
 # bottomOffset = 160
-optWidthLow = 50
-optWidthHigh = 100
+optWidthLow = 40
+optWidthHigh = 80
 div = 70
 prev_target = None
 
