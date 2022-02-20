@@ -57,14 +57,14 @@ mqttClient.will_set(topic_publish, "disconnected", qos=1, retain=False)
 mqttClient.connect(serverAddress, 1883)
 mqttClient.loop_start()
 
-motorSpeed = 40
-leftOffset = 125
-rightOffset = 185
-topOffset = 80
-bottomOffset = 160
-optWidthLow = 50
-optWidthHigh = 80
-div = 30
+motorSpeed = 60
+leftOffset = 80
+rightOffset = 240
+# topOffset = 80
+# bottomOffset = 160
+optWidthLow = 40
+optWidthHigh = 70
+div = 50
 prev_target = None
 
 
@@ -125,29 +125,39 @@ def tracking():
 
             if target.width < optWidthLow:
                 diff = optWidthLow - target.width
-                mqttClient.publish(topic_publish, "forward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
-                print("Huskylens published: forward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
-                time.sleep(diff / div)
+                if 0 < diff <= 20:
+                    mqttClient.publish(topic_publish, "forward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                    print("Huskylens published: forward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                    time.sleep(diff / div)
+                else:
+                    mqttClient.publish(topic_publish, "forward,{sec},{speed}".format(sec=0.5, speed=motorSpeed))
+                    print("Huskylens published: forward,{sec},{speed}".format(sec=0.5, speed=motorSpeed))
+                    time.sleep(0.5)
 
             elif target.width > optWidthHigh:
                 diff = target.width - optWidthHigh
-                mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
-                print("Huskylens published: backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
-                time.sleep(diff / div)
+                if 0 < diff <= 20:
+                    mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                    print("Huskylens published: backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                    time.sleep(diff / div)
+                else:
+                    mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=0.5, speed=motorSpeed))
+                    print("Huskylens published: backward,{sec},{speed}".format(sec=0.5, speed=motorSpeed))
+                    time.sleep(0.5)
 
             if target.x < leftOffset:
                 diff = leftOffset - target.x
-                mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / 20, speed=motorSpeed+10))
-                print("Huskylens published: left,{sec},{speed}".format(sec=diff / 20, speed=motorSpeed+10))
-                time.sleep(diff / 20)
+                mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / div, speed=motorSpeed+10))
+                print("Huskylens published: left,{sec},{speed}".format(sec=diff / div, speed=motorSpeed+10))
+                time.sleep(diff / div)
 
             elif target.x > rightOffset:
                 diff = target.x - rightOffset
                 mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / div, speed=motorSpeed+10))
                 print("Huskylens published: right,{sec},{speed}".format(sec=diff / div, speed=motorSpeed+10))
-                time.sleep(diff / 20)
+                time.sleep(diff / div)
 
-            if target.y < topOffset:
+            '''if target.y < topOffset:
                 if target.width < prev_target.width:
                     diff = topOffset - target.y
                     mqttClient.publish(topic_publish,
@@ -166,7 +176,7 @@ def tracking():
                 diff = target.y - bottomOffset
                 mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 print("Huskylens published: backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
-                time.sleep(diff / div)
+                time.sleep(diff / div)'''
 
             prev_target = target
             counter = counter + 1
