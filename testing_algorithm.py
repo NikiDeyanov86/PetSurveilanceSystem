@@ -22,5 +22,3 @@ while hl.knock() == "Knock Recieved":
         print("COORDINATES - ({x}, {y}) / WIDTH: {w}".format(x=target.x, y=target.y, w=target.width))
         time.sleep(3)
 
-    else:
-        print("Non visible")
