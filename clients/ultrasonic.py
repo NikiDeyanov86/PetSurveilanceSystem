@@ -71,6 +71,8 @@ def measure():
             print("Free")
             stopped = False
 
+        time.sleep(1)
+
 
 if __name__ == '__main__':
     mqttClient.loop_start()
