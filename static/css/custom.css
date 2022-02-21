@@ -18,7 +18,7 @@ body {
 
 .mode {
    display: flex;
-   margin-top: 3vh;
+   margin-top: 0vh;
    flex-direction: row;
    justify-content: center;
    outline: dashed 1px black;
@@ -56,4 +56,9 @@ img {
 .stream_holder .take_photo_holder {
    display: flex;
    justify-content: center;
+}
+.alerts {
+   display: flex;
+   justify-content: center;
+   margin-top: 2vh;
 }
