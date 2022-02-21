@@ -93,8 +93,8 @@ try:
 
         elif topic == topic_mov:
             if message == "obstacle":
-                Check.obstacle = True
                 motors.stop()
+                Check.obstacle = True
                 print("OBSTACLE!")
             elif message == "free":
                 Check.obstacle = False
