@@ -41,16 +41,20 @@ def measure():
     time.sleep(2)
 
     while True:
+        print("In loop...")
         GPIO.output(TRIG, True)
         time.sleep(0.00001)
         GPIO.output(TRIG, False)
 
         while GPIO.input(ECHO) == 0:
             pulse_start = time.time()
+            print("Transeiving...")
 
         while GPIO.input(ECHO) == 1:
             pulse_end = time.time()
-
+            print("Receiving...")
+       
+        print("On pulse duration")
         pulse_duration = pulse_end - pulse_start
 
         distance = pulse_duration * 17150
