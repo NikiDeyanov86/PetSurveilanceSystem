@@ -56,6 +56,7 @@ def measure():
         distance = pulse_duration * 17150
 
         distance = round(distance + 1.15, 2)
+        print("Distance is: ", distance, "cm.")
 
         if distance <= 10 and stopped is False:
             mqttClient.publish(topic_mov, "obstacle")

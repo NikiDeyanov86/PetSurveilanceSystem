@@ -21,6 +21,8 @@ try:
 
     def connect(client, userdata, flags, rc):
         mqttClient.subscribe(topics)
+        mqttClient.subscribe(topic_feedback)
+        mqttClient.subscribe(topic_mov)
         print("Connected! Subscribed to <pss/movement/+> and <pss/feedback>")
         mqttClient.publish(topic_feedback, "mov_connected", qos=1)
 
