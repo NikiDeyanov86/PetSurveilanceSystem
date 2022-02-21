@@ -59,19 +59,19 @@ def measure():
         distance = pulse_duration * 17150
 
         distance = round(distance + 1.15, 2)
-        print("Distance is: ", distance, "cm.")
+        # print("Distance is: ", distance, "cm.")
 
-        if distance <= 10 and stopped is False:
+        if distance <= 25 and stopped is False:
             mqttClient.publish(topic_mov, "obstacle")
             print("Obstacle")
             stopped = True
 
-        elif distance > 10 and stopped is True:
+        elif distance > 25 and stopped is True:
             mqttClient.publish(topic_mov, "free")
             print("Free")
             stopped = False
 
-        time.sleep(1)
+        time.sleep(0.1)
 
 
 if __name__ == '__main__':
