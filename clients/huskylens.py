@@ -16,6 +16,7 @@ def on_connect(client, userdata, flags, rc):
     print("Huskylens connected!")
     mqttClient.subscribe(topic_hl)
     print("Subscribed to ", topic_hl)
+    mqttClient.publish(topic_feedback, "hl_connected", qos=1)
 
 
 def message_decoder(client, userdata, msg):
@@ -34,16 +35,6 @@ def message_decoder(client, userdata, msg):
                 else:
                     mqttClient.publish(topic_feedback, "unable_to_forget_object")
 
-    '''
-    if topic == topic_hl:
-        if message == "start":
-            Sleep.sleep = False
-            print("Starting")
-        elif message == "sleep":
-            Sleep.sleep = True
-            print("Sleeping")
-    '''
-
 
 def on_publish(client, userdata, result):
     # print("Huskylens published \n")
@@ -53,7 +44,7 @@ def on_publish(client, userdata, result):
 mqttClient.on_connect = on_connect
 mqttClient.on_publish = on_publish
 mqttClient.on_message = message_decoder
-mqttClient.will_set(topic_publish, "disconnected", qos=1, retain=False)
+mqttClient.will_set(topic_feedback, "hl_disconnected", qos=1, retain=False)
 mqttClient.connect(serverAddress, 1883)
 mqttClient.loop_start()
 
@@ -87,7 +78,7 @@ except:
         hl = HuskyLensLibrary("SERIAL", "/dev/ttyUSB1", 115200)
     except:
         print("Cannot create serial communication, check your hardware connections!")
-        mqttClient.publish(topic_publish, "disconnected")
+        mqttClient.publish(topic_feedback, "hl_disconnected")
         sys.exit(1)
 
 
@@ -196,7 +187,7 @@ def tracking():
             time.sleep(1)
 
     print("Connection error occurred")
-    mqttClient.publish(topic_publish, "disconnected")
+    mqttClient.publish(topic_feedback, "hl_disconnected")
     sys.exit(1)
 
 
@@ -210,12 +201,13 @@ if __name__ == '__main__':
                     tracking()
                 else:
                     print("Failed to connect with huskylens, check hardware")
-                    mqttClient.publish(topic_publish, "disconnected")
+                    mqttClient.publish(topic_feedback, "hl_disconnected")
                     sys.exit(1)
         else:
             print("Failed to connect with huskylens, check hardware")
-            mqttClient.publish(topic_publish, "disconnected")
+            mqttClient.publish(topic_feedback, "hl_disconnected")
             sys.exit(1)
     except KeyboardInterrupt:
-        print('Interrupted')
+        print("Terminating program...")
+        print('Interrupted by keyboard.')
         sys.exit(0)

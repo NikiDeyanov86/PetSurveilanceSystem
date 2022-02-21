@@ -1,22 +1,45 @@
 import RPi.GPIO as GPIO
 import time
+import sys
+import paho.mqtt.client as mqtt
 
 GPIO.setmode(GPIO.BOARD)
 
 TRIG = 12
 ECHO = 37
-i = 0
+stopped = False
 
-GPIO.setup(TRIG, GPIO.OUT)
-GPIO.setup(ECHO, GPIO.IN)
+clientName = "Ultrasonic"
+serverAddress = "localhost"
+mqttClient = mqtt.Client(clientName)
+topic_mov = "pss/movement/proximity"
+topic_feedback = "pss/feedback"
 
-GPIO.output(TRIG, False)
-print("Calibrating.....")
-time.sleep(2)
 
-print("Place the object......")
+def on_connect(client, userdata, flags, rc):
+    print("Ultrasonic connected!")
+    mqttClient.publish(topic_feedback, "us_connected", qos=1)
 
-try:
+
+def on_publish(client, userdata, result):
+    print("Published.")
+
+
+mqttClient.on_connect = on_connect
+mqttClient.on_publish = on_publish
+mqttClient.will_set(topic_feedback, "us_disconnected", qos=1, retain=False)
+mqttClient.connect(serverAddress, 1883)
+
+
+def measure():
+    global stopped
+    GPIO.setup(TRIG, GPIO.OUT)
+    GPIO.setup(ECHO, GPIO.IN)
+
+    GPIO.output(TRIG, False)
+    print("Calibrating.....")
+    time.sleep(2)
+
     while True:
         GPIO.output(TRIG, True)
         time.sleep(0.00001)
@@ -34,14 +57,20 @@ try:
 
         distance = round(distance + 1.15, 2)
 
-        if 20 >= distance >= 5:
-            print("distance:", distance, "cm")
-            i = 1
+        if distance <= 10 and stopped is False:
+            mqttClient.publish(topic_mov, "obstacle")
+            print("Obstacle")
+            stopped = True
 
-        if distance > 20 and i == 1:
-            print("place the object....")
-            i = 0
-        time.sleep(2)
+        elif distance > 10 and stopped is True:
+            mqttClient.publish(topic_mov, "free")
+            print("Free")
+            stopped = False
 
-except KeyboardInterrupt:
-    GPIO.cleanup()
+
+if __name__ == '__main__':
+    mqttClient.loop_start()
+    try:
+        measure()
+    except KeyboardInterrupt:
+        GPIO.cleanup()

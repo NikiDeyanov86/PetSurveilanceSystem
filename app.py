@@ -16,13 +16,9 @@ import io
 import requests
 import logging
 
-# db = SQLAlchemy()
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'pissi-pissi'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['UPLOAD_FOLDER'] = "voice_files"
-# app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 login_manager.init_app(app)
 init_db()
@@ -39,6 +35,8 @@ vc = cv2.VideoCapture(0)
 class Check:
     manual = True
     visible = None
+    hl_available = None
+    mov_available = None
 
 
 access_key = "gain_access"
@@ -62,15 +60,26 @@ def on_message(client, userdata, message):
         topic=message.topic,
         payload=message.payload.decode()
     )
-    print("Received message: ", data['payload'])
-    app.logger.info('Received message: ')
+    # print("Received message: ", data['payload'])
+    app.logger.info('Received message')
+
     if data['payload'] == "object_visible":
-        # flash("Your pet is now visible. Would you like to switch to automated mode?")
         Check.visible = True
 
     elif data['payload'] == "object_lost":
-        # flash("Unfortunately, your pet got away from the robot.")
         Check.visible = False
+
+    elif data['payload'] == "hl_connected":
+        Check.hl_available = True
+
+    elif data['payload'] == "hl_disconnected":
+        Check.hl_available = False
+
+    elif data['payload'] == "mov_connected":
+        Check.mov_available = True
+
+    elif data['payload'] == "mov_disconnected":
+        Check.mov_available = False
 
 
 def on_publish(client, userdata, result):
@@ -198,41 +207,57 @@ def video_feed():
 @app.route('/forward')
 @login_required
 def forward():
-    flask_client.publish(topic_rc, "forward")
-    print("Move forward")
-    app.logger.info('Move forward')
+    if Check.mov_available is True:
+        flask_client.publish(topic_rc, "forward")
+        print("Move forward")
+        app.logger.info('Move forward')
 
-    return Response(status=201)
+        return Response(status=201)
+    else:
+        flash("There is something wrong with the module, responsible for movement.")
+        return Response(status=200)
 
 
 @app.route('/left')
 @login_required
 def left():
-    flask_client.publish(topic_rc, "left")
-    print("Move left")
-    app.logger.info('Move left')
+    if Check.mov_available is True:
+        flask_client.publish(topic_rc, "left")
+        print("Move left")
+        app.logger.info('Move left')
 
-    return Response(status=201)
+        return Response(status=201)
+    else:
+        flash("There is something wrong with the module, responsible for movement.")
+        return Response(status=200)
 
 
 @app.route('/right')
 @login_required
 def right():
-    flask_client.publish(topic_rc, "right")
-    print("Move right")
-    app.logger.info('Move right')
+    if Check.mov_available is True:
+        flask_client.publish(topic_rc, "right")
+        print("Move right")
+        app.logger.info('Move right')
 
-    return Response(status=201)
+        return Response(status=201)
+    else:
+        flash("There is something wrong with the module, responsible for movement.")
+        return Response(status=200)
 
 
 @app.route('/backward')
 @login_required
 def backward():
-    flask_client.publish(topic_rc, "backward")
-    print("Move backward")
-    app.logger.info('Move backward')
+    if Check.mov_available is True:
+        flask_client.publish(topic_rc, "backward")
+        print("Move backward")
+        app.logger.info('Move backward')
 
-    return Response(status=201)
+        return Response(status=201)
+    else:
+        flash("There is something wrong with the module, responsible for movement.")
+        return Response(status=200)
 
 
 @app.route('/stop')
@@ -267,7 +292,7 @@ def take_photo():
 
 @app.route('/check_status')
 def check():
-    if Check.manual is True and Check.visible is True:
+    if Check.manual is True and Check.visible is True and Check.hl_available is True:
         app.logger.info('Switch to auto (AJAX)')
         print('Switch to auto (AJAX)')
         Check.manual = False
@@ -286,15 +311,18 @@ def check():
 @app.route('/automated_mode')
 @login_required
 def change_to_auto_mode():
-    # Check if it is possible
-    if Check.manual is True:
-        flask_client.publish(topic_mode, "auto")
-        # flask_client.publish(topic_hl, "start")
-        print("Switch to auto")
-        app.logger.info('Switch to auto')
+    if Check.hl_available is True:
+        if Check.manual is True:
+            flask_client.publish(topic_mode, "auto")
+            # flask_client.publish(topic_hl, "start")
+            print("Switch to auto")
+            app.logger.info('Switch to auto')
 
-    Check.manual = False
-    return render_template('auto.html', name=current_user.username)
+        Check.manual = False
+        return render_template('auto.html', name=current_user.username)
+    else:
+        flash("There is something wrong with the module, responsible for object tracking.")
+        return redirect(url_for('change_to_manual_mode'))
 
 
 @app.route('/manual_mode')
@@ -310,6 +338,7 @@ def change_to_manual_mode():
     return render_template('manual.html', name=current_user.username)
 
 
+'''
 @app.route('/save-record', methods=['POST'])
 @login_required
 def save_record():
@@ -328,7 +357,7 @@ def save_record():
     full_file_name = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
     file.save(full_file_name)
     return '<h1>Success</h1>'
-
+'''
 
 if __name__ == '__main__':
     flask_client.loop_start()
