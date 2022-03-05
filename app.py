@@ -1,6 +1,5 @@
 import sys
 import os
-import time
 import uuid
 
 from flask import Flask, render_template, Response, flash, request, redirect, url_for
@@ -361,6 +360,5 @@ def save_record():
 '''
 
 if __name__ == '__main__':
-    time.sleep(10)
     flask_client.loop_start()
     app.run(port=8080, host='0.0.0.0', threaded=True, debug=False)
