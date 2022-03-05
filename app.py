@@ -71,15 +71,19 @@ def on_message(client, userdata, message):
 
     elif data['payload'] == "hl_connected":
         Check.hl_available = True
+        app.logger.info('HL connected')
 
     elif data['payload'] == "hl_disconnected":
         Check.hl_available = False
+        app.logger.info('HL disconnected')
 
     elif data['payload'] == "mov_connected":
         Check.mov_available = True
+        app.logger.info('Movement connected')
 
     elif data['payload'] == "mov_disconnected":
         Check.mov_available = False
+        app.logger.info('Movement disconnected')
 
 
 def on_publish(client, userdata, result):
