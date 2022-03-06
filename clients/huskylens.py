@@ -43,13 +43,9 @@ class Visible:
     first_time = True
 
 
-'''class Sleep:
-    sleep = False'''
-
 hl = None
 
-# make an if that catches exception if serial connection
-# failes and tries to connect on USB1
+
 try:
     hl = HuskyLensLibrary("SERIAL", "/dev/ttyUSB0", 115200)
 except:
@@ -90,7 +86,6 @@ def tracking():
     counter = 0
     while hl.knock() == "Knock Recieved":
 
-        # Check for read response error
         if hl.learnedBlocks() is not None:
             target = hl.getObjectByID(1)
             if target is None:
@@ -101,35 +96,30 @@ def tracking():
             if Visible.prev_state is False or Visible.first_time is True:
                 Visible.first_time = False
                 Visible.prev_state = True
-                print("Object visible")
                 mqttClient.publish(topic_feedback, "object_visible")
 
             if target.width < optWidthLow:
                 diff = optWidthLow - target.width
                 div = calculate_div(diff)
                 mqttClient.publish(topic_publish, "forward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
-                print("Huskylens published: forward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 time.sleep(diff / div)
 
             elif target.width > optWidthHigh:
                 diff = target.width - optWidthHigh
                 div = calculate_div(diff)
                 mqttClient.publish(topic_publish, "backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
-                print("Huskylens published: backward,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 time.sleep(diff / div)
 
             if (target.x - (target.width / 2)) < leftOffset:
                 diff = leftOffset - (target.x - (target.width / 2))
                 div = calculate_div(diff)
                 mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
-                print("Huskylens published: left,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 time.sleep(diff / div)
 
             elif (target.x + (target.width / 2)) > rightOffset:
                 diff = (target.x + (target.width / 2)) - rightOffset
                 div = calculate_div(diff)
                 mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
-                print("Huskylens published: right,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 time.sleep(diff / div)
 
             prev_target = target
@@ -139,7 +129,6 @@ def tracking():
             if Visible.prev_state is True or Visible.first_time is True:
                 Visible.first_time = False
                 Visible.prev_state = False
-                print("Object lost")
                 mqttClient.publish(topic_feedback, "object_lost")
 
             time.sleep(1)
