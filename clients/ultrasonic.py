@@ -28,6 +28,7 @@ def on_publish(client, userdata, result):
 mqttClient.on_connect = on_connect
 mqttClient.on_publish = on_publish
 mqttClient.will_set(topic_feedback, "us_disconnected", qos=1, retain=False)
+mqttClient.username_pw_set("pi", "pissi-pissi")
 mqttClient.connect(serverAddress, 1883)
 
 

@@ -118,8 +118,7 @@ try:
     mqttClient.on_connect = connect
     mqttClient.on_message = message_decoder
     mqttClient.will_set(topic_feedback, "mov_disconnected", qos=1, retain=False)
-    # Connect to the MQTT server & loop forever.
-    # CTRL-C will stop the program from running.
+    mqttClient.username_pw_set("pi", "pissi-pissi")
     mqttClient.connect(serverAddress, 1883)
     # mqttClient.loop_start()
     mqttClient.loop_forever()

@@ -7,13 +7,13 @@ body {
 .main {
    width: 100vw;
    height: 100vh;
-   outline: dashed 1px black;
+   outline: solid 1px black;
 }
 .content {
    width: 50vw;
    height: 100vh;
    margin: auto;
-   outline: dashed 1px black;
+   outline: solid 1px black;
 }
 
 .mode {
@@ -21,19 +21,19 @@ body {
    margin-top: 0vh;
    flex-direction: row;
    justify-content: center;
-   outline: dashed 1px black;
+   outline: solid 1px black;
 }
 .mode_holder {
    width:100%;
    text-align: center;
-   outline: dashed 1px black;
+   outline: solid 1px black;
 }
 .stream_holder {
    display: flex;
    justify-content: center;
    flex-direction: column;
    flex-wrap: nowrap;
-   outline: dashed 1px black;
+   outline: solid 1px black;
    position: relative;
 }
 img {
@@ -45,13 +45,13 @@ img {
    display: flex;
    justify-content: center;
    width: 100%;
-   outline: dashed 1px black;
+   outline: solid 1px black;
 }
 .controls {
    display: flex;
    justify-content: center;
    width: 100%;
-   outline: dashed 1px black;
+   outline: solid 1px black;
 }
 .stream_holder .take_photo_holder {
    display: flex;

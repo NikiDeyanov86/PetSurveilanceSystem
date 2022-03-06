@@ -16,7 +16,6 @@ class Check:
 
 
 def init_mqtt():
-
     def on_connect(client, userdata, flags, rc):
         print("Client connected to broker with response code ", rc)
         flask_client.subscribe(topic_feedback)
@@ -26,8 +25,6 @@ def init_mqtt():
             topic=message.topic,
             payload=message.payload.decode()
         )
-        # print("Received message: ", data['payload'])
-        # app.logger.info('Received message')
 
         if data['payload'] == "object_visible":
             Check.visible = True
@@ -52,10 +49,10 @@ def init_mqtt():
         pass
 
     flask_client = mqtt.Client("Flask")
-    # client.username_pw_set(username, password)
     flask_client.on_connect = on_connect
     flask_client.on_message = on_message
     flask_client.on_publish = on_publish
+    flask_client.username_pw_set("pi", "pissi-pissi")
     flask_client.connect('localhost', 1883)
 
     return flask_client
