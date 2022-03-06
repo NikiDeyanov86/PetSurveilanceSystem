@@ -8,13 +8,11 @@ from database import db_session, init_db
 from login import login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User
-import paho.mqtt.client as mqtt
 import picamera
 import cv2
-import socket
-import io
 import requests
 import logging
+from clients.flask_client import topic_feedback, topic_rc, topic_mode, init_mqtt, start_loop, flask_client, Check
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'pissi-pissi'
@@ -22,6 +20,7 @@ app.config['UPLOAD_FOLDER'] = "voice_files"
 
 login_manager.init_app(app)
 init_db()
+init_mqtt()
 
 
 @app.teardown_appcontext
@@ -32,15 +31,12 @@ def shutdown_context(exception=None):
 vc = cv2.VideoCapture(0)
 
 
-class Check:
+class CheckManual:
     manual = True
-    visible = None
-    hl_available = None
-    mov_available = None
 
 
 access_key = "gain_access"
-
+'''
 # PUBLISH AND SUBSCRIBE TOPICS
 topic_feedback = "pss/feedback"
 
@@ -98,6 +94,7 @@ flask_client.on_connect = on_connect
 flask_client.on_message = on_message
 flask_client.on_publish = on_publish
 flask_client.connect('localhost', 1883)
+'''
 
 logging.basicConfig(filename='record.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %('
                                                                        f'threadName)s : %(message)s')
@@ -106,7 +103,7 @@ logging.basicConfig(filename='record.log', level=logging.DEBUG, format=f'%(ascti
 @app.route('/')
 def index():
     if 'id' in current_user.__dict__:
-        if Check.manual is True:
+        if CheckManual.manual is True:
             return redirect(url_for('change_to_manual_mode'))
         else:
             return redirect(url_for('change_to_auto_mode'))
@@ -117,7 +114,7 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'id' in current_user.__dict__:
-        if Check.manual is True:
+        if CheckManual.manual is True:
             return redirect(url_for('change_to_manual_mode'))
         else:
             return redirect(url_for('change_to_auto_mode'))
@@ -138,7 +135,7 @@ def login():
         user.login_id = str(uuid.uuid4())
         db_session.commit()
         login_user(user)
-        if Check.manual is True:
+        if CheckManual.manual is True:
             return redirect(url_for('change_to_manual_mode'))
         else:
             return redirect(url_for('change_to_auto_mode'))
@@ -147,7 +144,7 @@ def login():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if 'login_id' in current_user.__dict__:
-        if Check.manual is True:
+        if CheckManual.manual is True:
             return redirect(url_for('change_to_manual_mode'))
         else:
             return redirect(url_for('change_to_auto_mode'))
@@ -274,16 +271,7 @@ def stop():
     return Response(status=201)
 
 
-@app.route('/forget_object')
-@login_required
-def forget():
-    flask_client.publish(topic_hl, "forget")
-    print("Telling HL to forget the current object")
-    app.logger.info('Telling HL to forget the current object')
-
-    return Response(status=201)
-
-
+'''
 @app.route('/take_photo')
 @login_required
 def take_photo():
@@ -292,20 +280,21 @@ def take_photo():
     app.logger.info('Taking photo')
 
     return Response(status=201)
+'''
 
 
 @app.route('/check_status')
 def check():
-    if Check.manual is True and Check.visible is True and Check.hl_available is True:
+    if CheckManual.manual is True and Check.visible is True and Check.hl_available is True:
         app.logger.info('Switch to auto (AJAX)')
         print('Switch to auto (AJAX)')
-        Check.manual = False
+        CheckManual.manual = False
         flask_client.publish(topic_mode, "auto")
         return "visible"
-    elif Check.manual is False and Check.visible is False:
+    elif CheckManual.manual is False and Check.visible is False:
         app.logger.info('Switch to manual (AJAX)')
         print('Switch to manual (AJAX)')
-        Check.manual = True
+        CheckManual.manual = True
         flask_client.publish(topic_mode, "manual")
         return "not_visible"
 
@@ -316,13 +305,13 @@ def check():
 @login_required
 def change_to_auto_mode():
     if Check.hl_available is True:
-        if Check.manual is True:
+        if CheckManual.manual is True:
             flask_client.publish(topic_mode, "auto")
             # flask_client.publish(topic_hl, "start")
             print("Switch to auto")
             app.logger.info('Switch to auto')
 
-        Check.manual = False
+        CheckManual.manual = False
         return render_template('auto.html', name=current_user.username)
     else:
         flash("There is something wrong with the module, responsible for object tracking.")
@@ -332,13 +321,13 @@ def change_to_auto_mode():
 @app.route('/manual_mode')
 @login_required
 def change_to_manual_mode():
-    if Check.manual is not True:
+    if CheckManual.manual is not True:
         flask_client.publish(topic_mode, "manual")
         # flask_client.publish(topic_hl, "sleep")
         print("Switch to manual")
         app.logger.info('Switch to manual')
 
-    Check.manual = True
+    CheckManual.manual = True
     return render_template('manual.html', name=current_user.username)
 
 
@@ -364,5 +353,5 @@ def save_record():
 '''
 
 if __name__ == '__main__':
-    flask_client.loop_start()
+    start_loop()
     app.run(port=8080, host='0.0.0.0', threaded=True, debug=False)
