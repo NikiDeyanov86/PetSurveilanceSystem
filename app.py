@@ -11,7 +11,7 @@ import picamera
 import cv2
 import requests
 import logging
-from clients.flask_client import topic_feedback, topic_rc, topic_mode, init_mqtt, start_loop, Check
+from clients.flask_client import topic_feedback, topic_rc, topic_mode, init_mqtt, Check
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'pissi-pissi'
