@@ -1,8 +1,6 @@
 import sys
+import os
 import uuid
-
-sys.path.append("./clients")
-
 from flask import Flask, render_template, Response, flash, request, redirect, url_for
 from flask_login import login_user, login_required, current_user, logout_user
 from database import db_session, init_db
@@ -13,7 +11,7 @@ import picamera
 import cv2
 import requests
 import logging
-from clients.flask_client import topic_feedback, topic_rc, topic_mode, init_mqtt, start_loop, flask_client, Check
+from clients.flask_client import topic_feedback, topic_rc, topic_mode, init_mqtt, start_loop, Check
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'pissi-pissi'
@@ -21,7 +19,7 @@ app.config['UPLOAD_FOLDER'] = "voice_files"
 
 login_manager.init_app(app)
 init_db()
-init_mqtt()
+flask_client = init_mqtt()
 
 
 @app.teardown_appcontext
