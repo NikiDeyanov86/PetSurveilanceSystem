@@ -8,7 +8,6 @@ clientName = "Huskylens"
 serverAddress = "localhost"
 mqttClient = mqtt.Client(clientName)
 topic_publish = "pss/movement/auto"
-topic_hl = "pss/huskylens"
 topic_feedback = "pss/feedback"
 
 
@@ -23,13 +22,7 @@ def message_decoder(client, userdata, msg):
     pass
 
 
-def on_publish(client, userdata, result):
-    # print("Huskylens published \n")
-    pass
-
-
 mqttClient.on_connect = on_connect
-mqttClient.on_publish = on_publish
 mqttClient.on_message = message_decoder
 mqttClient.will_set(topic_feedback, "hl_disconnected", qos=1, retain=False)
 mqttClient.username_pw_set("pi", "pissi-pissi")
