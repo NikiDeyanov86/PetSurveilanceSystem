@@ -63,9 +63,4 @@ def init_mqtt():
     flask_client.on_publish = on_publish
     flask_client.connect('localhost', 1883)
 
-    # return flask_client
-
-
-def start_loop():
-    flask_client.loop_start()
-
+    return flask_client
