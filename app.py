@@ -1,6 +1,7 @@
 import sys
-import os
 import uuid
+
+sys.path.append("./clients")
 
 from flask import Flask, render_template, Response, flash, request, redirect, url_for
 from flask_login import login_user, login_required, current_user, logout_user
