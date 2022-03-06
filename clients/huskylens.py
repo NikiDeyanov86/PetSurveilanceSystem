@@ -35,7 +35,6 @@ rightOffset = 240
 optWidthLow = 40
 optWidthHigh = 80
 div = 70
-prev_target = None
 
 
 class Visible:
@@ -44,7 +43,6 @@ class Visible:
 
 
 hl = None
-
 
 try:
     hl = HuskyLensLibrary("SERIAL", "/dev/ttyUSB0", 115200)
@@ -79,19 +77,16 @@ def calculate_div(difference):
 
 
 def tracking():
-    global prev_target
     global div
     hl.algorthim("ALGORITHM_OBJECT_TRACKING")
     Visible.first_time = True
-    counter = 0
+
     while hl.knock() == "Knock Recieved":
 
         if hl.learnedBlocks() is not None:
             target = hl.getObjectByID(1)
             if target is None:
                 continue
-            if counter == 0:
-                prev_target = target
 
             if Visible.prev_state is False or Visible.first_time is True:
                 Visible.first_time = False
@@ -121,9 +116,6 @@ def tracking():
                 div = calculate_div(diff)
                 mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 time.sleep(diff / div)
-
-            prev_target = target
-            counter = counter + 1
 
         else:
             if Visible.prev_state is True or Visible.first_time is True:
