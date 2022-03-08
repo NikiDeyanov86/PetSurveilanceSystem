@@ -128,8 +128,8 @@ def gen():
     while True:
         rval, frame = vc.read()
         if frame is None or rval is None:
-            print("Frame/rval is none")
             continue
+
         cv2.imwrite('/home/pi/Projects/PetSurveilanceSystem/t.jpg', frame)
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + open('/home/pi/Projects/PetSurveilanceSystem/t.jpg',
@@ -149,7 +149,7 @@ def video_feed():
 def forward():
     if Check.mov_available is True:
         flask_client.publish(topic_rc, "forward")
-        print("Move forward")
+
         app.logger.info('Move forward')
 
         return Response(status=201)
@@ -163,7 +163,7 @@ def forward():
 def left():
     if Check.mov_available is True:
         flask_client.publish(topic_rc, "left")
-        print("Move left")
+
         app.logger.info('Move left')
 
         return Response(status=201)
@@ -177,7 +177,7 @@ def left():
 def right():
     if Check.mov_available is True:
         flask_client.publish(topic_rc, "right")
-        print("Move right")
+
         app.logger.info('Move right')
 
         return Response(status=201)
@@ -191,7 +191,7 @@ def right():
 def backward():
     if Check.mov_available is True:
         flask_client.publish(topic_rc, "backward")
-        print("Move backward")
+
         app.logger.info('Move backward')
 
         return Response(status=201)
@@ -204,7 +204,7 @@ def backward():
 @login_required
 def stop():
     flask_client.publish(topic_rc, "stop")
-    print("Stop motors")
+
     app.logger.info('Stop motors')
 
     return Response(status=201)
@@ -226,13 +226,11 @@ def take_photo():
 def check():
     if CheckManual.manual is True and Check.visible is True and Check.hl_available is True:
         app.logger.info('Switch to auto (AJAX)')
-        print('Switch to auto (AJAX)')
         CheckManual.manual = False
         flask_client.publish(topic_mode, "auto")
         return "visible"
     elif CheckManual.manual is False and Check.visible is False:
         app.logger.info('Switch to manual (AJAX)')
-        print('Switch to manual (AJAX)')
         CheckManual.manual = True
         flask_client.publish(topic_mode, "manual")
         return "not_visible"
@@ -246,8 +244,6 @@ def change_to_auto_mode():
     if Check.hl_available is True:
         if CheckManual.manual is True:
             flask_client.publish(topic_mode, "auto")
-            # flask_client.publish(topic_hl, "start")
-            print("Switch to auto")
             app.logger.info('Switch to auto')
 
         CheckManual.manual = False
@@ -262,8 +258,6 @@ def change_to_auto_mode():
 def change_to_manual_mode():
     if CheckManual.manual is not True:
         flask_client.publish(topic_mode, "manual")
-        # flask_client.publish(topic_hl, "sleep")
-        print("Switch to manual")
         app.logger.info('Switch to manual')
 
     CheckManual.manual = True
