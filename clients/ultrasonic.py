@@ -49,7 +49,7 @@ def measure():
 
         while GPIO.input(ECHO) == 0:
             pulse_start = time.time()
-            # print("Transeiving...")
+            # print("Transiting...")
 
         while GPIO.input(ECHO) == 1:
             pulse_end = time.time()

@@ -29,7 +29,7 @@ mqttClient.username_pw_set("pi", "pissi-pissi")
 mqttClient.connect(serverAddress, 1883)
 mqttClient.loop_start()
 
-motorSpeed = 50
+motorSpeed = 60
 leftOffset = 80
 rightOffset = 240
 optWidthLow = 40
@@ -108,13 +108,13 @@ def tracking():
             if (target.x - (target.width / 2)) < leftOffset:
                 diff = leftOffset - (target.x - (target.width / 2))
                 div = calculate_div(diff)
-                mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / div, speed=motorSpeed+10))
                 time.sleep(diff / div)
 
             elif (target.x + (target.width / 2)) > rightOffset:
                 diff = (target.x + (target.width / 2)) - rightOffset
                 div = calculate_div(diff)
-                mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
+                mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / div, speed=motorSpeed+10))
                 time.sleep(diff / div)
 
         else:

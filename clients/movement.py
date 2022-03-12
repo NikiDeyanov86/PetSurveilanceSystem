@@ -29,7 +29,8 @@ try:
     def message_decoder(client, userdata, msg):
         message = msg.payload.decode(encoding='UTF-8')
         topic = msg.topic
-        # Syncronize auto and manual
+
+        # Synchronize auto and manual
 
         if topic == "pss/movement/auto" and Check.manual is False:
             # Data from Huskylens, ex. "<direction>,<seconds>,<speed>"
@@ -58,7 +59,7 @@ try:
         elif topic == "pss/movement/manual" and Check.manual is True:
             # Data from remote client, ex. "left" ---- time ----> "stop"
             direction = message
-            speed = 60
+            speed = 65
             if direction == "forward":
                 if Check.obstacle is False:
                     print("MANUAL: forward")
@@ -119,7 +120,6 @@ try:
     mqttClient.will_set(topic_feedback, "mov_disconnected", qos=1, retain=False)
     mqttClient.username_pw_set("pi", "pissi-pissi")
     mqttClient.connect(serverAddress, 1883)
-    # mqttClient.loop_start()
     mqttClient.loop_forever()
 
 except KeyboardInterrupt:
