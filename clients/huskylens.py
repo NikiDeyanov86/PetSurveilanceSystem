@@ -108,13 +108,13 @@ def tracking():
             if (target.x - (target.width / 2)) < leftOffset:
                 diff = leftOffset - (target.x - (target.width / 2))
                 div = calculate_div(diff)
-                mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / div, speed=motorSpeed+10))
+                mqttClient.publish(topic_publish, "left,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 time.sleep(diff / div)
 
             elif (target.x + (target.width / 2)) > rightOffset:
                 diff = (target.x + (target.width / 2)) - rightOffset
                 div = calculate_div(diff)
-                mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / div, speed=motorSpeed+10))
+                mqttClient.publish(topic_publish, "right,{sec},{speed}".format(sec=diff / div, speed=motorSpeed))
                 time.sleep(diff / div)
 
         else:
