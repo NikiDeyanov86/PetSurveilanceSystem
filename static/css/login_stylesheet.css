@@ -31,8 +31,12 @@ body {
 }
 
 .login-form {
-    margin-top: 60px;
+    margin-top: 50px;
     text-align: left;
+}
+
+.alert-holder {
+    height: auto;
 }
 
 input[type=text] {
