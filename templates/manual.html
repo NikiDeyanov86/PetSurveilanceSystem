@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %} Manual {% endblock %}
+{% block title %} - Manual {% endblock %}
 
+{% block head %}
+    <link rel="stylesheet" href="/static/css/manual_stylesheet.css">
+{% endblock %}
 
 {% block content %}
 
@@ -120,9 +123,9 @@
             });
     </script>
 
-    <button id="forward" class='btn btn-default direction'>Forward</button>
-    <button id="left" class='btn btn-default direction'>Left</button>
-    <button id="right" class='btn btn-default direction'>Right</button>
-    <button id="backward" class='btn btn-default direction'>Backward</button>
+    <button id="forward" type="button" class="btn btn-outline-primary direction">Forward</button>
+    <button id="left" type="button" class="btn btn-outline-primary direction">Left</button>
+    <button id="right" type="button" class="btn btn-outline-primary direction">Right</button>
+    <button id="backward" type="button" class="btn btn-outline-primary direction">Backward</button>
 
 {% endblock %}

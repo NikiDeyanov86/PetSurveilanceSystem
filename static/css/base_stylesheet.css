@@ -1,64 +1,109 @@
 body {
    margin: 0;
-   width: 100vw;
-   height: 100vh;
+   background: #1A2226;
+   font-family: 'Roboto', sans-serif;
+   color: white;
+}
+#logged {
+   width: 23vw;
+   text-align: center;
+}
+#logged p{
+   margin-top: 1vh;
+   color: white;
+   font-size: 1.6vh;
+   font-family: 'Roboto', sans-serif;
+   float: right;
 }
 
-.main {
-   width: 100vw;
-   height: 100vh;
-   outline: solid 1px black;
+#logout #logout_btn {
+   font-size: 1.5vh;
+   color: aliceblue;
+   font-weight: bold;
+   float: right;
 }
-.content {
-   width: 50vw;
-   height: 100vh;
-   margin: auto;
-   outline: solid 1px black;
+
+#logout #logout_btn:hover {
+   background-color: white;
+   color: #0d6efd;
+}
+.navbar {
+   background-color: #0e3e81;
 }
 
 .mode {
    display: flex;
-   margin-top: 0vh;
+   margin-top: 15vh;
    flex-direction: row;
+   align-items: center;
    justify-content: center;
-   outline: solid 1px black;
+   height: 5vh;
+   background-color: #0e3e81;
 }
-.mode_holder {
-   width:100%;
+.mode > a {
+   padding: 5px;
+   height: 100%;
+   width: 100%;
+}
+.mode > a > button {
    text-align: center;
-   outline: solid 1px black;
+   font-family: 'Roboto', sans-serif;
+   font-size: 2vh;
+   width: 100%;
+   height: 100%;
+   background-color: #0e3e81;
+   color: aliceblue;
+   border: 0;
+}
+.mode a button.active, button:hover {
+   font-size: 2.1vh;
+   color: aliceblue;
+   font-weight: bold;
 }
 .stream_holder {
    display: flex;
    justify-content: center;
+   align-items: center;
    flex-direction: column;
    flex-wrap: nowrap;
-   outline: solid 1px black;
+   outline: solid 0px white;
    position: relative;
+   margin-top: 15vh;
 }
-img {
-   margin-top: 3vh;
+.stream_holder img {
    display: block;
-   width: 50vw;
+   width: 640px;
+   height: 480px;
+   border: 2px solid #0e3e81;
 }
 .voice_recorder {
    display: flex;
    justify-content: center;
    width: 100%;
-   outline: solid 1px black;
+   outline: solid 1px white;
 }
-.controls {
+.content {
    display: flex;
    justify-content: center;
    width: 100%;
-   outline: solid 1px black;
+   border: 2px solid #0e3e81;
+   margin-top: 10vh;
+   padding: 3vh;
 }
-.stream_holder .take_photo_holder {
-   display: flex;
-   justify-content: center;
-}
+
 .alerts {
    display: flex;
    justify-content: center;
    margin-top: 2vh;
 }
+.btn-holder {
+   margin-top: 3vh;
+   justify-content: center;
+}
+#snapBtn {
+   width: auto;
+   height: auto;
+   padding: 1.5vh;
+   font-size: 1.8vh;
+}
+

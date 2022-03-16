@@ -7,9 +7,10 @@
 	<meta name='copyright' content=''>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-	<title>{% block title %}{% endblock %}</title>
+	<title>{% block title %}PetSurveillanceSystem {% endblock %}</title>
 
     <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/base_stylesheet.css">
 
@@ -80,6 +81,17 @@
         };*/
 
         $(document).ready(function() {
+            if (/manual/.test(window.location.href)) {
+                $("#manual_btn").toggleClass("active");
+                $("#manual_link").toggleClass("disabled");
+            }
+            else if(/auto/.test(window.location.href)) {
+                $("#auto_btn").toggleClass("active");
+                $("#auto_link").toggleClass("disabled");
+            }
+        })
+
+        $(document).ready(function() {
             setInterval("check_vis()",10000); // call every 10 seconds
         });
 
@@ -113,58 +125,65 @@
 */
     </script>
 
-    <div class="main">
-        <div class="content">
-            <nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="navbar navbar-dark">
                 <div class="container-fluid">
                     <span class="navbar-brand mb-0 h1">PetSurveillanceSystem</span>
-                    <h5>Welcome {{ name }}!</h5>
-                    <a class="nav-link active" aria-current="page" href="/logout">Log out</a>
+
+                        <div class="col" id="logged">
+                            <p>You are logged in as {{ name }}</p>
+                        </div>
+                        <div class="col" id="logout">
+                            <a class="nav-link active" aria-current="page" href="/logout"><button class="rounded btn btn-primary" id="logout_btn"> <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            Log out</button></a>
+                        </div>
                 </div>
             </nav>
-            <div class="stream_holder">
-                <!-- Stream container will go here -->
-                <img src="{{ url_for('video_feed') }}">
-                <div class="take_photo_holder">
-                    <button id="take_photo" class='btn btn-default'>Take photo</button>
-                </div>
-            </div>
-            <div class="mode">
-                <div class="mode_holder">
-                    <div class="auto">
-                        <a href="/automated_mode" id="auto_switch"> AUTO </a>
+            <div class="col">
+                <div class="row">
+                    <div class="stream_holder">
+                        <!-- Stream container will go here -->
+                        <img src="{{ url_for('video_feed') }}" class="rounded" alt="Video stream">
                     </div>
                 </div>
-                <div class="mode_holder">
-                    <div class="manual">
-                        <a href="/manual_mode" id="manual_switch"> MANUAL </a>
-                    </div>
+                <div class="row btn-holder">
+                    <button type="button" class="btn btn-outline-primary" id="snapBtn"><i class="fa fa-camera"></i>
+                        Snap </button>
                 </div>
-            </div>
-            <!--
-            <div id="status">
 
             </div>
+            <div class="col">
+                <div class="mode rounded">
+                        <a href="/automated_mode" id="auto_link"><button class="rounded btn btn-primary" id="auto_btn"> AUTO </button></a>
+                        <a href="/manual_mode" id="manual_link"><button class="rounded btn btn-primary" id="manual_btn"> MANUAL </button></a>
+                </div>
+                <!--
+                <div id="status">
 
-            <div class="voice_recorder">
-                <button id="startRecording">Start recording</button>
-                <button id="stopRecording" disabled>Stop recording</button>
-            </div>
-            -->
-            <div class="controls">
-                <!-- Content will go here -->
-                {% block content %}
-                {% endblock %}
-            </div>
-            <div class="alerts">
-                {% with messages = get_flashed_messages() %}
-                        {% if messages %}
-                            <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                                <strong>{{ messages[0] }}</strong>
-                                <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        {% endif %}
-                    {% endwith %}
+                </div>
+
+                <div class="voice_recorder">
+                    <button id="startRecording">Start recording</button>
+                    <button id="stopRecording" disabled>Stop recording</button>
+                </div>
+                -->
+                <div class="content rounded">
+                    <!-- Content will go here -->
+                    {% block content %}
+                    {% endblock %}
+                </div>
+
+                <div class="alerts">
+                    {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                    <strong>{{ messages[0] }}</strong>
+                                    <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                </div>
             </div>
         </div>
     </div>
