@@ -155,8 +155,8 @@
             </div>
             <div class="col">
                 <div class="mode rounded">
-                        <a href="/automated_mode" id="auto_link"><button class="rounded btn btn-primary" id="auto_btn"> AUTO </button></a>
-                        <a href="/manual_mode" id="manual_link"><button class="rounded btn btn-primary" id="manual_btn"> MANUAL </button></a>
+                        <a href="/automated_mode" id="auto_link"><button class="rounded btn btn-primary mode_btn" id="auto_btn"> AUTO </button></a>
+                        <a href="/manual_mode" id="manual_link"><button class="rounded btn btn-primary mode_btn" id="manual_btn"> MANUAL </button></a>
                 </div>
                 <!--
                 <div id="status">
@@ -168,12 +168,6 @@
                     <button id="stopRecording" disabled>Stop recording</button>
                 </div>
                 -->
-                <div class="content rounded">
-                    <!-- Content will go here -->
-                    {% block content %}
-                    {% endblock %}
-                </div>
-
                 <div class="alerts">
                     {% with messages = get_flashed_messages() %}
                             {% if messages %}
@@ -184,6 +178,14 @@
                             {% endif %}
                         {% endwith %}
                 </div>
+
+                <div class="content rounded">
+                    <!-- Content will go here -->
+                    {% block content %}
+                    {% endblock %}
+                </div>
+
+
             </div>
         </div>
     </div>

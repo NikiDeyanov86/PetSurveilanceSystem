@@ -1,7 +1,17 @@
 .direction {
-    width: auto;
+    width: 7vh;
     height: auto;
     padding: 1.5vh;
-    font-size: 1.5vh;
-    margin: 1vw;
+    font-size: 2.8vh;
+    margin: 1vh;
+}
+.controls_holder {
+    width: auto;
+}
+div.first, div.second, div.third{
+    justify-content: center;
+}
+button#left, button#right {
+    margin-left: 4.5vh;
+    margin-right: 4.5vh;
 }

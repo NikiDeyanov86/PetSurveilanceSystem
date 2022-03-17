@@ -55,7 +55,7 @@ body {
    color: aliceblue;
    border: 0;
 }
-.mode a button.active, button:hover {
+.mode_btn.active, .mode_btn:hover {
    font-size: 2.1vh;
    color: aliceblue;
    font-weight: bold;
@@ -87,7 +87,7 @@ body {
    justify-content: center;
    width: 100%;
    border: 2px solid #0e3e81;
-   margin-top: 10vh;
+   margin-top: 2vh;
    padding: 3vh;
 }
 
@@ -106,4 +106,3 @@ body {
    padding: 1.5vh;
    font-size: 1.8vh;
 }
-

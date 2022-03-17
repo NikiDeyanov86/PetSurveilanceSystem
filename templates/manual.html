@@ -123,9 +123,17 @@
             });
     </script>
 
-    <button id="forward" type="button" class="btn btn-outline-primary direction">Forward</button>
-    <button id="left" type="button" class="btn btn-outline-primary direction">Left</button>
-    <button id="right" type="button" class="btn btn-outline-primary direction">Right</button>
-    <button id="backward" type="button" class="btn btn-outline-primary direction">Backward</button>
+    <div class="d-flex flex-column controls_holder">
+                        <div class="row first">
+                            <button id="forward" type="button" class="btn btn-outline-primary direction"><i class="fa fa-arrow-up"></i></button>
+                        </div>
+                        <div class="row second">
+                            <button id="left" type="button" class="btn btn-outline-primary direction"><i class="fa fa-arrow-left"></i></button>
+                            <button id="right" type="button" class="btn btn-outline-primary direction"><i class="fa fa-arrow-right"></i></button>
+                        </div>
+                        <div class="row third">
+                            <button id="backward" type="button" class="btn btn-outline-primary direction"><i class="fa fa-arrow-down"></i></button>
+                        </div>
+    </div>
 
 {% endblock %}
