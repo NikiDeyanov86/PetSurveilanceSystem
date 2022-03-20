@@ -225,6 +225,8 @@ def take_photo():
         db_session.add(new_photo)
         db_session.commit()
 
+        return Response(status=200)
+
     else:
         app.logger.info('Unable to take photo')
         return Response(status=500)
