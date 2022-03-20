@@ -16,14 +16,14 @@ body {
    float: right;
 }
 
-#logout #logout_btn {
+#logout_btn, #gallery_btn {
    font-size: 1.5vh;
    color: aliceblue;
    font-weight: bold;
    float: right;
 }
 
-#logout #logout_btn:hover {
+#logout_btn:hover, #gallery_btn:hover {
    background-color: white;
    color: #0d6efd;
 }

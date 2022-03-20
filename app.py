@@ -1,3 +1,4 @@
+from datetime import datetime
 import sys
 import os
 import uuid
@@ -6,7 +7,7 @@ from flask_login import login_user, login_required, current_user, logout_user
 from database import db_session, init_db
 from login import login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import User
+from models import User, Photo
 import picamera
 import cv2
 import requests
@@ -127,7 +128,7 @@ def gen():
     """Video streaming generator function."""
     while True:
         rval, frame = vc.read()
-        if frame is None or rval is None:
+        if rval is None:
             continue
 
         cv2.imwrite('/home/pi/Projects/PetSurveilanceSystem/t.jpg', frame)
@@ -155,7 +156,7 @@ def forward():
         return Response(status=201)
     else:
         flash("There is something wrong with the module, responsible for movement.")
-        return Response(status=200)
+        return Response(status=500)
 
 
 @app.route('/left')
@@ -169,7 +170,7 @@ def left():
         return Response(status=201)
     else:
         flash("There is something wrong with the module, responsible for movement.")
-        return Response(status=200)
+        return Response(status=500)
 
 
 @app.route('/right')
@@ -183,7 +184,7 @@ def right():
         return Response(status=201)
     else:
         flash("There is something wrong with the module, responsible for movement.")
-        return Response(status=200)
+        return Response(status=500)
 
 
 @app.route('/backward')
@@ -197,7 +198,7 @@ def backward():
         return Response(status=201)
     else:
         flash("There is something wrong with the module, responsible for movement.")
-        return Response(status=200)
+        return Response(status=500)
 
 
 @app.route('/stop')
@@ -210,16 +211,23 @@ def stop():
     return Response(status=201)
 
 
-'''
-@app.route('/take_photo')
+@app.route('/snap')
 @login_required
 def take_photo():
-    flask_client.publish(topic_hl, "take_photo")
-    print("Taking photo")
-    app.logger.info('Taking photo')
+    rval, frame = vc.read()
+    if rval:
+        app.logger.info('Taking photo')
 
-    return Response(status=201)
-'''
+        filename = str(uuid.uuid4()) + '.jpg'
+        cv2.imwrite(f'./uploads/photos/{filename}', frame)
+
+        new_photo = Photo(location=f'/uploads/photos/{filename}', name=filename, created_at=datetime.now())
+        db_session.add(new_photo)
+        db_session.commit()
+
+    else:
+        app.logger.info('Unable to take photo')
+        return Response(status=500)
 
 
 @app.route('/check_status')
@@ -262,6 +270,14 @@ def change_to_manual_mode():
 
     CheckManual.manual = True
     return render_template('manual.html', name=current_user.username)
+
+
+@app.route('/gallery', methods=['GET', 'POST'])
+@login_required
+def gallery():
+    images = Photo.query.all()
+
+    return render_template('gallery.html', Photo=Photo, images=images)
 
 
 '''

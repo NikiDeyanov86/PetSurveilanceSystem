@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime,TIMESTAMP
 from sqlalchemy.orm import relationship
 from database import Base
+from datetime import datetime
 
 
 class User(Base):
@@ -28,3 +29,12 @@ class User(Base):
 
     def get_id(self):
         return self.login_id
+
+
+class Photo(Base):
+    __tablename__ = 'Photo'
+
+    id = Column(Integer, primary_key=True)
+    location = Column(String(80), nullable=False)
+    name = Column(String(80), unique=True, nullable=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.now())
