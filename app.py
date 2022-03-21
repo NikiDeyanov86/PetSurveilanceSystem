@@ -24,7 +24,7 @@ login_manager.init_app(app)
 init_db()
 flask_client = init_mqtt()
 
-# app.add_url_rule('/uploads/<filename>', 'uploaded_file', build_only=True)
+app.add_url_rule('/uploads/<filename>', 'uploaded_file', build_only=True)
 app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
     '/uploads': app.config['UPLOAD_FOLDER']
 })
