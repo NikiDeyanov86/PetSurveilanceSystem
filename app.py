@@ -13,15 +13,21 @@ import cv2
 import requests
 import logging
 from clients.flask_client import topic_feedback, topic_rc, topic_mode, init_mqtt, Check
+from werkzeug.middleware.shared_data import SharedDataMiddleware
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'pissi-pissi'
-app.config['UPLOAD_FOLDER'] = "voice_files"
+app.config['UPLOAD_FOLDER'] = './uploads'
 
 access_key = "gain_access"
 login_manager.init_app(app)
 init_db()
 flask_client = init_mqtt()
+
+app.add_url_rule('/uploads/<filename>', 'uploaded_file', build_only=True)
+app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
+    '/uploads': app.config['UPLOAD_FOLDER']
+})
 
 
 @app.teardown_appcontext
@@ -219,9 +225,9 @@ def take_photo():
         app.logger.info('Taking photo')
 
         filename = str(uuid.uuid4()) + '.jpg'
-        cv2.imwrite(f'./uploads/photos/{filename}', frame)
+        cv2.imwrite(f'./uploads/{filename}', frame)
 
-        new_photo = Photo(location=f'/uploads/photos/{filename}', name=filename, created_at=datetime.now())
+        new_photo = Photo(location=f'/uploads/{filename}', name=filename, created_at=datetime.now())
         db_session.add(new_photo)
         db_session.commit()
 
