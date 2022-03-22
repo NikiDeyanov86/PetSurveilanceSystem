@@ -284,8 +284,8 @@ def change_to_manual_mode():
 @login_required
 def gallery():
     images = Photo.query.all()
-
-    return render_template('gallery.html', Photo=Photo, images=images, name=current_user.username)
+    first_image = Photo.query.first()
+    return render_template('gallery.html', Photo=Photo, first_image=first_image, images=images, name=current_user.username)
 
 
 '''
