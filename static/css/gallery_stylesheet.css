@@ -1,0 +1,49 @@
+body {
+   margin: 0;
+   background: #1A2226;
+   font-family: 'Roboto', sans-serif;
+   color: white;
+}
+#logged {
+   width: 23vw;
+   text-align: center;
+}
+#logged p{
+   margin-top: 1vh;
+   color: white;
+   font-size: 1.6vh;
+   font-family: 'Roboto', sans-serif;
+   float: right;
+}
+
+#logout_btn, #gallery_btn {
+   font-size: 1.5vh;
+   color: aliceblue;
+   font-weight: bold;
+   float: right;
+}
+
+#logout_btn:hover, #gallery_btn:hover {
+   background-color: white;
+   color: #0d6efd;
+}
+.navbar {
+   background-color: #0e3e81;
+}
+.carousel {
+    width: 768px;  /* 640:480 x 1.2 */
+    height: 576px;
+}
+.carousel-holder {
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.custom-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}

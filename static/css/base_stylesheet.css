@@ -72,8 +72,8 @@ body {
 }
 .stream_holder img {
    display: block;
-   width: 640px;
-   height: 480px;
+   width: 768px;
+   height: 576px;
    border: 2px solid #0e3e81;
 }
 .voice_recorder {
