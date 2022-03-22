@@ -2,6 +2,8 @@ from datetime import datetime
 import sys
 import os
 import uuid
+
+import sqlalchemy
 from flask import Flask, render_template, Response, flash, request, redirect, url_for
 from flask_login import login_user, login_required, current_user, logout_user
 from database import db_session, init_db
@@ -283,9 +285,11 @@ def change_to_manual_mode():
 @app.route('/gallery', methods=['GET', 'POST'])
 @login_required
 def gallery():
-    images = Photo.query.all()
-    first_image = Photo.query.first()
-    return render_template('gallery.html', Photo=Photo, first_image=first_image, images=images, name=current_user.username)
+    first_image = Photo.query.order_by(sqlalchemy.desc(Photo.created_at)).first()
+    images = Photo.query.order_by(sqlalchemy.desc(Photo.created_at)).all()
+
+    return render_template('gallery.html', Photo=Photo, first_image=first_image, images=images,
+                           name=current_user.username)
 
 
 '''
