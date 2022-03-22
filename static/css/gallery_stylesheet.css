@@ -41,9 +41,3 @@ body {
     justify-content: center;
     align-items: center;
 }
-.custom-flex {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
