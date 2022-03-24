@@ -50,6 +50,7 @@ body {
     text-align: center;
 }
 .alert-row{
+    margin-top: 5vh;
     display: flex;
     align-items: center;
     justify-content: center;

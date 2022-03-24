@@ -114,7 +114,7 @@
                                             <h5>{{ image.name }}</h5>
                                             <p>{{ image.created_at }}</p>
                                             <div class="d-flex justify-content-between">
-                                                <a class="nav-link active" aria-current="page" href="#"><button class="rounded btn btn-outline-warning" id="edit_btn"> <i class="bi bi-pencil-square"></i>
+                                                <a class="nav-link active" aria-current="page" href="#"><button type="button" class="rounded btn btn-outline-warning" id="edit_btn" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="bi bi-pencil-square"></i>
                                                 </button></a>
                                                 <a class="nav-link active" aria-current="page" href="/gallery/delete/{{ image.id }}"><button class="rounded btn btn-outline-danger" id="delete_btn"> <i class="bi bi-trash"></i>
                                                 </button></a>
