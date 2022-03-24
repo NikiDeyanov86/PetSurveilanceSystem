@@ -293,6 +293,35 @@ def gallery():
                            name=current_user.username)
 
 
+@app.route('/gallery/delete/<int:photo_id>', methods=['GET', 'POST'])
+@login_required
+def delete_photo(photo_id):
+    image_to_delete = Photo.query.filter_by(id=photo_id).first()
+
+    new_first_image = Photo.query.filter_by(
+        user_id=current_user.id).order_by(sqlalchemy.desc(Photo.created_at)).first()
+    new_images = Photo.query.filter_by(user_id=current_user.id).order_by(
+        sqlalchemy.desc(Photo.created_at)).all()
+
+    if request.method == 'POST':
+        pass
+    else:
+        if image_to_delete.user_id != current_user.id:
+            pass
+
+        else:
+            db_session.delete(image_to_delete)
+            db_session.commit()
+
+            new_first_image = Photo.query.filter_by(
+                user_id=current_user.id).order_by(sqlalchemy.desc(Photo.created_at)).first()
+            new_images = Photo.query.filter_by(user_id=current_user.id).order_by(
+                sqlalchemy.desc(Photo.created_at)).all()
+
+    return redirect(url_for('gallery', Photo=Photo, first_image=new_first_image, images=new_images,
+                            name=current_user.username))
+
+
 '''
 @app.route('/save-record', methods=['POST'])
 @login_required
