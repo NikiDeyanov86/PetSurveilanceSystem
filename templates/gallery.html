@@ -51,11 +51,11 @@
                             <!-- CHECK IF THE GALLERY IS EMPTY -->
                           <div class="carousel-inner">
                                     <div class="carousel-item active" data-bs-interval="30000">
-                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="firstImageModal" tabindex="-1" aria-labelledby="firstImageModalLabel" aria-hidden="true">
                                               <div class="modal-dialog">
                                                 <div class="modal-content">
                                                   <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Rename the selected photo?</h5>
+                                                    <h5 class="modal-title" id="firstImageModalLabel">Rename the selected photo?</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                   </div>
                                                   <div class="modal-body">
@@ -78,20 +78,20 @@
                                             <h5>{{ first_image.name }}</h5>
                                             <p>{{ first_image.created_at }}</p>
                                             <div class="d-flex justify-content-between">
-                                                <a class="nav-link active" aria-current="page" href="#"><button type="button" class="rounded btn btn-outline-warning" id="edit_btn" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="bi bi-pencil-square"></i>
+                                                <a class="nav-link active" aria-current="page" href="#"><button type="button" class="rounded btn btn-outline-warning" id="edit_btn" data-bs-toggle="modal" data-bs-target="#firstImageModal"> <i class="bi bi-pencil-square"></i>
                                                 </button></a>
-                                                <a class="nav-link active" aria-current="page" href="/gallery/delete/{{ first_image.id }}"><button type="button" class="rounded btn btn-outline-danger" id="delete_btn" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="bi bi-trash"></i>
+                                                <a class="nav-link active" aria-current="page" href="/gallery/delete/{{ first_image.id }}"><button type="button" class="rounded btn btn-outline-danger" id="delete_btn"> <i class="bi bi-trash"></i>
                                                 </button></a>
                                             </div>
                                         </div>
                                     </div>
                                 {% for image in images[1:] %}
                                     <div class="carousel-item" data-bs-interval="30000">
-                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
                                               <div class="modal-dialog">
                                                 <div class="modal-content">
                                                   <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Rename the selected photo?</h5>
+                                                    <h5 class="modal-title" id="imageModalLabel">Rename the selected photo?</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                   </div>
                                                   <div class="modal-body">
@@ -114,9 +114,9 @@
                                             <h5>{{ image.name }}</h5>
                                             <p>{{ image.created_at }}</p>
                                             <div class="d-flex justify-content-between">
-                                                <a class="nav-link active" aria-current="page" href="#"><button type="button" class="rounded btn btn-outline-warning" id="edit_btn" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="bi bi-pencil-square"></i>
+                                                <a class="nav-link active" aria-current="page" href="#"><button type="button" class="rounded btn btn-outline-warning" id="edit_btn" data-bs-toggle="modal" data-bs-target="#imageModal"> <i class="bi bi-pencil-square"></i>
                                                 </button></a>
-                                                <a class="nav-link active" aria-current="page" href="/gallery/delete/{{ image.id }}"><button class="rounded btn btn-outline-danger" id="delete_btn"> <i class="bi bi-trash"></i>
+                                                <a class="nav-link active" aria-current="page" href="/gallery/delete/{{ image.id }}"><button type="button" class="rounded btn btn-outline-danger" id="delete_btn"> <i class="bi bi-trash"></i>
                                                 </button></a>
                                             </div>
                                         </div>
