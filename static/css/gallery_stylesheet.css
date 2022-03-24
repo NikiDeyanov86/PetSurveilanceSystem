@@ -45,3 +45,12 @@ body {
 .modal-title, label.col-form-label {
     color: black;
 }
+.alert-holder {
+    width: 50vw;
+    text-align: center;
+}
+.alert-row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

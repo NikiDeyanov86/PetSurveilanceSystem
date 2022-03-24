@@ -322,6 +322,32 @@ def delete_photo(photo_id):
                             name=current_user.username))
 
 
+@app.route('gallery/rename/<int:photo_id>', methods=['GET', 'POST'])
+@login_required
+def rename(photo_id):
+
+    if request.method == 'GET':
+        pass
+    else:
+        new_name = request.form['new_name']
+        temp_photo = Photo.query.filter_by(name=new_name).first()
+        if temp_photo:
+            flash(f'A photo with the name {new_name} already exists!')
+            return redirect(url_for('gallery'))
+
+        # CHECK SIZE OF THE NAME
+        if len(new_name) < 5:
+            flash('Invalid name - it must be more than 4 symbols long!.')
+            return redirect(url_for('gallery'))
+
+        image_to_rename = Photo.query.filter_by(id=photo_id).first()
+        image_to_rename.name = new_name
+
+        db_session.commit()
+
+        return redirect(url_for('gallery'))
+
+
 '''
 @app.route('/save-record', methods=['POST'])
 @login_required
