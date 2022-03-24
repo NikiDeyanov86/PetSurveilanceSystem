@@ -345,7 +345,10 @@ def rename(photo_id):
 
         db_session.commit()
 
-        return redirect(url_for('gallery'))
+        return redirect(url_for('gallery', Photo=Photo,
+                                first_image=image_to_rename,
+                                images=Photo.query.filter_by(user_id=current_user.id)
+                                .order_by(sqlalchemy.desc(Photo.created_at)).all() - image_to_rename))
 
 
 '''
