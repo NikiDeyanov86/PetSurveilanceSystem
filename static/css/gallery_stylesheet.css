@@ -42,3 +42,6 @@ body {
     justify-content: center;
     align-items: center;
 }
+.modal-title, label.col-form-label {
+    color: black;
+}
