@@ -50,20 +50,64 @@
                             <!-- CHECK IF THE GALLERY IS EMPTY -->
                           <div class="carousel-inner">
                                     <div class="carousel-item active" data-bs-interval="30000">
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                              <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                  <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Rename the selected photo?</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                    <form method="POST" action="/gallery/rename/{{ first_image.id }}" id="form_rename">
+                                                      <div class="mb-3">
+                                                        <label for="new_name" class="col-form-label">New name:</label>
+                                                        <input type="text" name="new_name" class="form-control" id="new_name" placeholder="{{ first_image.name }}">
+                                                      </div>
+                                                    </form>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary" form="form_rename">Rename</button>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                        </div>
                                         <img src="{{ first_image.location }}" class="d-block w-100" alt="image">
                                         <div class="carousel-caption d-none d-md-block">
                                             <h5>{{ first_image.name }}</h5>
                                             <p>{{ first_image.created_at }}</p>
                                             <div class="d-flex justify-content-between">
-                                                <a class="nav-link active" aria-current="page" href="#"><button class="rounded btn btn-outline-warning" id="edit_btn"> <i class="bi bi-pencil-square"></i>
+                                                <a class="nav-link active" aria-current="page" href="#"><button type="button" class="rounded btn btn-outline-warning" id="edit_btn" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="bi bi-pencil-square"></i>
                                                 </button></a>
-                                                <a class="nav-link active" aria-current="page" href="/gallery/delete/{{ first_image.id }}"><button class="rounded btn btn-outline-danger" id="delete_btn"> <i class="bi bi-trash"></i>
+                                                <a class="nav-link active" aria-current="page" href="/gallery/delete/{{ first_image.id }}"><button type="button" class="rounded btn btn-outline-danger" id="delete_btn" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="bi bi-trash"></i>
                                                 </button></a>
                                             </div>
                                         </div>
                                     </div>
                                 {% for image in images[1:] %}
                                     <div class="carousel-item" data-bs-interval="30000">
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                              <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                  <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Rename the selected photo?</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                    <form method="POST" action="/gallery/rename/{{ image.id }}" id="form_rename">
+                                                      <div class="mb-3">
+                                                        <label for="new_name" class="col-form-label">New name:</label>
+                                                        <input type="text" name="new_name" class="form-control" id="new_name" placeholder="{{ image.name }}">
+                                                      </div>
+                                                    </form>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary" form="form_rename">Rename</button>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                        </div>
                                         <img src="{{ image.location }}" class="d-block w-100" alt="image">
                                         <div class="carousel-caption d-none d-md-block">
                                             <h5>{{ image.name }}</h5>
