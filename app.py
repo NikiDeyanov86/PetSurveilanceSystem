@@ -322,7 +322,7 @@ def delete_photo(photo_id):
                             name=current_user.username))
 
 
-@app.route('gallery/rename/<int:photo_id>', methods=['GET', 'POST'])
+@app.route('/gallery/rename/<int:photo_id>', methods=['GET', 'POST'])
 @login_required
 def rename(photo_id):
 
