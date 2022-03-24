@@ -285,8 +285,8 @@ def change_to_manual_mode():
 @app.route('/gallery', methods=['GET', 'POST'])
 @login_required
 def gallery():
-    first_image = Photo.query.order_by(sqlalchemy.desc(Photo.created_at)).first()
-    images = Photo.query.order_by(sqlalchemy.desc(Photo.created_at)).all()
+    first_image = Photo.query.filter_by(user_id=current_user.id).order_by(sqlalchemy.desc(Photo.created_at)).first()
+    images = Photo.query.filter_by(user_id=current_user.id).order_by(sqlalchemy.desc(Photo.created_at)).all()
 
     return render_template('gallery.html', Photo=Photo, first_image=first_image, images=images,
                            name=current_user.username)
