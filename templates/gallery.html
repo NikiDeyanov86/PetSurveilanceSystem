@@ -87,11 +87,11 @@
                                     </div>
                                 {% for image in images[1:] %}
                                     <div class="carousel-item" data-bs-interval="30000">
-                                    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="imageModal{{ image.id }}" tabindex="-1" aria-labelledby="imageModal{{ image.id }}Label" aria-hidden="true">
                                               <div class="modal-dialog">
                                                 <div class="modal-content">
                                                   <div class="modal-header">
-                                                    <h5 class="modal-title" id="imageModalLabel">Rename the selected photo?</h5>
+                                                    <h5 class="modal-title" id="imageModal{{ image.id }}Label">Rename the selected photo?</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                   </div>
                                                   <div class="modal-body">
@@ -112,9 +112,9 @@
                                         <img src="{{ image.location }}" class="d-block w-100" alt="image">
                                         <div class="carousel-caption d-none d-md-block">
                                             <h5>{{ image.name }}</h5>
-                                            <p>Snap date: {{ image.created_at.strftime('%Y-%m-%d') }}</p>
+                                            <p>Snap date: {{ image.created_at.strftime('%d-%m-%Y') }}</p>
                                             <div class="d-flex justify-content-between">
-                                                <a class="nav-link active" aria-current="page" href="#"><button type="button" class="rounded btn btn-outline-warning" id="edit_btn" data-bs-toggle="modal" data-bs-target="#imageModal"> <i class="bi bi-pencil-square"></i>
+                                                <a class="nav-link active" aria-current="page" href="#"><button type="button" class="rounded btn btn-outline-warning" id="edit_btn" data-bs-toggle="modal" data-bs-target="#imageModal{{ image.id }}"> <i class="bi bi-pencil-square"></i>
                                                 </button></a>
                                                 <a class="nav-link active" aria-current="page" href="/gallery/delete/{{ image.id }}"><button type="button" class="rounded btn btn-outline-danger" id="delete_btn"> <i class="bi bi-trash"></i>
                                                 </button></a>
