@@ -4,7 +4,7 @@ body {
 }
 
 .box {
-    margin-top: 20vh;
+    margin-top: 30vh;
     height: auto;
     background: #1A2226;
     text-align: center;
@@ -68,5 +68,6 @@ body {
 }
 
 .custom-button {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    font-size: 19px;
 }

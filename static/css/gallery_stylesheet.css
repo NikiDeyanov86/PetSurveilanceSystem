@@ -69,3 +69,11 @@ body {
 .empty-message > strong.empty-description {
     font-size: 2vh;
 }
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+   .carousel {
+        width: 576px;
+        height: 432px;
+    }
+}
