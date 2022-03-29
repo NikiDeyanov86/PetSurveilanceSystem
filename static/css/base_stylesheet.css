@@ -124,15 +124,15 @@ body {
 @media only screen and (max-width: 576px) {
   /* For mobile phones: */
    .stream_holder img {
-      width: 448px;
-      height: 336px;
+      width: 384px;
+      height: 288px;
    }
    .stream_holder {
       margin-top: 5vh;
    }
    .mode {
       margin-top: 2vh;
-      height: 4vh;
+      height: auto;
    }
    #logged p{
       margin-top: 1vh;
@@ -175,5 +175,12 @@ body {
    }
    .content {
       margin-top: 1vh;
+   }
+   .alerts {
+      margin-top: 1vh;
+   }
+   .direction {
+      padding: 1vh;
+      font-size: 2.2vh;
    }
 }
