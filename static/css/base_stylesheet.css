@@ -120,3 +120,60 @@ body {
       margin-top: 5vh;
    }
 }
+
+@media only screen and (max-width: 576px) {
+  /* For mobile phones: */
+   .stream_holder img {
+      width: 448px;
+      height: 336px;
+   }
+   .stream_holder {
+      margin-top: 5vh;
+   }
+   .mode {
+      margin-top: 2vh;
+      height: 4vh;
+   }
+   #logged p{
+      margin-top: 1vh;
+      color: white;
+      font-size: 1.4vh;
+      font-family: 'Roboto', sans-serif;
+      float: right;
+   }
+
+   #logout_btn, #gallery_btn {
+      font-size: 1.4vh;
+      color: aliceblue;
+      font-weight: bold;
+      float: right;
+   }
+   #logout_btn {
+      width: 25vw;
+   }
+   #gallery_btn {
+      width: 25vw;
+   }
+   .navbar-brand {
+      font-size: 1.7vh;
+   }
+   .justify-content-end {
+      justify-content: space-around!important;
+   }
+   .btn-holder {
+      margin-top: 1.5vh;
+   }
+   #snapBtn {
+       font-size: 1.6vh;
+      padding: 0.7vh;
+   }
+   .mode > a > button {
+      font-size: 1.6vh;
+   }
+   .mode_btn.active, .mode_btn:hover {
+      font-size: 1.6vh;
+   }
+   .content {
+      margin-top: 1vh;
+   }
+}

@@ -77,3 +77,43 @@ body {
         height: 432px;
     }
 }
+
+@media only screen and (max-width: 576px) {
+  /* For mobile phones: */
+
+   #logged p{
+      margin-top: 1vh;
+      color: white;
+      font-size: 1.4vh;
+      font-family: 'Roboto', sans-serif;
+      float: right;
+   }
+
+   #logout_btn, #gallery_btn {
+      font-size: 1.4vh;
+      color: aliceblue;
+      font-weight: bold;
+      float: right;
+   }
+   #logout_btn {
+      width: 25vw;
+   }
+   #gallery_btn {
+      width: 25vw;
+   }
+   .navbar-brand {
+      font-size: 1.7vh;
+   }
+   .justify-content-end {
+      justify-content: space-around!important;
+   }
+    .h5, h5 {
+       font-size: 1.1rem;
+       font-weight: inherit;
+   }
+   .carousel-caption > p {
+       font-size: 0.8rem;
+        font-weight: lighter;
+       margin-bottom: 0;
+   }
+}
