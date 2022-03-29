@@ -116,4 +116,12 @@ body {
         font-weight: lighter;
        margin-bottom: 0;
    }
+   .carousel-control-prev-icon {
+       width: 1.6rem;
+       height: 1.6rem;
+   }
+   .carousel-control-next-icon {
+       width: 1.6rem;
+       height: 1.6rem;
+   }
 }
