@@ -59,7 +59,7 @@ try:
         elif topic == "pss/movement/manual" and Check.manual is True:
             # Data from remote client, ex. "left" ---- time ----> "stop"
             direction = message
-            speed = 65
+            speed = 50
             if direction == "forward":
                 if Check.obstacle is False:
                     print("MANUAL: forward")
@@ -72,11 +72,11 @@ try:
                 pass
             elif direction == "left":
                 print("MANUAL: left")
-                motors.left(speed + 10)
+                motors.left(speed + 5)
                 pass
             elif direction == "right":
                 print("MANUAL: right")
-                motors.right(speed + 10)
+                motors.right(speed + 5)
                 pass
             elif direction == "stop":
                 print("MANUAL: stop")

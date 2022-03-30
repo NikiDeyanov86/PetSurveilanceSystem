@@ -29,7 +29,7 @@ mqttClient.username_pw_set("pi", "pissi-pissi")
 mqttClient.connect(serverAddress, 1883)
 mqttClient.loop_start()
 
-motorSpeed = 60
+motorSpeed = 50
 leftOffset = 80
 rightOffset = 240
 optWidthLow = 40
