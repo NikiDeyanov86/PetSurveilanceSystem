@@ -136,3 +136,6 @@ except KeyboardInterrupt:
 
     print("Terminating program...")
     print("Interrupted by keyboard.")
+
+finally:
+    motors.tear_down()

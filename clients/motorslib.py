@@ -9,7 +9,7 @@ ena = 12
 enb = 13
 relay_in = 11
 
-gpio.setmode(gpio.BCM)
+gpio.setmode(gpio.BOARD)
 gpio.setwarnings(False)
 gpio.setup(relay_in, gpio.OUT)
 
