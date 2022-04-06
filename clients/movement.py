@@ -1,6 +1,8 @@
 import paho.mqtt.client as mqtt
 from motorslib import MotorSide, MotorDriver, in1, in2, in3, in4, ena, enb, power
 
+global motors
+
 try:
     left = MotorSide(ena, in1, in2)
     right = MotorSide(enb, in3, in4)
