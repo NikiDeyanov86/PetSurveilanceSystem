@@ -7,7 +7,7 @@ in3 = 24
 in4 = 25
 ena = 12
 enb = 13
-relay_in = 11
+relay_in = 40
 
 gpio.setmode(gpio.BOARD)
 gpio.setwarnings(False)
