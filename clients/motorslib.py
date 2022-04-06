@@ -7,9 +7,19 @@ in3 = 24
 in4 = 25
 ena = 12
 enb = 13
+relay_in = 11
 
 gpio.setmode(gpio.BCM)
 gpio.setwarnings(False)
+gpio.setup(relay_in, gpio.OUT)
+
+
+def power(message):
+    if message == 1:
+        gpio.output(relay_in, gpio.LOW)
+
+    elif message == 0:
+        gpio.output(relay_in, gpio.HIGH)
 
 
 class MotorSide:

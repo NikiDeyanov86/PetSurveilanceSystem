@@ -7,6 +7,7 @@ topic_feedback = "pss/feedback"
 topic_mode = "pss/movement/mode"
 topic_rc = "pss/movement/manual"
 topic_hl = "pss/huskylens"
+topic_motors_power = "pss/movement/motors_power"
 
 
 class Check:

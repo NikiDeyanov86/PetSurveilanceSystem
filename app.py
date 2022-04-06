@@ -14,7 +14,7 @@ import picamera
 import cv2
 import requests
 import logging
-from clients.flask_client import topic_feedback, topic_rc, topic_mode, init_mqtt, Check
+from clients.flask_client import topic_feedback, topic_rc, topic_mode, topic_motors_power, init_mqtt, Check
 from werkzeug.middleware.shared_data import SharedDataMiddleware
 
 app = Flask(__name__)
@@ -242,6 +242,7 @@ def take_photo():
 
 
 @app.route('/check_status')
+@login_required
 def check():
     if CheckManual.manual is True and Check.visible is True and Check.hl_available is True:
         app.logger.info('Switch to auto (AJAX)')
@@ -346,6 +347,32 @@ def rename(photo_id):
         db_session.commit()
 
         return redirect(url_for('gallery'))
+
+
+@app.route('/motors_on')
+@login_required
+def motors_on():
+    if Check.mov_available is True:
+        app.logger.info('Motors on')
+        flask_client.publish(topic_motors_power, "on")
+
+    else:
+        return Response(status=500)
+
+    return Response(status=200)
+
+
+@app.route('/motors_off')
+@login_required
+def motors_off():
+    if Check.mov_available is True:
+        app.logger.info('Motors off')
+        flask_client.publish(topic_motors_power, "off")
+
+    else:
+        return Response(status=500)
+
+    return Response(status=200)
 
 
 '''

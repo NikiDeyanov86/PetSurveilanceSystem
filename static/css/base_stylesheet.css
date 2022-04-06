@@ -16,6 +16,13 @@ body {
    float: right;
 }
 
+#info_btn, #settings_btn {
+   font-size: 1.5vh;
+   color: aliceblue;
+   font-weight: bold;
+   float: right;
+}
+
 #logout_btn, #gallery_btn {
    font-size: 1.5vh;
    color: aliceblue;
@@ -23,7 +30,7 @@ body {
    float: right;
 }
 
-#logout_btn:hover, #gallery_btn:hover {
+#logout_btn:hover, #gallery_btn:hover, #info_btn:hover, #settings_btn:hover {
    background-color: white;
    color: #0d6efd;
 }
@@ -107,6 +114,10 @@ body {
    font-size: 1.8vh;
 }
 
+.offcanvas {
+   color: black;
+}
+
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
    .stream_holder img {
@@ -164,8 +175,9 @@ body {
       margin-top: 1.5vh;
    }
    #snapBtn {
-       font-size: 1.6vh;
+      font-size: 1.7vh;
       padding: 0.7vh;
+      width: 30vw;
    }
    .mode > a > button {
       font-size: 1.6vh;
@@ -179,5 +191,10 @@ body {
    .alerts {
       margin-top: 1vh;
    }
-
+   div.container-fluid {
+      padding: 1.2vw;
+   }
+   .nav-link {
+      padding: 0;
+   }
 }

@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-from motorslib import MotorSide, MotorDriver, in1, in2, in3, in4, ena, enb
+from motorslib import MotorSide, MotorDriver, in1, in2, in3, in4, ena, enb, power
 
 try:
     left = MotorSide(ena, in1, in2)
@@ -12,6 +12,7 @@ try:
     topics = "pss/movement/+"
     topic_feedback = "pss/feedback"
     topic_mov = "pss/movement/proximity"
+    topic_motors_power = "pss/movement/motors_power"
 
 
     class Check:
@@ -90,6 +91,13 @@ try:
             elif message == "manual":
                 print("<<<<<<<< MANUAL MODE >>>>>>>>>")
                 Check.manual = True
+
+        elif topic == topic_motors_power:
+            if message == "on":
+                power(1)
+
+            elif message == "off":
+                power(0)
 
         elif topic == topic_mov:
             if message == "obstacle":
