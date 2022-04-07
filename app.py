@@ -375,7 +375,7 @@ def motors_on():
                 return 0
 
         else:
-            return Response(status=500)
+            return Response(status=200)
 
 
 '''
