@@ -358,24 +358,24 @@ def rename(photo_id):
 def motors_on():
     if request.method == 'GET':
         if MotorsState.on is True:
-            return 1
+            return "on"
         else:
-            return 0
+            return "off"
     else:
         if Check.mov_available is True:
             if MotorsState.on is False:
                 app.logger.info('Motors on')
                 flask_client.publish(topic_motors_power, "on")
                 MotorsState.on = True
-                return 1
+                return "on"
             else:
                 app.logger.info('Motors off')
                 flask_client.publish(topic_motors_power, "off")
                 MotorsState.on = False
-                return 0
+                return "off"
 
         else:
-            return Response(status=200)
+            return Response(status=500)
 
 
 '''

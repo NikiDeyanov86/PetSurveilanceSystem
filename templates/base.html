@@ -134,10 +134,10 @@
                 success: function (data) {
                      console.log(data);
 
-                     if(data === 1) {
+                     if(data === "on") {
                          document.getElementById("flexSwitchCheck").toggleAttribute("checked", true)
                      }
-                     else if(data === 0) {
+                     else if(data === "off") {
                          document.getElementById("flexSwitchCheck").toggleAttribute("checked", false)
                      }
                 }
@@ -151,10 +151,10 @@
                 success: function (data) {
                      console.log(data);
 
-                     if(data === 1) {
+                     if(data === "on") {
                          document.getElementById("flexSwitchCheck").toggleAttribute("checked", true)
                      }
-                     else if(data === 0) {
+                     else if(data === "off") {
                          document.getElementById("flexSwitchCheck").toggleAttribute("checked", false)
                      }
                 }
