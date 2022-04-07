@@ -156,10 +156,14 @@
                      console.log(data);
 
                      if(data === "on") {
-                         document.getElementById("flexSwitchCheck").setAttribute("checked", "checked")
+                         let checkbox = document.getElementById("flexSwitchCheck");
+                         checkbox.setAttribute("checked", "checked")
+                         checkbox.checked = true;
                      }
                      else if(data === "off") {
-                         document.getElementById("flexSwitchCheck").setAttribute("checked", "")
+                         let checkbox = document.getElementById("flexSwitchCheck");
+                         checkbox.removeAttribute("checked");
+                         checkbox.checked = false;
                      }
                 }
             });
