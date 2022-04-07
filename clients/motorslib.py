@@ -12,6 +12,7 @@ relay_in = 18
 gpio.setmode(gpio.BCM)
 gpio.setwarnings(False)
 gpio.setup(relay_in, gpio.OUT)
+gpio.output(relay_in, True)
 
 
 def power(message):
