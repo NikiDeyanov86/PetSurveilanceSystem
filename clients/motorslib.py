@@ -7,12 +7,11 @@ in3 = 24
 in4 = 25
 ena = 12
 enb = 13
-relay_in = 21
+relay_in = 17
 
 gpio.setmode(gpio.BCM)
 gpio.setwarnings(False)
 gpio.setup(relay_in, gpio.OUT)
-gpio.output(relay_in, gpio.HIGH)
 
 
 def power(message):
