@@ -162,7 +162,8 @@
         }
 
         $(function() {
-              $('input#flexSwitchCheck').on('click', function() {
+              $('input#flexSwitchCheck').on('click', function(e) {
+                  e.preventDefault()
                   motors_switch();
               });
         });
