@@ -135,10 +135,14 @@
                      console.log(data);
 
                      if(data === "on") {
-                         document.getElementById("flexSwitchCheck").toggleAttribute("checked", true)
+                         let checkbox = document.getElementById("flexSwitchCheck");
+                         checkbox.setAttribute("checked", "checked")
+                         checkbox.checked = true;
                      }
                      else if(data === "off") {
-                         document.getElementById("flexSwitchCheck").toggleAttribute("checked", false)
+                         let checkbox = document.getElementById("flexSwitchCheck");
+                         checkbox.removeAttribute("checked");
+                         checkbox.checked = false;
                      }
                 }
             });
@@ -152,10 +156,10 @@
                      console.log(data);
 
                      if(data === "on") {
-                         document.getElementById("flexSwitchCheck").toggleAttribute("checked", true)
+                         document.getElementById("flexSwitchCheck").setAttribute("checked", "checked")
                      }
                      else if(data === "off") {
-                         document.getElementById("flexSwitchCheck").toggleAttribute("checked", false)
+                         document.getElementById("flexSwitchCheck").setAttribute("checked", "")
                      }
                 }
             });
