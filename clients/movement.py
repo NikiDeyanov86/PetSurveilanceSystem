@@ -42,9 +42,8 @@ try:
             speed = int(split[2])
 
             if direction == "forward":
-                if Check.obstacle is False:
-                    print("AUTO: Forward")
-                    motors.move_forward_hl(seconds, speed)
+                print("AUTO: Forward")
+                motors.move_forward_hl(seconds, speed)
 
             elif direction == "backward":
                 print("AUTO: Backward")
@@ -63,9 +62,8 @@ try:
             direction = message
             speed = 50
             if direction == "forward":
-                if Check.obstacle is False:
-                    print("MANUAL: forward")
-                    motors.forward(speed)
+                print("MANUAL: forward")
+                motors.forward(speed)
                 pass
 
             elif direction == "backward":
