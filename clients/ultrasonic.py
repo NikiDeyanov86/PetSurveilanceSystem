@@ -67,7 +67,7 @@ def measure():
             print("Obstacle")
             stopped = True
 
-        elif distance > 25:
+        elif distance > 25 and stopped is True:
             mqttClient.publish(topic_mov, "free")
             print("Free")
             stopped = False
