@@ -44,6 +44,10 @@ class CheckManual:
     manual = True
 
 
+class MotorsState:
+    on = False
+
+
 logging.basicConfig(filename='record.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %('
                                                                        f'threadName)s : %(message)s')
 
@@ -349,30 +353,29 @@ def rename(photo_id):
         return redirect(url_for('gallery'))
 
 
-@app.route('/motors_on')
+@app.route('/motors_power', methods=['GET', 'POST'])
 @login_required
 def motors_on():
-    if Check.mov_available is True:
-        app.logger.info('Motors on')
-        flask_client.publish(topic_motors_power, "on")
-
+    if request.method == 'GET':
+        if MotorsState.on is True:
+            return 1
+        else:
+            return 0
     else:
-        return Response(status=500)
+        if Check.mov_available is True:
+            if MotorsState.on is False:
+                app.logger.info('Motors on')
+                flask_client.publish(topic_motors_power, "on")
+                MotorsState.on = True
+                return 1
+            else:
+                app.logger.info('Motors off')
+                flask_client.publish(topic_motors_power, "off")
+                MotorsState.on = False
+                return 0
 
-    return Response(status=200)
-
-
-@app.route('/motors_off')
-@login_required
-def motors_off():
-    if Check.mov_available is True:
-        app.logger.info('Motors off')
-        flask_client.publish(topic_motors_power, "off")
-
-    else:
-        return Response(status=500)
-
-    return Response(status=200)
+        else:
+            return Response(status=500)
 
 
 '''

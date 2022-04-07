@@ -95,24 +95,25 @@
         })
 
         $(document).ready(function() {
+            motors_check();
             setInterval("check_vis()",10000); // call every 10 seconds
         });
 
 
         function check_vis() {
-        $.ajax({
-            url: '/check_status',
-            success: function (data) {
-                 // console.log(data);
+            $.ajax({
+                url: '/check_status',
+                success: function (data) {
+                     // console.log(data);
 
-                 if(data === "not_visible") {
-                     window.location.replace("http://petbot.ddns.net/manual_mode")
-                 }
-                 else if(data === "visible") {
-                     window.location.replace("http://petbot.ddns.net/automated_mode")
-                 }
-            }
-        });
+                     if(data === "not_visible") {
+                         window.location.replace("http://petbot.ddns.net/manual_mode")
+                     }
+                     else if(data === "visible") {
+                         window.location.replace("http://petbot.ddns.net/automated_mode")
+                     }
+                }
+            });
         }
 
         $(function() {
@@ -126,27 +127,46 @@
               });
         });
 
+        function motors_check() {
+            $.ajax({
+                type: "GET",
+                url: '/motors_power',
+                success: function (data) {
+                     console.log(data);
+
+                     if(data === 1) {
+                         document.getElementById("flexSwitchCheck").toggleAttribute("checked", true)
+                     }
+                     else if(data === 0) {
+                         document.getElementById("flexSwitchCheck").toggleAttribute("checked", false)
+                     }
+                }
+            });
+        }
+
+        function motors_switch() {
+            $.ajax({
+                type: "POST",
+                url: '/motors_power',
+                success: function (data) {
+                     console.log(data);
+
+                     if(data === 1) {
+                         document.getElementById("flexSwitchCheck").toggleAttribute("checked", true)
+                     }
+                     else if(data === 0) {
+                         document.getElementById("flexSwitchCheck").toggleAttribute("checked", false)
+                     }
+                }
+            });
+        }
+
         $(function() {
-              $('button#on_btn').on('click', function(e) {
-                e.preventDefault()
-                $.getJSON('/motors_on',
-                    function(data) {
-                    //show that the motors are on or off
-                });
-                //return false;
+              $('input#flexSwitchCheck').on('click', function() {
+                  motors_switch();
               });
         });
 
-        $(function() {
-              $('button#off_btn').on('click', function(e) {
-                e.preventDefault()
-                $.getJSON('/motors_off',
-                    function(data) {
-                    //show that the motors are on or off
-                });
-                //return false;
-              });
-        });
 
     </script>
 
@@ -251,8 +271,8 @@
       </div>
       <div class="offcanvas-body">
         <div class="form-check form-switch">
-            <button class="rounded btn btn-primary" id="on_btn">On</button>
-            <button class="rounded btn btn-primary" id="off_btn">Off</button>
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheck">
+          <label class="form-check-label" for="flexSwitchCheck">Turn motors on/off</label>
         </div>
       </div>
     </div>
