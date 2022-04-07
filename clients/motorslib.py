@@ -11,7 +11,6 @@ relay_in = 17
 
 gpio.setmode(gpio.BCM)
 gpio.setwarnings(False)
-gpio.setup(relay_in, gpio.OUT)
 
 
 def power(message):
@@ -30,6 +29,8 @@ class MotorSide:
         gpio.setup(en, gpio.OUT)
         gpio.setup(in1, gpio.OUT)
         gpio.setup(in2, gpio.OUT)
+        gpio.setup(relay_in, gpio.OUT)
+        gpio.output(relay_in, gpio.HIGH)
         self.pwm = gpio.PWM(en, 100)
         self.pwm.start(0)
 
