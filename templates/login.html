@@ -53,18 +53,17 @@
                         <form method="POST" action="/login">
                             <div class="form-group">
                                 <label for="inputUsername" class="form-control-label">USERNAME</label>
-                                <input type="text" class="form-control" name="username" id="inputUsername">
+                                <input type="text" class="form-control valid" name="username" id="inputUsername">
                             </div>
                             <div class="form-group">
                                 <label for="inputPassword" class="form-control-label">PASSWORD</label>
-                                <input type="password" class="form-control" name="password" id="inputPassword">
+                                <input type="password" class="form-control valid" name="password" id="inputPassword">
                             </div>
-
-                            <div class="col-lg-12 loginbttm">
-
-                                    <div class="col-lg-6 login-btm login-button">
-                                        <button type="submit" class="btn btn-outline-primary">LOGIN</button>
-                                    </div>
+                            <div class="d-flex justify-content-between flex-row">
+                                <p class="to-login-message"> Don't have an account? <a href="/signup" class="link-info">Sign up</a></p>
+                                <div class="col-lg-6 login-btm login-button">
+                                    <button type="submit" class="btn btn-outline-primary">LOGIN</button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -78,6 +77,18 @@
 
         $(".btn-close").click(function() {
             document.querySelector(".alert-holder").style.height = "0px";
+        })
+
+        $("input#inputUsername").focus(function () {
+            $("label[for=inputUsername]").removeClass("form-control-label").addClass("form-control-label-focused");
+        }).blur(function () {
+            $("label[for=inputUsername]").removeClass("form-control-label-focused").addClass("form-control-label");
+        })
+
+        $("input#inputPassword").focus(function () {
+            $("label[for=inputPassword]").removeClass("form-control-label").addClass("form-control-label-focused");
+        }).blur(function () {
+            $("label[for=inputPassword]").removeClass("form-control-label-focused").addClass("form-control-label");
         })
 
     </script>

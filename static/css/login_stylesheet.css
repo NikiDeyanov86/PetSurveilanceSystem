@@ -79,18 +79,30 @@ input[type=password] {
     background-color: #1A2226;
     color: #ECF0F5;
 }
-
-input[type=text]:focus {
+input.valid {
     outline: none;
     box-shadow: 0 0 0;
-    border-bottom: 3px solid #2ecc71;
+    border-bottom: 2px solid #0DB8DE;
 }
 
-input[type=password]:focus {
+input.invalid {
+    outline: none;
+    box-shadow: 0 0 0;
+    border-bottom: 2px solid #EF340D;
+}
+
+input.valid:focus {
+    outline: none;
+    box-shadow: 0 0 0;
+    border-bottom: 3px solid #0DB8DE;
+}
+
+input.invalid:focus {
     outline: none;
     box-shadow: 0 0 0;
     border-bottom: 3px solid #EF340D;
 }
+
 
 label {
     margin-bottom: 0px;
@@ -99,6 +111,13 @@ label {
 .form-control-label {
     font-size: 10px;
     color: #6C6C6C;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.form-control-label-focused {
+    font-size: 11px;
+    color: white;
     font-weight: bold;
     letter-spacing: 1px;
 }
@@ -114,6 +133,11 @@ label {
 
 .btn-outline-primary:hover {
     background-color: #0DB8DE;
+    right: 0px;
+}
+
+.btn-outline-primary:disabled {
+    color: #0DB8DE;
     right: 0px;
 }
 
@@ -133,6 +157,8 @@ label {
     color: #A2A4A4;
 }
 
-.loginbttm {
-    padding: 0px;
+.to-login-message {
+    font-size: 15px;
+    color: ghostwhite;
+    font-family: 'Roboto', sans-serif;
 }
