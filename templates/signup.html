@@ -61,7 +61,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputAccessKey" class="form-control-label">ACCESS KEY</label>
-                                <input type="password" class="form-control invalid" name="access_key" id="inputAccessKey" required>
+                                <input type="password" class="form-control valid" name="access_key" id="inputAccessKey" required>
                             </div>
                             <div class="d-flex justify-content-between flex-row">
                                 <p class="to-login-message"> Already have an account? <a href="/login" class="link-info">Log in</a></p>
@@ -84,10 +84,8 @@
         let valid_letter = false;
         let valid_capital = false;
         let valid_number = false;
-        let key = btoa("{{ key }}");
         let valid_username = false;
         let valid_password = false;
-        let valid_key = false;
 
         $(".btn-close").click(function() {
             document.querySelector(".alert-holder").style.height = "0px";
@@ -165,19 +163,7 @@
         })
 
 
-        $("input#inputAccessKey").keyup(function () {
-            let input_key = $(this).val()
-
-            if(input_key === key) {
-                $(this).removeClass("invalid").addClass("valid");
-                valid_key = true;
-                $.fn.checkForValidForm();
-            } else {
-                $(this).removeClass("valid").addClass("invalid");
-                valid_key = false;
-                $.fn.checkForValidForm();
-            }
-        }).focus(function () {
+        $("input#inputAccessKey").focus(function () {
             $("label[for=inputAccessKey]").removeClass("form-control-label").addClass("form-control-label-focused");
 
         }).blur(function () {
@@ -185,7 +171,7 @@
         })
 
         $.fn.checkForValidForm = function () {
-            if(valid_username && valid_password && valid_key) {
+            if(valid_username && valid_password) {
                 $("button#submit_btn").prop("disabled", false);
             } else
             {

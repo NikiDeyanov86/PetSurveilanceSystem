@@ -102,7 +102,7 @@ def signup():
             return redirect(url_for('change_to_auto_mode'))
 
     if request.method == 'GET':
-        return render_template('signup.html', key=access_key)
+        return render_template('signup.html')
     else:
         username = request.form['username']
         temp_user = User.query.filter_by(username=username).first()
