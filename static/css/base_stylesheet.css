@@ -4,9 +4,11 @@ body {
    font-family: 'Roboto', sans-serif;
    color: white;
 }
-#logged {
-   width: 23vw;
+div#logged.col {
+   display: flex;
+   width: auto;
    text-align: center;
+   justify-content: center;
 }
 #logged p{
    margin-top: 1vh;
@@ -31,6 +33,8 @@ body {
    font-weight: bold;
    float: right;
    font-size: 1vw;
+   background-color: #0e3e81;
+   border-color: white;
 }
 
 .nav-link > button:hover {
@@ -128,10 +132,10 @@ body {
       height: 408px;
    }
    .stream_holder {
-      margin-top: 3vh;
+      margin-top: 4vh;
    }
    .mode {
-      margin-top: 3vh;
+      margin-top: 8vh;
    }
 }
 
@@ -146,6 +150,13 @@ body {
    }
    .mode {
       margin-top: 3vh;
+   }
+   #logged p{
+      font-size: 1.4vw;
+      margin-right: 2vw;
+   }
+   .nav-link > button{
+      font-size: 12px;
    }
 }
 
@@ -171,7 +182,13 @@ body {
       float: right;
    }
 
+   .nav-link {
+      margin-right: 5vw;
+   }
 
+   .nav-link > button{
+      font-size: 10px;
+   }
 
    .navbar-brand {
       font-size: 3vh;
@@ -184,15 +201,15 @@ body {
       margin-bottom: 1.5vh;
    }
    #snapBtn {
-      font-size: 1.7vh;
+      font-size: 13px;
       padding: 0.7vh;
       width: 30vw;
    }
    .mode > a > button {
-      font-size: 1.6vh;
+      font-size: 12px;
    }
    .mode_btn.active, .mode_btn:hover {
-      font-size: 1.6vh;
+      font-size: 12.5px;
    }
    .content {
       margin-top: 1vh;

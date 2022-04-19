@@ -70,11 +70,25 @@ body {
     font-size: 2vh;
 }
 
+@media only screen and (max-width: 1280px) {
+    .carousel {
+        width: 544px;
+        height: 408px;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .carousel {
+        width: 435px;
+        height: 326px;
+    }
+}
+
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
    .carousel {
-        width: 576px;
-        height: 432px;
+        width: 384px;
+        height: 288px;
     }
 }
 
