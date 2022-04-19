@@ -96,41 +96,41 @@ div#logged.col {
         width: 435px;
         height: 326px;
     }
+    #logged p{
+      font-size: 1.4vw;
+      margin-right: 2vw;
+   }
+   .nav-link > button.nav-btn{
+      font-size: 12px;
+   }
 }
+
 
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
-   .carousel {
+    .carousel {
         width: 384px;
         height: 288px;
     }
-}
 
-@media only screen and (max-width: 576px) {
-  /* For mobile phones: */
-
-   #logged p{
+   #logged p {
       margin-top: 1vh;
       color: white;
-      font-size: 1.4vh;
+      font-size: 2.5vw;
       font-family: 'Roboto', sans-serif;
       float: right;
    }
 
-   #logout_btn, #gallery_btn {
-      font-size: 1.4vh;
-      color: aliceblue;
-      font-weight: bold;
-      float: right;
+   .nav-link-main {
+      margin-right: 5vw;
    }
-   #logout_btn {
-      width: 25vw;
+
+   .nav-link-main > button.nav-btn{
+      font-size: 10px;
    }
-   #gallery_btn {
-      width: 50vw;
-   }
+
    .navbar-brand {
-      font-size: 1.7vh;
+      font-size: 3vh;
    }
    .justify-content-end {
       justify-content: space-around!important;
