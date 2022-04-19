@@ -103,6 +103,9 @@ div#logged.col {
    .nav-link > button.nav-btn{
       font-size: 12px;
    }
+   .carousel-holder {
+       margin-top: 13vh;
+   }
 }
 
 
@@ -112,6 +115,10 @@ div#logged.col {
         width: 384px;
         height: 288px;
     }
+
+    .carousel-holder {
+       margin-top: 15vh;
+   }
 
    #logged p {
       margin-top: 1vh;
