@@ -4,33 +4,40 @@ body {
    font-family: 'Roboto', sans-serif;
    color: white;
 }
-#logged {
-   width: 23vw;
+div#logged.col {
+   display: flex;
+   width: auto;
    text-align: center;
+   justify-content: center;
 }
 #logged p{
    margin-top: 1vh;
    color: white;
-   font-size: 1.6vh;
+   font-size: 1.2vw;
    font-family: 'Roboto', sans-serif;
    float: right;
 }
 
-#info_btn, #settings_btn {
-   font-size: 1.5vh;
+.nav-link {
+   padding: 0.3rem;
+}
+
+.nav-link > button > i {
+   margin-right: 0.5vw;
+}
+
+.nav-link > button{
+   display: flex;
+   flex-direction: row;
    color: aliceblue;
    font-weight: bold;
    float: right;
+   font-size: 1vw;
+   background-color: #0e3e81;
+   border-color: white;
 }
 
-#logout_btn, #gallery_btn {
-   font-size: 1.5vh;
-   color: aliceblue;
-   font-weight: bold;
-   float: right;
-}
-
-#logout_btn:hover, #gallery_btn:hover, #info_btn:hover, #settings_btn:hover {
+.nav-link > button:hover, .nav-link > button:focus {
    background-color: white;
    color: #0d6efd;
 }
@@ -48,14 +55,14 @@ body {
    background-color: #0e3e81;
 }
 .mode > a {
-   padding: 5px;
+   padding: 0;
    height: 100%;
    width: 100%;
 }
 .mode > a > button {
    text-align: center;
    font-family: 'Roboto', sans-serif;
-   font-size: 2vh;
+   font-size: 2.4vh;
    width: 100%;
    height: 100%;
    background-color: #0e3e81;
@@ -63,7 +70,7 @@ body {
    border: 0;
 }
 .mode_btn.active, .mode_btn:hover {
-   font-size: 2.1vh;
+   font-size: 2.5vh;
    color: aliceblue;
    font-weight: bold;
 }
@@ -105,34 +112,56 @@ body {
 }
 .btn-holder {
    margin-top: 3vh;
+   margin-bottom: 3vh;
    justify-content: center;
 }
 #snapBtn {
-   width: auto;
+   width: 15vw;
    height: auto;
    padding: 1.5vh;
-   font-size: 1.8vh;
 }
 
 .offcanvas {
    color: black;
 }
 
-@media only screen and (max-width: 768px) {
-  /* For mobile phones: */
+@media only screen and (max-width: 1280px) {
+  /* For laptops: */
    .stream_holder img {
-      width: 576px;
-      height: 432px;
+      width: 544px;
+      height: 408px;
    }
    .stream_holder {
-      margin-top: 5vh;
+      margin-top: 4vh;
    }
    .mode {
-      margin-top: 5vh;
+      margin-top: 8vh;
    }
 }
 
-@media only screen and (max-width: 576px) {
+@media only screen and (max-width: 1024px) {
+  /* For laptops: */
+   .stream_holder img {
+      width: 435px;
+      height: 326px;
+   }
+   .stream_holder {
+      margin-top: 3vh;
+   }
+   .mode {
+      margin-top: 3vh;
+   }
+   #logged p{
+      font-size: 1.4vw;
+      margin-right: 2vw;
+   }
+   .nav-link > button{
+      font-size: 12px;
+   }
+}
+
+
+@media only screen and (max-width: 768px) {
   /* For mobile phones: */
    .stream_holder img {
       width: 384px;
@@ -142,48 +171,45 @@ body {
       margin-top: 5vh;
    }
    .mode {
-      margin-top: 2vh;
+      margin-top: 1.5vh;
       height: auto;
    }
    #logged p{
       margin-top: 1vh;
       color: white;
-      font-size: 1.4vh;
+      font-size: 2.5vw;
       font-family: 'Roboto', sans-serif;
       float: right;
    }
 
-   #logout_btn, #gallery_btn {
-      font-size: 1.4vh;
-      color: aliceblue;
-      font-weight: bold;
-      float: right;
+   .nav-link {
+      margin-right: 5vw;
    }
-   #logout_btn {
-      width: 25vw;
+
+   .nav-link > button{
+      font-size: 10px;
    }
-   #gallery_btn {
-      width: 25vw;
-   }
+
    .navbar-brand {
-      font-size: 1.7vh;
+      font-size: 3vh;
    }
    .justify-content-end {
       justify-content: space-around!important;
    }
    .btn-holder {
       margin-top: 1.5vh;
+      margin-bottom: 1.5vh;
    }
    #snapBtn {
-      font-size: 1.7vh;
+      font-size: 13px;
       padding: 0.7vh;
       width: 30vw;
    }
    .mode > a > button {
-      font-size: 1.6vh;
+      font-size: 12px;
    }
    .mode_btn.active, .mode_btn:hover {
-      font-size: 1.6vh;
+      font-size: 12.5px;
    }
    .content {
       margin-top: 1vh;
