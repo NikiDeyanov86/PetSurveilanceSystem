@@ -22,11 +22,11 @@ div#logged.col {
    padding: 0.3rem;
 }
 
-.nav-link > button > i {
+.nav-link > button.nav-btn > i {
    margin-right: 0.5vw;
 }
 
-.nav-link > button, .nav-link > button:active{
+.nav-link > button.nav-btn {
    display: flex;
    flex-direction: row;
    color: aliceblue;
@@ -37,7 +37,7 @@ div#logged.col {
    border-color: white;
 }
 
-.nav-link > button:hover {
+.nav-link > button:hover, .nav-link > button.nav-btn:focus {
    background-color: white;
    color: #0d6efd;
 }
