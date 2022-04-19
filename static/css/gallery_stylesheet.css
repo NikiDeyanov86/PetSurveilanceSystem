@@ -37,7 +37,7 @@ div#logged.col {
    border-color: white;
 }
 
-.nav-link > button:hover, .nav-link > button.nav-btn:focus {
+.nav-link > button.nav-btn:hover, .nav-link > button.nav-btn:focus {
    background-color: white;
    color: #0d6efd;
 }
