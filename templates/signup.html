@@ -55,9 +55,15 @@
                                 <label for="inputUsername" class="form-control-label">USERNAME</label>
                                 <input type="text" class="form-control invalid" name="username" id="inputUsername" required>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="password_form_group">
                                 <label for="inputPassword" class="form-control-label">PASSWORD</label>
                                 <input type="password" class="form-control invalid" name="password" id="inputPassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                                <div class="d-flex justify-content-start flex-row" id="password_conditions">
+                                    <p id="lowercase" class="password_condition">Lowercase</p>
+                                    <p id="capital" class="password_condition">Capital</p>
+                                    <p id="number" class="password_condition">Number</p>
+                                    <p id="length" class="password_condition">At least 8 symbols long</p>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputAccessKey" class="form-control-label">ACCESS KEY</label>

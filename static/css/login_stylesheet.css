@@ -65,9 +65,26 @@ input[type=password] {
     color: #ECF0F5;
 }
 
+#inputPassword {
+    margin-bottom: 5px;
+}
+
 .form-group {
     margin-bottom: 45px;
     outline: 0px;
+}
+
+#password_form_group {
+    margin-bottom: 10px;
+}
+
+#password_conditions {
+    font-size: 11px;
+    color: #6C6C6C;
+}
+
+.password_condition {
+    margin: 8px;
 }
 
 .form-control:focus {
