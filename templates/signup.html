@@ -59,15 +59,15 @@
                                 <label for="inputPassword" class="form-control-label">PASSWORD</label>
                                 <input type="password" class="form-control invalid" name="password" id="inputPassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
                                 <div class="d-flex justify-content-start flex-row" id="password_conditions">
-                                    <p id="lowercase" class="password_condition">Lowercase</p>
-                                    <p id="capital" class="password_condition">Capital</p>
+                                    <p id="lowercase" class="password_condition">Lowercase letter</p>
+                                    <p id="capital" class="password_condition">Capital letter</p>
                                     <p id="number" class="password_condition">Number</p>
                                     <p id="length" class="password_condition">At least 8 symbols long</p>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputAccessKey" class="form-control-label">ACCESS KEY</label>
-                                <input type="password" class="form-control valid" name="access_key" id="inputAccessKey" required>
+                                <input type="password" class="form-control invalid" name="access_key" id="inputAccessKey" required>
                             </div>
                             <div class="d-flex justify-content-between flex-row">
                                 <p class="to-login-message"> Already have an account? <a href="/login" class="link-info">Log in</a></p>
@@ -92,6 +92,7 @@
         let valid_number = false;
         let valid_username = false;
         let valid_password = false;
+        let valid_key_input = false;
 
         $(".btn-close").click(function() {
             document.querySelector(".alert-holder").style.height = "0px";
@@ -126,30 +127,38 @@
             // validate length
             if(password.length < 8) {
                 valid_length = false;
+                $("p#length").removeClass("active");
             }
             else {
                 valid_length = true;
+                $("p#length").addClass("active");
             }
 
             //validate letter
-            if ( password.match(/[A-z]/) ) {
+            if ( password.match(/[a-z]/) ) {
                 valid_letter = true;
+                $("p#lowercase").addClass("active");
             } else {
                 valid_letter = false;
+                $("p#lowercase").removeClass("active");
             }
 
             //validate capital letter
             if ( password.match(/[A-Z]/) ) {
                 valid_capital = true;
+                $("p#capital").addClass("active");
             } else {
                 valid_capital = false;
+                $("p#capital").removeClass("active");
             }
 
             //validate number
             if ( password.match(/\d/) ) {
                 valid_number = true;
+                $("p#number").addClass("active");
             } else {
                 valid_number = false;
+                $("p#number").removeClass("active");
             }
 
             if(valid_length && valid_letter && valid_capital && valid_number) {
@@ -169,7 +178,20 @@
         })
 
 
-        $("input#inputAccessKey").focus(function () {
+        $("input#inputAccessKey").keyup(function () {
+            let key = $(this).val()
+
+            if(key.length > 0) {
+                $(this).removeClass("invalid").addClass("valid");
+                valid_key_input = true;
+                $.fn.checkForValidForm();
+            } else {
+                $(this).removeClass("valid").addClass("invalid");
+                valid_key_input = false;
+                $.fn.checkForValidForm();
+            }
+
+        }).focus(function () {
             $("label[for=inputAccessKey]").removeClass("form-control-label").addClass("form-control-label-focused");
 
         }).blur(function () {
@@ -177,7 +199,7 @@
         })
 
         $.fn.checkForValidForm = function () {
-            if(valid_username && valid_password) {
+            if(valid_username && valid_password && valid_key_input) {
                 $("button#submit_btn").prop("disabled", false);
             } else
             {

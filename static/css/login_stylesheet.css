@@ -87,6 +87,11 @@ input[type=password] {
     margin: 8px;
 }
 
+.password_condition.active {
+    color: white;
+    font-weight: bold;
+}
+
 .form-control:focus {
     border-color: inherit;
     -webkit-box-shadow: none;

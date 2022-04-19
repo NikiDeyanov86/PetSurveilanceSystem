@@ -84,6 +84,29 @@ div#logged.col {
     font-size: 2vh;
 }
 
+@media only screen and (max-width: 1920px) {
+  /* For large monitors: */
+   .carousel {
+      width: 832px;
+      height: 624px;
+   }
+
+   #logged p{
+      font-size: 16px;
+      margin-right: 2vw;
+   }
+   .nav-link > button.nav-btn{
+      font-size: 15px;
+   }
+
+   .navbar-brand {
+      font-size: 23px;
+   }
+   .carousel-holder {
+       margin-top: 16vh;
+   }
+}
+
 @media only screen and (max-width: 1280px) {
     .carousel {
         width: 544px;
@@ -117,7 +140,7 @@ div#logged.col {
     }
 
     .carousel-holder {
-       margin-top: 15vh;
+       margin-top: 12vh;
    }
 
    #logged p {
@@ -137,7 +160,7 @@ div#logged.col {
    }
 
    .navbar-brand {
-      font-size: 3vh;
+      font-size: 18px;
    }
    .justify-content-end {
       justify-content: space-around!important;

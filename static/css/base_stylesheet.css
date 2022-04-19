@@ -125,6 +125,42 @@ div#logged.col {
    color: black;
 }
 
+@media only screen and (max-width: 1920px) {
+  /* For large monitors: */
+   .stream_holder img {
+      width: 832px;
+      height: 624px;
+   }
+   .stream_holder {
+      margin-top: 8vh;
+   }
+   .mode {
+      margin-top: 8vh;
+   }
+   #logged p{
+      font-size: 16px;
+      margin-right: 2vw;
+   }
+   .nav-link > button{
+      font-size: 15px;
+   }
+   #snapBtn {
+      font-size: 19px;
+      padding: 0.7vh;
+      width: 20vw;
+      height: 5vh;
+   }
+   .mode > a > button {
+      font-size: 19px;
+   }
+   .mode_btn.active, .mode_btn:hover {
+      font-size: 20px;
+   }
+   .navbar-brand {
+      font-size: 23px;
+   }
+}
+
 @media only screen and (max-width: 1280px) {
   /* For laptops: */
    .stream_holder img {
@@ -177,7 +213,7 @@ div#logged.col {
    #logged p{
       margin-top: 1vh;
       color: white;
-      font-size: 2.5vw;
+      font-size: 12px;
       font-family: 'Roboto', sans-serif;
       float: right;
    }
@@ -191,7 +227,7 @@ div#logged.col {
    }
 
    .navbar-brand {
-      font-size: 3vh;
+      font-size: 18px;
    }
    .justify-content-end {
       justify-content: space-around!important;
