@@ -4,26 +4,40 @@ body {
    font-family: 'Roboto', sans-serif;
    color: white;
 }
-#logged {
-   width: 23vw;
+div#logged.col {
+   display: flex;
+   width: auto;
    text-align: center;
+   justify-content: center;
 }
 #logged p{
    margin-top: 1vh;
    color: white;
-   font-size: 1.6vh;
+   font-size: 1.2vw;
    font-family: 'Roboto', sans-serif;
    float: right;
 }
 
-#logout_btn, #gallery_btn {
-   font-size: 1.5vh;
+.nav-link {
+   padding: 0.3rem;
+}
+
+.nav-link > button > i {
+   margin-right: 0.5vw;
+}
+
+.nav-link > button, .nav-link > button:active{
+   display: flex;
+   flex-direction: row;
    color: aliceblue;
    font-weight: bold;
    float: right;
+   font-size: 1vw;
+   background-color: #0e3e81;
+   border-color: white;
 }
 
-#logout_btn:hover, #gallery_btn:hover {
+.nav-link > button:hover {
    background-color: white;
    color: #0d6efd;
 }
