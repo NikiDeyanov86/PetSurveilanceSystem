@@ -11,8 +11,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type=text/javascript>
 
-            function move_forward(e) {
-                e.preventDefault()
+            function move_forward() {
                 $.getJSON('/forward',
                     function(data) {
                   //do nothing
@@ -20,110 +19,107 @@
                 return false;
             }
 
-            $(function() {
-              $('button#forward').mousedown(function(e) {
-                move_forward(e);
-              });
-            });
-
-            $(function() {
-              $('button#left').mousedown(function(e) {
-                e.preventDefault()
+            function  turn_left() {
                 $.getJSON('/left',
                     function(data) {
                   //do nothing
                 });
                 return false;
+            }
+
+            function turn_right() {
+                $.getJSON('/right',
+                    function(data) {
+                  //do nothing
+                });
+                return false;
+            }
+
+            function move_backward() {
+                $.getJSON('/backward',
+                    function(data) {
+                  //do nothing
+                });
+                return false;
+            }
+
+            function stop() {
+                $.getJSON('/stop',
+                    function(data) {
+                  //do nothing
+                });
+                return false;
+            }
+
+            /*$(function() {
+              $('button#forward').mousedown(function(e) {
+                  e.preventDefault()
+                  move_forward();
+              });
+            });
+
+            $(function() {
+              $('button#left').mousedown(function(e) {
+                  e.preventDefault()
+                  turn_left(e);
               });
             });
 
             $(function() {
               $('button#right').mousedown(function(e) {
                 e.preventDefault()
-                $.getJSON('/right',
-                    function(data) {
-                  //do nothing
-                });
-                return false;
+                turn_right();
               });
             });
 
             $(function() {
               $('button#backward').mousedown(function(e) {
                 e.preventDefault()
-                $.getJSON('/backward',
-                    function(data) {
-                  //do nothing
-                });
-                return false;
+                move_backward();
               });
             });
 
             $(function() {
               $('button.direction').mouseup(function(e) {
                 e.preventDefault()
-                $.getJSON('/stop',
-                    function(data) {
-                  //do nothing
-                });
-                return false;
+                stop();
               });
-            });
+            });*/
 
             // FOR MOBILE
 
             $(function() {
-              $('button#forward').on('touchstart', function(e) {
+              $('button#forward').on('touchstart mousedown', function(e) {
                 e.preventDefault()
-                $.getJSON('/forward',
-                    function(data) {
-                  //do nothing
-                });
-                //return false;
+                move_forward();
               });
             });
 
             $(function() {
-              $('button#left').on('touchstart', function(e) {
+              $('button#left').on('touchstart mousedown', function(e) {
                 e.preventDefault()
-                $.getJSON('/left',
-                    function(data) {
-                  //do nothing
-                });
-                //return false;
+                turn_left();
               });
             });
 
             $(function() {
-              $('button#right').on('touchstart', function(e) {
+              $('button#right').on('touchstart mousedown', function(e) {
                 e.preventDefault()
-                $.getJSON('/right',
-                    function(data) {
-                  //do nothing
-                });
-                //return false;
+                turn_right();
               });
             });
 
             $(function() {
-              $('button#backward').on('touchstart', function(e) {
+              $('button#backward').on('touchstart mousedown', function(e) {
                 e.preventDefault()
-                $.getJSON('/backward',
-                    function(data) {
-                  //do nothing
-                });
-                //return false;
+                move_backward();
               });
             });
 
             $(function() {
-              $('button.direction').on('touchend', function(e) {
+              $('button.direction').on('touchend mouseup', function(e) {
                 e.preventDefault()
-                $.getJSON('/stop',
-                    function(data) {
-                  //do nothing
-                });
-                //return false;
+                stop();
               });
             });
     </script>
