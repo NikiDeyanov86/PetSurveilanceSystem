@@ -94,19 +94,27 @@
             $(document).keydown(function(e) {
                 e.preventDefault()
 
-                if(forward_pressed === false && e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */ ) {
+                if(forward_pressed === false && e.keyCode === 38 /* up */
+                    || forward_pressed === false && e.keyCode === 87 /* w */ ) {
+
                     forward_pressed = true;
                     move_forward();
                 }
-                else if(right_pressed === false && e.keyCode === 39 /* right */ || e.keyCode === 68 /* d */) {
+                else if(right_pressed === false && e.keyCode === 39 /* right */
+                    || right_pressed === false && e.keyCode === 68 /* d */) {
+
                     right_pressed = true;
                     turn_right();
                 }
-                else if(left_pressed === false && e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */) {
+                else if(left_pressed === false && e.keyCode === 37 /* left */
+                    || left_pressed === false && e.keyCode === 65 /* a */) {
+
                     left_pressed = true;
                     turn_left();
                 }
-                else if(backward_pressed === false && e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */) {
+                else if(backward_pressed === false && e.keyCode === 40 /* down */
+                    || backward_pressed === false && e.keyCode === 83 /* s */) {
+
                     backward_pressed = true;
                     move_backward()
                 }
