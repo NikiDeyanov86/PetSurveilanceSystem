@@ -94,19 +94,19 @@
             $(document).keydown(function(e) {
                 e.preventDefault()
 
-                if(e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */ && forward_pressed === false) {
+                if(forward_pressed === false && e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */ ) {
                     forward_pressed = true;
                     move_forward();
                 }
-                else if(e.keyCode === 39 /* right */ || e.keyCode === 68 /* d */ && right_pressed === false) {
+                else if(right_pressed === false && e.keyCode === 39 /* right */ || e.keyCode === 68 /* d */) {
                     right_pressed = true;
                     turn_right();
                 }
-                else if(e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */ && left_pressed === false) {
+                else if(left_pressed === false && e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */) {
                     left_pressed = true;
                     turn_left();
                 }
-                else if(e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */ && backward_pressed === false) {
+                else if(backward_pressed === false && e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */) {
                     backward_pressed = true;
                     move_backward()
                 }
