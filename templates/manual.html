@@ -51,43 +51,6 @@
                 return false;
             }
 
-            /*$(function() {
-              $('button#forward').mousedown(function(e) {
-                  e.preventDefault()
-                  move_forward();
-              });
-            });
-
-            $(function() {
-              $('button#left').mousedown(function(e) {
-                  e.preventDefault()
-                  turn_left(e);
-              });
-            });
-
-            $(function() {
-              $('button#right').mousedown(function(e) {
-                e.preventDefault()
-                turn_right();
-              });
-            });
-
-            $(function() {
-              $('button#backward').mousedown(function(e) {
-                e.preventDefault()
-                move_backward();
-              });
-            });
-
-            $(function() {
-              $('button.direction').mouseup(function(e) {
-                e.preventDefault()
-                stop();
-              });
-            });*/
-
-            // FOR MOBILE
-
             $(function() {
               $('button#forward').on('touchstart mousedown', function(e) {
                 e.preventDefault()
@@ -122,6 +85,26 @@
                 stop();
               });
             });
+
+            $(document).keydown(function(e) {
+                e.preventDefault()
+
+                if(e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */) {
+                    move_forward();
+                }
+                else if(e.keyCode === 39 /* right */ || e.keyCode === 68 /* d */) {
+                    turn_right();
+                }
+                else if(e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */) {
+                    turn_left();
+                }
+                else if(e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */) {
+                    move_backward()
+                }
+            }).keyup(function (e) {
+                e.preventDefault()
+                stop();
+            })
     </script>
 
     <div class="d-flex flex-column controls_holder">
