@@ -47,6 +47,7 @@ div#logged.col {
 .carousel {
     width: 768px;  /* 640:480 x 1.2 */
     height: 576px;
+    border: 3px solid #0e3e81;
 }
 .carousel-holder {
     margin-top: 10vh;
