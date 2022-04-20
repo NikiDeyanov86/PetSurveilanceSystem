@@ -86,23 +86,36 @@
               });
             });
 
+            let forward_pressed = false;
+            let left_pressed = false;
+            let right_pressed = false;
+            let backward_pressed = false;
+
             $(document).keydown(function(e) {
                 e.preventDefault()
 
-                if(e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */) {
+                if(e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */ && forward_pressed === false) {
+                    forward_pressed = true;
                     move_forward();
                 }
-                else if(e.keyCode === 39 /* right */ || e.keyCode === 68 /* d */) {
+                else if(e.keyCode === 39 /* right */ || e.keyCode === 68 /* d */ && right_pressed === false) {
+                    right_pressed = true;
                     turn_right();
                 }
-                else if(e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */) {
+                else if(e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */ && left_pressed === false) {
+                    left_pressed = true;
                     turn_left();
                 }
-                else if(e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */) {
+                else if(e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */ && backward_pressed === false) {
+                    backward_pressed = true;
                     move_backward()
                 }
             }).keyup(function (e) {
                 e.preventDefault()
+                forward_pressed = false;
+                left_pressed = false;
+                right_pressed = false;
+                backward_pressed = false;
                 stop();
             })
     </script>
