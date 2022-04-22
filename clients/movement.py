@@ -130,22 +130,10 @@ def message_decoder(client, userdata, msg):
             Check.obstacle = False
 
 
+scheduler.add_job(check_for_obstacle, 'interval', seconds=5)
 mqttClient.on_connect = connect
 mqttClient.on_message = message_decoder
 mqttClient.will_set(topic_feedback, "mov_disconnected", qos=1, retain=False)
 mqttClient.username_pw_set("pi", "pissi-pissi")
 mqttClient.connect(serverAddress, 1883)
-# mqttClient.loop_forever()
-
-if __name__ == '__main__':
-    try:
-        mqttClient.loop_start()
-        scheduler.add_job(check_for_obstacle, 'interval', seconds=5)
-        while True:
-            nothing = 1
-    finally:
-        if motors is not None:
-            motors.tear_down()
-        if scheduler.running is True:
-            scheduler.shutdown()
-        print("Terminating program...")
+mqttClient.loop_forever()
