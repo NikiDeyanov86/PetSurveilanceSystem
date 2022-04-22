@@ -2,10 +2,11 @@ from datetime import datetime
 import sys
 import os
 import uuid
-
 import sqlalchemy
 from flask import Flask, render_template, Response, flash, request, redirect, url_for
 from flask_login import login_user, login_required, current_user, logout_user
+from werkzeug.datastructures import ImmutableDict
+from flask_wtf.csrf import CSRFProtect
 from database import db_session, init_db
 from login import login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -24,12 +25,21 @@ app.config['UPLOAD_FOLDER'] = './uploads'
 access_key = "gain_access"
 login_manager.init_app(app)
 init_db()
+csrf = CSRFProtect(app)
 flask_client = init_mqtt()
 
 app.add_url_rule('/uploads/<filename>', 'uploaded_file', build_only=True)
 app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
     '/uploads': app.config['UPLOAD_FOLDER']
 })
+
+# Enabling Jinja2 Engine to auto escape all input JavaScript codes
+jinja_options = ImmutableDict(
+    extensions=[
+        'jinja2.ext.autoescape', 'jinja2.ext.with_'
+    ])
+
+app.jinja_env.autoescape = True
 
 
 @app.teardown_appcontext
@@ -330,7 +340,6 @@ def delete_photo(photo_id):
 @app.route('/gallery/rename/<int:photo_id>', methods=['GET', 'POST'])
 @login_required
 def rename(photo_id):
-
     if request.method == 'GET':
         pass
     else:
