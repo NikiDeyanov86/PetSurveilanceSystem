@@ -7,7 +7,11 @@ GPIO.setmode(GPIO.BOARD)
 
 TRIG = 38
 ECHO = 37
-stopped = False
+
+
+class Check:
+    stopped = False
+
 
 clientName = "Ultrasonic"
 serverAddress = "localhost"
@@ -18,11 +22,20 @@ topic_feedback = "pss/feedback"
 
 def on_connect(client, userdata, flags, rc):
     print("Ultrasonic connected!")
+    mqttClient.subscribe(topic_feedback)
     mqttClient.publish(topic_feedback, "us_connected", qos=1)
 
 
 def on_publish(client, userdata, result):
     print("Published.")
+
+
+def message_decoder(client, userdata, msg):
+    message = msg.payload.decode(encoding='UTF-8')
+    topic = msg.topic
+
+    if message == "free?":
+        measure(check=True)
 
 
 mqttClient.on_connect = on_connect
@@ -32,8 +45,8 @@ mqttClient.username_pw_set("pi", "pissi-pissi")
 mqttClient.connect(serverAddress, 1883)
 
 
-def measure():
-    global stopped
+def measure(check):
+
     GPIO.setup(TRIG, GPIO.OUT)
     GPIO.setup(ECHO, GPIO.IN)
 
@@ -62,15 +75,23 @@ def measure():
         distance = round(distance + 1.15, 2)
         # print("Distance is: ", distance, "cm.")
 
-        if distance <= 25 and stopped is False:
-            mqttClient.publish(topic_mov, "obstacle")
-            print("Obstacle")
-            stopped = True
+        if check is True:
+            if distance > 25:
+                mqttClient.publish(topic_mov, "free")
+                Check.stopped = False
 
-        elif distance > 25 and stopped is True:
-            mqttClient.publish(topic_mov, "free")
-            print("Free")
-            stopped = False
+            check = False
+
+        else:
+            if distance <= 25 and Check.stopped is False:
+                mqttClient.publish(topic_mov, "obstacle")
+                print("Obstacle")
+                Check.stopped = True
+
+            elif distance > 25 and Check.stopped is True:
+                mqttClient.publish(topic_mov, "free")
+                print("Free")
+                Check.stopped = False
 
         time.sleep(0.1)
 
@@ -78,6 +99,6 @@ def measure():
 if __name__ == '__main__':
     mqttClient.loop_start()
     try:
-        measure()
-    except KeyboardInterrupt:
+        measure(check=False)
+    finally:
         GPIO.cleanup()

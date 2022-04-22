@@ -1,25 +1,31 @@
 import paho.mqtt.client as mqtt
 from motorslib import MotorSide, MotorDriver, in1, in2, in3, in4, ena, enb, power
+from apscheduler.schedulers.background import BackgroundScheduler
+
+left = MotorSide(ena, in1, in2)
+right = MotorSide(enb, in3, in4)
+motors = MotorDriver(left, right)
+
+clientName = "Movement"
+serverAddress = "localhost"
+mqttClient = mqtt.Client(clientName)
+topics = "pss/movement/+"
+topic_feedback = "pss/feedback"
+topic_mov = "pss/movement/proximity"
+topic_motors_power = "pss/movement/motors_power"
+
+scheduler = BackgroundScheduler()
+
+
+class Check:
+    manual = True
+    obstacle = False
 
 
 try:
-    left = MotorSide(ena, in1, in2)
-    right = MotorSide(enb, in3, in4)
-    motors = MotorDriver(left, right)
 
-    clientName = "Movement"
-    serverAddress = "localhost"
-    mqttClient = mqtt.Client(clientName)
-    topics = "pss/movement/+"
-    topic_feedback = "pss/feedback"
-    topic_mov = "pss/movement/proximity"
-    topic_motors_power = "pss/movement/motors_power"
-
-
-    class Check:
-        manual = True
-        obstacle = False
-
+    def check_for_obstacle():
+        mqttClient.publish(topic_feedback, "free?", qos=1)
 
     def connect(client, userdata, flags, rc):
         mqttClient.subscribe(topics)
@@ -62,8 +68,9 @@ try:
             direction = message
             speed = 50
             if direction == "forward":
-                print("MANUAL: forward")
-                motors.forward(speed)
+                if Check.obstacle is False:
+                    print("MANUAL: forward")
+                    motors.forward(speed)
                 pass
 
             elif direction == "backward":
@@ -103,9 +110,12 @@ try:
                 motors.stop()
                 Check.obstacle = True
                 print("OBSTACLE!")
+                scheduler.add_job(check_for_obstacle, 'interval', seconds=5)
+                scheduler.start()
             elif message == "free":
                 Check.obstacle = False
                 print("FREE TO MOVE!")
+                scheduler.shutdown()
 
         elif topic == topic_feedback:
             if message == "hl_connected":
@@ -129,10 +139,9 @@ try:
     mqttClient.connect(serverAddress, 1883)
     mqttClient.loop_forever()
 
-except KeyboardInterrupt:
+finally:
     if motors is not None:
         motors.tear_down()
 
+    scheduler.shutdown()
     print("Terminating program...")
-    print("Interrupted by keyboard.")
-
