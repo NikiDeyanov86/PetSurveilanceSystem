@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt
 from motorslib import MotorSide, MotorDriver, in1, in2, in3, in4, ena, enb, power
-# from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 
 left = MotorSide(ena, in1, in2)
 right = MotorSide(enb, in3, in4)
@@ -14,7 +14,7 @@ topic_feedback = "pss/feedback"
 topic_mov = "pss/movement/proximity"
 topic_motors_power = "pss/movement/motors_power"
 
-# scheduler = BackgroundScheduler()
+scheduler = BackgroundScheduler()
 
 
 class Check:
@@ -109,11 +109,11 @@ def message_decoder(client, userdata, msg):
             motors.stop()
             Check.obstacle = True
             print("OBSTACLE!")
-            # scheduler.start()
+            scheduler.start()
         elif message == "free":
             Check.obstacle = False
             print("FREE TO MOVE!")
-            # scheduler.shutdown()
+            scheduler.shutdown()
 
     elif topic == topic_feedback:
         if message == "hl_connected":
@@ -140,10 +140,12 @@ mqttClient.connect(serverAddress, 1883)
 if __name__ == '__main__':
     try:
         mqttClient.loop_start()
-        # scheduler.add_job(check_for_obstacle, 'invalid', seconds=5)
+        scheduler.add_job(check_for_obstacle, 'invalid', seconds=5)
+        while True:
+            nothing = 1
     finally:
         if motors is not None:
             motors.tear_down()
 
-        # scheduler.shutdown()
+        scheduler.shutdown()
         print("Terminating program...")
