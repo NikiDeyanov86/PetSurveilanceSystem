@@ -53,11 +53,18 @@
                         <form method="POST" action="/signup">
                             <div class="form-group">
                                 <label for="inputUsername" class="form-control-label">USERNAME</label>
-                                <input type="text" class="form-control invalid" name="username" id="inputUsername" required>
+                                <input type="text" class="form-control invalid"
+                                       name="username" id="inputUsername"
+                                       value="{{ request.form['username'] }}"
+                                       required>
                             </div>
                             <div class="form-group" id="password_form_group">
                                 <label for="inputPassword" class="form-control-label">PASSWORD</label>
-                                <input type="password" class="form-control invalid" name="password" id="inputPassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                                <input type="password" class="form-control invalid"
+                                       name="password" id="inputPassword"
+                                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                       value="{{ request.form['password'] }}"
+                                       required>
                                 <div class="d-flex justify-content-start flex-row" id="password_conditions">
                                     <p id="lowercase" class="password_condition">Lowercase letter</p>
                                     <p id="capital" class="password_condition">Capital letter</p>
@@ -67,7 +74,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputAccessKey" class="form-control-label">ACCESS KEY</label>
-                                <input type="password" class="form-control invalid" name="access_key" id="inputAccessKey" required>
+                                <input type="password" class="form-control invalid"
+                                       name="access_key" id="inputAccessKey"
+                                       value="{{ request.form['access_key'] }}"
+                                       required>
                             </div>
                             <div class="d-flex justify-content-between flex-row">
                                 <p class="to-login-message"> Already have an account? <a href="/login" class="link-info">Log in</a></p>

@@ -69,7 +69,9 @@
                                                     <form method="POST" action="/gallery/rename/{{ first_image.id }}" id="form_rename">
                                                       <div class="mb-3">
                                                         <label for="new_name" class="col-form-label">New name: (You do not need to place ".jpg" at the end)</label>
-                                                        <input type="text" name="new_name" class="form-control" id="new_name" placeholder="{{ first_image.name }}">
+                                                        <input type="text" name="new_name" class="form-control"
+                                                               id="new_name" placeholder="{{ first_image.name }}"
+                                                               value="{{ request.form['new_name'] }}" required>
                                                       </div>
                                                     </form>
                                                   </div>
@@ -105,7 +107,9 @@
                                                     <form method="POST" action="/gallery/rename/{{ image.id }}" id="form_rename">
                                                       <div class="mb-3">
                                                         <label for="new_name" class="col-form-label">New name:</label>
-                                                        <input type="text" name="new_name" class="form-control" id="new_name" placeholder="{{ image.name }}">
+                                                        <input type="text" name="new_name" class="form-control"
+                                                               id="new_name" placeholder="{{ image.name }}"
+                                                               value="{{ request.form['new_name'] }}" required>
                                                       </div>
                                                     </form>
                                                   </div>

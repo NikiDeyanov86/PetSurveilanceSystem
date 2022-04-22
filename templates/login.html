@@ -53,11 +53,15 @@
                         <form method="POST" action="/login">
                             <div class="form-group">
                                 <label for="inputUsername" class="form-control-label">USERNAME</label>
-                                <input type="text" class="form-control valid" name="username" id="inputUsername">
+                                <input type="text" class="form-control valid"
+                                       name="username" id="inputUsername"
+                                       value="{{ request.form['username'] }}" required>
                             </div>
                             <div class="form-group">
                                 <label for="inputPassword" class="form-control-label">PASSWORD</label>
-                                <input type="password" class="form-control valid" name="password" id="inputPassword">
+                                <input type="password" class="form-control valid"
+                                       name="password" id="inputPassword"
+                                       value="{{ request.form['password'] }}" required>
                             </div>
                             <div class="d-flex justify-content-between flex-row">
                                 <p class="to-login-message"> Don't have an account? <a href="/signup" class="link-info">Sign up</a></p>
