@@ -146,6 +146,6 @@ if __name__ == '__main__':
     finally:
         if motors is not None:
             motors.tear_down()
-
-        scheduler.shutdown()
+        if scheduler.running is True:
+            scheduler.shutdown()
         print("Terminating program...")
