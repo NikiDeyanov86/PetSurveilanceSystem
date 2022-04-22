@@ -140,7 +140,7 @@ mqttClient.connect(serverAddress, 1883)
 if __name__ == '__main__':
     try:
         mqttClient.loop_start()
-        scheduler.add_job(check_for_obstacle, 'invalid', seconds=5)
+        scheduler.add_job(check_for_obstacle, 'interval', seconds=5)
         while True:
             nothing = 1
     finally:
