@@ -110,10 +110,12 @@ def message_decoder(client, userdata, msg):
             print("OBSTACLE!")
             if scheduler.running is False:
                 scheduler.start()
+            else:
+                scheduler.resume()
         elif message == "free":
             Check.obstacle = False
             print("FREE TO MOVE!")
-            scheduler.shutdown()
+            scheduler.pause()
 
     elif topic == topic_feedback:
         if message == "hl_connected":
