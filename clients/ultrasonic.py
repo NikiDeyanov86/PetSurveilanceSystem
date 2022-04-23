@@ -103,6 +103,8 @@ def check_only(distance):
         mqttClient.publish(topic_mov, "free")
         Check.stopped = False
         print("Confirm it is free.")
+    else:
+        print("It's not free yet.")
 
 
 if __name__ == '__main__':

@@ -108,8 +108,8 @@ def message_decoder(client, userdata, msg):
             motors.stop()
             Check.obstacle = True
             print("OBSTACLE!")
-            scheduler.add_job(check_for_obstacle, 'interval', seconds=5)
-            scheduler.start()
+            if scheduler.running is False:
+                scheduler.start()
         elif message == "free":
             Check.obstacle = False
             print("FREE TO MOVE!")
@@ -131,6 +131,7 @@ def message_decoder(client, userdata, msg):
 
 
 scheduler = BackgroundScheduler()
+scheduler.add_job(check_for_obstacle, 'interval', seconds=5)
 mqttClient.on_connect = connect
 mqttClient.on_message = message_decoder
 mqttClient.will_set(topic_feedback, "mov_disconnected", qos=1, retain=False)
