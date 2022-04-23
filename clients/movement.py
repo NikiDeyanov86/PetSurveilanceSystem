@@ -24,6 +24,7 @@ class Check:
 
 def check_for_obstacle():
     mqttClient.publish(topic_feedback, "free?", qos=1)
+    print("Asking is it free?")
 
 
 def connect(client, userdata, flags, rc):

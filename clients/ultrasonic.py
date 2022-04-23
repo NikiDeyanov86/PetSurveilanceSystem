@@ -39,6 +39,7 @@ def message_decoder(client, userdata, msg):
         temp_thread = Thread(target=check_only(distance=measure()), daemon=True)
         temp_thread.start()
         temp_thread.join(timeout=5)
+        print("Temporary thread joined")
 
 
 mqttClient.on_connect = on_connect
@@ -100,6 +101,7 @@ def check_only(distance):
     if distance > 25:
         mqttClient.publish(topic_mov, "free")
         Check.stopped = False
+        print("Confirm it is free.")
 
 
 if __name__ == '__main__':
@@ -108,5 +110,6 @@ if __name__ == '__main__':
         calibrate()
         main_thread = Thread(target=measure_and_send(), daemon=True)
         main_thread.start()
+        print("main_thread started.")
     finally:
         GPIO.cleanup()
