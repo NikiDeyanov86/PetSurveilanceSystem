@@ -92,6 +92,7 @@ def send_message(distance):
 
 
 def measure_and_send():
+    print("main_thread started.")
     while True:
         send_message(distance=measure())
         time.sleep(0.1)
@@ -110,6 +111,6 @@ if __name__ == '__main__':
         calibrate()
         main_thread = Thread(target=measure_and_send(), daemon=True)
         main_thread.start()
-        print("main_thread started.")
+        main_thread.join()
     finally:
         GPIO.cleanup()
