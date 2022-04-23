@@ -370,6 +370,7 @@ def rename(photo_id):
 
 @app.route('/motors_power', methods=['GET', 'POST'])
 @login_required
+@csrf.exempt
 def motors_on():
     if request.method == 'GET':
         if MotorsState.on is True:
