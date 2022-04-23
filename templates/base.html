@@ -293,8 +293,9 @@
       </div>
       <div class="offcanvas-body">
         <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" id="flexSwitchCheck">
-          <label class="form-check-label" for="flexSwitchCheck">Turn motors on/off</label>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input class="form-check-input" type="checkbox" id="flexSwitchCheck">
+            <label class="form-check-label" for="flexSwitchCheck">Turn motors on/off</label>
         </div>
       </div>
     </div>
