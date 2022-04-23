@@ -5,6 +5,7 @@ import uuid
 import sqlalchemy
 from flask import Flask, render_template, Response, flash, request, redirect, url_for
 from flask_login import login_user, login_required, current_user, logout_user
+from flask_wtf.csrf import CSRFProtect, CSRFError
 from werkzeug.datastructures import ImmutableDict
 from database import db_session, init_db
 from login import login_manager
@@ -26,6 +27,7 @@ access_key = "gain_access"
 login_manager.init_app(app)
 init_db()
 flask_client = init_mqtt()
+csrf = CSRFProtect(app)
 
 app.add_url_rule('/uploads/<filename>', 'uploaded_file', build_only=True)
 app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
@@ -44,6 +46,11 @@ app.jinja_env.autoescape = True
 @app.teardown_appcontext
 def shutdown_context(exception=None):
     db_session.remove()
+
+
+@app.errorhandler(CSRFError)
+def handle_csrf_error(e):
+    return render_template('error.html', reason=e.description), 400
 
 
 vc = cv2.VideoCapture(0)
@@ -69,7 +76,7 @@ def index():
         else:
             return redirect(url_for('change_to_auto_mode'))
 
-    return render_template('index.html')
+    return render_template('index.html'), 200
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -81,7 +88,7 @@ def login():
             return redirect(url_for('change_to_auto_mode'))
 
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('login.html'), 200
     else:
         username = request.form['username']
         password = request.form['password']
@@ -297,14 +304,14 @@ def change_to_manual_mode():
     return render_template('manual.html', name=current_user.username)
 
 
-@app.route('/gallery', methods=['GET', 'POST'])
+@app.route('/gallery')
 @login_required
 def gallery():
     first_image = Photo.query.filter_by(user_id=current_user.id).order_by(sqlalchemy.desc(Photo.created_at)).first()
     images = Photo.query.filter_by(user_id=current_user.id).order_by(sqlalchemy.desc(Photo.created_at)).all()
 
     return render_template('gallery.html', Photo=Photo, first_image=first_image, images=images,
-                           name=current_user.username)
+                           name=current_user.username), 200
 
 
 @app.route('/gallery/delete/<int:photo_id>', methods=['GET', 'POST'])

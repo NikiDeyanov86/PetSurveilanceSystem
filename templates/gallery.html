@@ -67,6 +67,7 @@
                                                   </div>
                                                   <div class="modal-body">
                                                     <form method="POST" action="/gallery/rename/{{ first_image.id }}" id="form_rename">
+                                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                                       <div class="mb-3">
                                                         <label for="new_name" class="col-form-label">New name: (You do not need to place ".jpg" at the end)</label>
                                                         <input type="text" name="new_name" class="form-control"
@@ -105,6 +106,7 @@
                                                   </div>
                                                   <div class="modal-body">
                                                     <form method="POST" action="/gallery/rename/{{ image.id }}" id="form_rename">
+                                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                                       <div class="mb-3">
                                                         <label for="new_name" class="col-form-label">New name:</label>
                                                         <input type="text" name="new_name" class="form-control"
@@ -146,19 +148,19 @@
                     </div>
                 {% endif %}
         </div>
-        <div class="row alert-row">
-            <div class="col-lg-12 alert-holder">
-                        {% with messages = get_flashed_messages() %}
-                            {% if messages %}
-                                <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                                    <strong>{{ messages[0] }}</strong>
-                                    <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            {% endif %}
-                        {% endwith %}
+            <div class="row alert-row">
+                <div class="col-lg-12 alert-holder">
+                            {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                        <strong>{{ messages[0] }}</strong>
+                                        <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                {% endif %}
+                            {% endwith %}
+                </div>
             </div>
         </div>
     </div>
-
 </body>
 </html>
