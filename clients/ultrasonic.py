@@ -39,7 +39,6 @@ def message_decoder(client, userdata, msg):
         temp_thread = Thread(target=check_only(distance=measure()), daemon=True)
         temp_thread.start()
         temp_thread.join(timeout=5)
-        print("Temporary thread joined")
 
 
 mqttClient.on_connect = on_connect
@@ -66,11 +65,9 @@ def measure():
 
     while GPIO.input(ECHO) == 0:
         pulse_start = time.time()
-        # print("Transiting...")
 
     while GPIO.input(ECHO) == 1:
         pulse_end = time.time()
-        # print("Receiving...")
 
     pulse_duration = pulse_end - pulse_start
 
@@ -92,7 +89,6 @@ def send_message(distance):
 
 
 def measure_and_send():
-    print("main_thread started.")
     while True:
         send_message(distance=measure())
         time.sleep(0.1)
