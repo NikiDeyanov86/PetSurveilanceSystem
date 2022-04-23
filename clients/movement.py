@@ -14,8 +14,6 @@ topic_feedback = "pss/feedback"
 topic_mov = "pss/movement/proximity"
 topic_motors_power = "pss/movement/motors_power"
 
-scheduler = BackgroundScheduler()
-
 
 class Check:
     manual = True
@@ -23,8 +21,8 @@ class Check:
 
 
 def check_for_obstacle():
-    mqttClient.publish(topic_feedback, "free?", qos=1)
     print("Asking is it free?")
+    mqttClient.publish(topic_feedback, "free?", qos=1)
 
 
 def connect(client, userdata, flags, rc):
@@ -110,6 +108,7 @@ def message_decoder(client, userdata, msg):
             motors.stop()
             Check.obstacle = True
             print("OBSTACLE!")
+            scheduler.add_job(check_for_obstacle, 'interval', seconds=5)
             scheduler.start()
         elif message == "free":
             Check.obstacle = False
@@ -131,7 +130,7 @@ def message_decoder(client, userdata, msg):
             Check.obstacle = False
 
 
-scheduler.add_job(check_for_obstacle, 'interval', seconds=5)
+scheduler = BackgroundScheduler()
 mqttClient.on_connect = connect
 mqttClient.on_message = message_decoder
 mqttClient.will_set(topic_feedback, "mov_disconnected", qos=1, retain=False)
