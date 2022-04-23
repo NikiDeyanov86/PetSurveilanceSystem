@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 import time
 import sys
 import paho.mqtt.client as mqtt
+from threading import Thread
 
 GPIO.setmode(GPIO.BOARD)
 
@@ -35,7 +36,9 @@ def message_decoder(client, userdata, msg):
     topic = msg.topic
 
     if message == "free?":
-        measure(check=True)
+        temp_thread = Thread(target=check_only(distance=measure()), daemon=True)
+        temp_thread.start()
+        temp_thread.join(timeout=5)
 
 
 mqttClient.on_connect = on_connect
@@ -46,8 +49,7 @@ mqttClient.username_pw_set("pi", "pissi-pissi")
 mqttClient.connect(serverAddress, 1883)
 
 
-def measure(check):
-
+def calibrate():
     GPIO.setup(TRIG, GPIO.OUT)
     GPIO.setup(ECHO, GPIO.IN)
 
@@ -55,51 +57,56 @@ def measure(check):
     print("Calibrating.....")
     time.sleep(2)
 
+
+def measure():
+    GPIO.output(TRIG, True)
+    time.sleep(0.00001)
+    GPIO.output(TRIG, False)
+
+    while GPIO.input(ECHO) == 0:
+        pulse_start = time.time()
+        # print("Transiting...")
+
+    while GPIO.input(ECHO) == 1:
+        pulse_end = time.time()
+        # print("Receiving...")
+
+    pulse_duration = pulse_end - pulse_start
+
+    distance = pulse_duration * 17150
+
+    distance = round(distance + 1.15, 2)
+
+    return distance
+
+
+def send_message(distance):
+    if distance <= 25 and Check.stopped is False:
+        mqttClient.publish(topic_mov, "obstacle")
+        Check.stopped = True
+
+    elif distance > 25 and Check.stopped is True:
+        mqttClient.publish(topic_mov, "free")
+        Check.stopped = False
+
+
+def measure_and_send():
     while True:
-        # print("In loop...")
-        GPIO.output(TRIG, True)
-        time.sleep(0.00001)
-        GPIO.output(TRIG, False)
-
-        while GPIO.input(ECHO) == 0:
-            pulse_start = time.time()
-            # print("Transiting...")
-
-        while GPIO.input(ECHO) == 1:
-            pulse_end = time.time()
-            # print("Receiving...")
-
-        pulse_duration = pulse_end - pulse_start
-
-        distance = pulse_duration * 17150
-
-        distance = round(distance + 1.15, 2)
-        # print("Distance is: ", distance, "cm.")
-
-        if check is True:
-            if distance > 25:
-                mqttClient.publish(topic_mov, "free")
-                Check.stopped = False
-
-            check = False
-
-        else:
-            if distance <= 25 and Check.stopped is False:
-                mqttClient.publish(topic_mov, "obstacle")
-                print("Obstacle")
-                Check.stopped = True
-
-            elif distance > 25 and Check.stopped is True:
-                mqttClient.publish(topic_mov, "free")
-                print("Free")
-                Check.stopped = False
-
+        send_message(distance=measure())
         time.sleep(0.1)
+
+
+def check_only(distance):
+    if distance > 25:
+        mqttClient.publish(topic_mov, "free")
+        Check.stopped = False
 
 
 if __name__ == '__main__':
     mqttClient.loop_start()
     try:
-        measure(check=False)
+        calibrate()
+        main_thread = Thread(target=measure_and_send(), daemon=True)
+        main_thread.start()
     finally:
         GPIO.cleanup()
