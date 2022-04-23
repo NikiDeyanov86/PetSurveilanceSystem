@@ -99,5 +99,7 @@ class MotorDriver:
         self.left_side.stop()
         self.right_side.stop()
 
-    def tear_down(self):
-        gpio.cleanup()
+
+def tear_down():
+    gpio.output(relay_in, True)
+    gpio.cleanup()

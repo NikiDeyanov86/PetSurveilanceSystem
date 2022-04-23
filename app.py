@@ -16,6 +16,7 @@ import requests
 import logging
 from clients.flask_client import topic_feedback, topic_rc, topic_mode, topic_motors_power, init_mqtt, Check
 from werkzeug.middleware.shared_data import SharedDataMiddleware
+from clients import motorslib
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'pissi-pissi'
@@ -408,4 +409,7 @@ def save_record():
 
 if __name__ == '__main__':
     flask_client.loop_start()
-    app.run(port=8080, host='0.0.0.0', threaded=True, debug=False)
+    try:
+        app.run(port=8080, host='0.0.0.0', threaded=True, debug=False)
+    finally:
+        motorslib.tear_down()
