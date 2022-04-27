@@ -97,6 +97,7 @@
 
         $(document).ready(function() {
             motors_check();
+            init();
             setInterval("check_vis()",10000); // call every 10 seconds
         });
 
@@ -177,7 +178,6 @@
               });
         });
 
-
     </script>
 
     <div class="container-fluid">
@@ -220,6 +220,18 @@
                     <div class="stream_holder">
                         <!-- Stream container will go here -->
                         <img src="{{ url_for('video_feed') }}" class="rounded-3" alt="Video stream">
+                        <div class="d-flex flex-column camera-controls-flex">
+                            <div class="row first">
+                                <button id="camera-forward" type="button" class="btn btn-outline-primary camera-direction"><i class="fa fa-arrow-up"></i></button>
+                            </div>
+                            <div class="row second">
+                                <button id="camera-left" type="button" class="btn btn-outline-primary camera-direction"><i class="fa fa-arrow-left"></i></button>
+                                <button id="camera-right" type="button" class="btn btn-outline-primary camera-direction"><i class="fa fa-arrow-right"></i></button>
+                            </div>
+                            <div class="row third">
+                                <button id="camera-backward" type="button" class="btn btn-outline-primary camera-direction"><i class="fa fa-arrow-down"></i></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row btn-holder">

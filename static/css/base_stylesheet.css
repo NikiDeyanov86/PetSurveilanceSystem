@@ -90,6 +90,24 @@ div#logged.col {
    height: 576px;
    border: 3px solid #0e3e81;
 }
+.stream_holder > .camera-controls-flex {
+   position: absolute;
+   width: 768px;
+   height: 576px;
+   justify-content: space-between;
+}
+.camera-direction {
+    width: auto;
+    height: auto;
+    font-size: 1.4vh;
+    margin: 30px;
+}
+.camera-controls-flex > div.first, .camera-controls-flex > div.third{
+    justify-content: center;
+}
+.camera-controls-flex > div.second {
+   justify-content: space-between;
+}
 .voice_recorder {
    display: flex;
    justify-content: center;
@@ -131,6 +149,13 @@ div#logged.col {
       width: 832px;
       height: 624px;
    }
+   .stream_holder > .camera-controls-flex {
+      width: 832px;
+      height: 624px;
+   }
+   .camera-direction {
+      margin: 30px;
+   }
    .stream_holder {
       margin-top: 8vh;
    }
@@ -167,6 +192,10 @@ div#logged.col {
       width: 544px;
       height: 408px;
    }
+   .stream_holder > .camera-controls-flex {
+      width: 544px;
+      height: 408px;
+   }
    .stream_holder {
       margin-top: 4vh;
    }
@@ -178,6 +207,10 @@ div#logged.col {
 @media only screen and (max-width: 1024px) {
   /* For laptops: */
    .stream_holder img {
+      width: 435px;
+      height: 326px;
+   }
+   .stream_holder > .camera-controls-flex {
       width: 435px;
       height: 326px;
    }
@@ -200,6 +233,10 @@ div#logged.col {
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
    .stream_holder img {
+      width: 384px;
+      height: 288px;
+   }
+   .stream_holder > .camera-controls-flex {
       width: 384px;
       height: 288px;
    }
