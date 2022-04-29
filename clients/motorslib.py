@@ -35,13 +35,13 @@ def power(message):
 
 
 def servo_positive(servo):
-    for i in range((servo.angle / 10), 10, 1):
+    for i in range(int(servo.angle / 10), 10, 1):
         servo.angle += 10
         time.sleep(0.2)
 
 
 def servo_negative(servo):
-    for i in range((servo.angle / 10), -10, -1):
+    for i in range(int(servo.angle / 10), -10, -1):
         servo.angle -= 10
         time.sleep(0.2)
 
