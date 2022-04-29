@@ -1,22 +1,17 @@
+from gpiozero import Servo
 from time import sleep
-import RPi.GPIO as GPIO
-# from gpiozero import AngularServo
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(2, GPIO.OUT)
-
-p = GPIO.PWM(2, 50)
-p.start(2.5)
+servo = Servo(2)
+val = -1
 
 try:
     while True:
-        p.ChangeDutyCycle(0)
-        sleep(2)
-        p.ChangeDutyCycle(7.5)
-        sleep(2)
-        p.ChangeDutyCycle(7.5)
-        sleep(2)
+        servo.value = val
+        sleep(0.1)
+        val = val + 0.1
+        if val > 1:
+            val = -1
 
 except KeyboardInterrupt:
-    p.stop()
-    GPIO.cleanup()
+    print("Program stopped")
+
