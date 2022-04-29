@@ -35,15 +35,21 @@ def power(message):
 
 
 def servo_positive(servo):
-    for i in range(int(servo.angle / 10), 10, 1):
-        servo.angle += 10
-        time.sleep(0.2)
+    for i in range(int(servo.angle / 10), 9, 1):
+        if servo.angle <= 80:
+            servo.angle += 10
+            time.sleep(0.2)
+        else:
+            break
 
 
 def servo_negative(servo):
-    for i in range(int(servo.angle / 10), -10, -1):
-        servo.angle -= 10
-        time.sleep(0.2)
+    for i in range(int(servo.angle / 10), -9, -1):
+        if servo.angle >= -80:
+            servo.angle -= 10
+            time.sleep(0.2)
+        else:
+            break
 
 
 class MotorSide:
