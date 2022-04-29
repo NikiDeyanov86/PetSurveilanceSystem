@@ -2,6 +2,7 @@ from gpiozero import Servo, AngularServo
 from time import sleep
 import RPi.GPIO as GPIO
 
+GPIO.setmode(GPIO.BCM)
 p = GPIO.PWM(2, 50)
 servo = AngularServo(p, min_angle=-90, max_angle=90)
 
