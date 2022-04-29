@@ -125,14 +125,19 @@ def message_decoder(client, userdata, msg):
         if message == "left":
             Check.current_process = Process(target=servo_positive(servo_horizontal))
             Check.current_process.start()
+            print("Creating left process")
 
         elif message == "right":
             Check.current_process = Process(target=servo_negative(servo_horizontal))
             Check.current_process.start()
+            print("Creating right process")
 
         elif message == "stop":
+            print("Stop received")
             if Check.current_process is not None:
                 Check.current_process.terminate()
+                print("Terminating process")
+                Check.current_process.join()
                 Check.current_process = None
             else:
                 pass
