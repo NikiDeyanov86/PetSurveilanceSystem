@@ -38,7 +38,7 @@ def servo_positive(servo):
     for i in range(int(servo.angle / 10), 9, 1):
         if servo.angle <= 80:
             servo.angle += 10
-            print("Angle is: " + servo.angle)
+            print("Angle is: " + str(servo.angle))
             time.sleep(1)
         else:
             break
@@ -48,7 +48,7 @@ def servo_negative(servo):
     for i in range(int(servo.angle / 10), -9, -1):
         if servo.angle >= -80:
             servo.angle -= 10
-            print("Angle is: " + servo.angle)
+            print("Angle is: " + str(servo.angle))
             time.sleep(1)
         else:
             break
