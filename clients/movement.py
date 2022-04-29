@@ -123,21 +123,21 @@ def message_decoder(client, userdata, msg):
             print("FREE TO MOVE!")
             scheduler.pause()
 
-    elif topic == topic_camera_movement:
-
-        if message == "left":
-            Check.servo_task = ServoTask()
-            Check.servo_task.positive(servo_horizontal)
-            print("Creating left process")
-
-        elif message == "right":
-            Check.servo_task = ServoTask()
-            Check.servo_task.negative(servo_horizontal)
-            print("Creating right process")
-
-        elif message == "stop":
-            print("Stop received")
-            Check.servo_task.terminate()
+    # elif topic == topic_camera_movement:
+    #
+    #     if message == "left":
+    #         Check.servo_task = ServoTask()
+    #         Check.servo_task.positive(servo_horizontal)
+    #         print("Creating left process")
+    #
+    #     elif message == "right":
+    #         Check.servo_task = ServoTask()
+    #         Check.servo_task.negative(servo_horizontal)
+    #         print("Creating right process")
+    #
+    #     elif message == "stop":
+    #         print("Stop received")
+    #         Check.servo_task.terminate()
 
     elif topic == topic_feedback:
         if message == "hl_connected":
