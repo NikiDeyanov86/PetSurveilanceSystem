@@ -163,9 +163,8 @@ mqttClient.will_set(topic_feedback, "mov_disconnected", qos=1, retain=False)
 mqttClient.username_pw_set("pi", "pissi-pissi")
 mqttClient.connect(serverAddress, 1883)
 
-if __name__ == '__main__':
-    mqttClient.loop_start()
 
+def check_for_messages_in_queue():
     while True:
         if not queue.empty():
 
@@ -191,3 +190,10 @@ if __name__ == '__main__':
                 elif payload == "stop":
                     print("Stop received")
                     Check.servo_task.terminate()
+
+
+if __name__ == '__main__':
+    mqttClient.loop_start()
+    check_for_messages_in_queue_task = Thread(target=check_for_messages_in_queue())
+    check_for_messages_in_queue_task.start()
+    check_for_messages_in_queue_task.join()
