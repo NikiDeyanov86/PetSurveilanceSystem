@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 from motorslib import MotorSide, MotorDriver, in1, in2, in3, in4, ena, enb, power, \
                         servo_horizontal, servo_positive, servo_negative
 from apscheduler.schedulers.background import BackgroundScheduler
+from multiprocessing import Process
 
 left = MotorSide(ena, in1, in2)
 right = MotorSide(enb, in3, in4)
@@ -20,6 +21,7 @@ topic_camera_movement = "pss/movement/camera"
 class Check:
     manual = True
     obstacle = False
+    current_process = None
 
 
 def check_for_obstacle():
@@ -121,9 +123,19 @@ def message_decoder(client, userdata, msg):
 
     elif topic == topic_camera_movement:
         if message == "left":
-            servo_positive(servo_horizontal)
+            Check.current_process = Process(target=servo_positive(servo_horizontal))
+            Check.current_process.start()
+
         elif message == "right":
-            servo_negative(servo_horizontal)
+            Check.current_process = Process(target=servo_negative(servo_horizontal))
+            Check.current_process.start()
+
+        elif message == "stop":
+            if Check.current_process is not None:
+                Check.current_process.terminate()
+                Check.current_process = None
+            else:
+                pass
 
     elif topic == topic_feedback:
         if message == "hl_connected":
