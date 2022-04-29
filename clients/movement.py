@@ -22,7 +22,7 @@ class Check:
     manual = True
     obstacle = False
     current_process = None
-
+    servo_task = None
 
 def check_for_obstacle():
     print("Asking is it free?")
@@ -122,21 +122,22 @@ def message_decoder(client, userdata, msg):
             scheduler.pause()
 
     elif topic == topic_camera_movement:
-        servo_task = ServoTask()
 
         if message == "left":
-            task = Thread(target=servo_task.positive(servo_horizontal))
+            Check.servo_task = ServoTask()
+            task = Thread(target=Check.servo_task.positive(servo_horizontal))
             task.start()
             print("Creating left process")
 
         elif message == "right":
-            task = Thread(target=servo_task.negative(servo_horizontal))
+            Check.servo_task = ServoTask()
+            task = Thread(target=Check.servo_task.negative(servo_horizontal))
             task.start()
             print("Creating right process")
 
         elif message == "stop":
             print("Stop received")
-            servo_task.terminate()
+            Check.servo_task.terminate()
 
     elif topic == topic_feedback:
         if message == "hl_connected":
