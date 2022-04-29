@@ -179,7 +179,6 @@ def video_feed():
 def forward():
     if Check.mov_available is True:
         flask_client.publish(topic_rc, "forward")
-
         app.logger.info('Move forward')
 
         return Response(status=200)
@@ -193,7 +192,6 @@ def forward():
 def left():
     if Check.mov_available is True:
         flask_client.publish(topic_rc, "left")
-
         app.logger.info('Move left')
 
         return Response(status=200)
@@ -207,7 +205,6 @@ def left():
 def right():
     if Check.mov_available is True:
         flask_client.publish(topic_rc, "right")
-
         app.logger.info('Move right')
 
         return Response(status=200)
@@ -221,7 +218,6 @@ def right():
 def backward():
     if Check.mov_available is True:
         flask_client.publish(topic_rc, "backward")
-
         app.logger.info('Move backward')
 
         return Response(status=200)
@@ -233,11 +229,14 @@ def backward():
 @app.route('/stop')
 @login_required
 def stop():
-    flask_client.publish(topic_rc, "stop")
+    if Check.mov_available is True:
+        flask_client.publish(topic_rc, "stop")
+        app.logger.info('Stop motors')
 
-    app.logger.info('Stop motors')
-
-    return Response(status=200)
+        return Response(status=200)
+    else:
+        flash("There is something wrong with the module, responsible for movement.")
+        return Response(status=500)
 
 
 @app.route('/snap')
@@ -398,28 +397,40 @@ def motors_on():
 @app.route('/camera/left')
 @login_required
 def camera_left():
-    app.logger.info('Camera left')
-    flask_client.publish(topic_camera_movement, "left")
+    if Check.mov_available is True:
+        app.logger.info('Camera left')
+        flask_client.publish(topic_camera_movement, "left")
 
-    return Response(status=200)
+        return Response(status=200)
+    else:
+        flash("There is something wrong with the module, responsible for movement.")
+        return Response(status=500)
 
 
 @app.route('/camera/right')
 @login_required
 def camera_right():
-    app.logger.info('Camera right')
-    flask_client.publish(topic_camera_movement, "right")
+    if Check.mov_available is True:
+        app.logger.info('Camera right')
+        flask_client.publish(topic_camera_movement, "right")
 
-    return Response(status=200)
+        return Response(status=200)
+    else:
+        flash("There is something wrong with the module, responsible for movement.")
+        return Response(status=500)
 
 
 @app.route('/camera/stop')
 @login_required
 def camera_stop():
-    app.logger.info('Camera stop')
-    flask_client.publish(topic_camera_movement, "stop")
+    if Check.mov_available is True:
+        app.logger.info('Camera stop')
+        flask_client.publish(topic_camera_movement, "stop")
 
-    return Response(status=200)
+        return Response(status=200)
+    else:
+        flash("There is something wrong with the module, responsible for movement.")
+        return Response(status=500)
 
 '''
 @app.route('/save-record', methods=['POST'])
