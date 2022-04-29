@@ -178,73 +178,78 @@
               });
         });
 
-        $.fn.camera_left = function () {
-            $.getJSON('/camera/left',
+            function camera_left() {
+                $.getJSON('/camera/left',
                     function(data) {
                   //do nothing
                 });
-        }
+                return false;
+            }
 
-        $.fn.camera_right = function () {
-            $.getJSON('/camera/right',
+            function camera_right() {
+                $.getJSON('/camera/right',
                     function(data) {
                   //do nothing
                 });
-        }
+                return false;
+            }
 
-        $.fn.camera_up = function () {
-            $.getJSON('/camera/up',
+            function camera_up() {
+                $.getJSON('/camera/up',
                     function(data) {
                   //do nothing
                 });
-        }
+                return false;
+            }
 
-        $.fn.camera_down = function () {
-            $.getJSON('/camera/down',
+            function camera_down() {
+                $.getJSON('/camera/down',
                     function(data) {
                   //do nothing
                 });
-        }
+                return false;
+            }
 
-        $.fn.camera_stop = function () {
-            $.getJSON('/camera/stop',
+            function camera_stop() {
+                $.getJSON('/camera/stop',
                     function(data) {
                   //do nothing
                 });
-        }
+                return false;
+            }
 
             $(function() {
               $('button#camera-up').on('touchstart mousedown', function(e) {
                 e.preventDefault()
-                $.fn.camera_up();
+                camera_up();
               });
             });
 
             $(function() {
               $('button#camera-down').on('touchstart mousedown', function(e) {
                 e.preventDefault()
-                $.fn.camera_down();
+                camera_down();
               });
             });
 
             $(function() {
               $('button#camera-left').on('touchstart mousedown', function(e) {
                 e.preventDefault()
-                $.fn.camera_left();
+                camera_left();
               });
             });
 
             $(function() {
               $('button#camera-right').on('touchstart mousedown', function(e) {
                 e.preventDefault()
-                $.fn.camera_right();
+                camera_right();
               });
             });
 
             $(function() {
               $('button.camera-direction').on('touchend mouseup', function(e) {
                 e.preventDefault()
-                $.fn.camera_stop();
+                camera_stop();
               });
             });
 
