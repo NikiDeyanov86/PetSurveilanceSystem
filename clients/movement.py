@@ -123,7 +123,7 @@ def message_decoder(client, userdata, msg):
         if message == "left":
             servo_positive(servo_horizontal)
         elif message == "right":
-            servo_positive(servo_horizontal)
+            servo_negative(servo_horizontal)
 
     elif topic == topic_feedback:
         if message == "hl_connected":
