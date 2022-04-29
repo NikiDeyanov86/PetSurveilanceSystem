@@ -3,6 +3,7 @@ from motorslib import MotorSide, MotorDriver, in1, in2, in3, in4, ena, enb, powe
                         servo_horizontal, ServoTask
 from apscheduler.schedulers.background import BackgroundScheduler
 from threading import Thread
+from queue import Queue
 
 left = MotorSide(ena, in1, in2)
 right = MotorSide(enb, in3, in4)
@@ -24,6 +25,7 @@ class Check:
     current_process = None
     servo_task = None
 
+
 def check_for_obstacle():
     print("Asking is it free?")
     mqttClient.publish(topic_feedback, "free?", qos=1)
@@ -39,7 +41,7 @@ def connect(client, userdata, flags, rc):
 def message_decoder(client, userdata, msg):
     message = msg.payload.decode(encoding='UTF-8')
     topic = msg.topic
-
+    queue.put(message)
     # Synchronize auto and manual
 
     if topic == "pss/movement/auto" and Check.manual is False:
@@ -153,6 +155,7 @@ def message_decoder(client, userdata, msg):
 
 
 scheduler = BackgroundScheduler()
+queue = Queue()
 scheduler.add_job(check_for_obstacle, 'interval', seconds=5)
 mqttClient.on_connect = connect
 mqttClient.on_message = message_decoder
@@ -162,5 +165,27 @@ mqttClient.connect(serverAddress, 1883)
 
 if __name__ == '__main__':
     mqttClient.loop_start()
+
     while True:
-        continue
+        if not queue.empty():
+
+            next_message = queue.get()
+            if next_message is None:
+                continue
+
+            if next_message.topic == topic_camera_movement:
+                if next_message == "left":
+                    print("Creating left process")
+                    Check.servo_task = ServoTask()
+                    Check.current_process = Thread(target=Check.servo_task.positive(servo_horizontal))
+                    Check.current_process.start()
+
+                elif next_message == "right":
+                    print("Creating right process")
+                    Check.servo_task = ServoTask()
+                    Check.current_process = Thread(target=Check.servo_task.negative(servo_horizontal))
+                    Check.current_process.start()
+
+                elif next_message == "stop":
+                    print("Stop received")
+                    Check.servo_task.terminate()
