@@ -415,7 +415,7 @@ def camera_right():
 
 @app.route('/camera/stop')
 @login_required
-def camera_right():
+def camera_stop():
     app.logger.info('Camera stop')
     flask_client.publish(topic_camera_movement, "stop")
 
