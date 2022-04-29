@@ -15,7 +15,8 @@ import picamera
 import cv2
 import requests
 import logging
-from clients.flask_client import topic_feedback, topic_rc, topic_mode, topic_motors_power, init_mqtt, Check
+from clients.flask_client import topic_feedback, topic_rc, topic_mode, \
+                                topic_motors_power, topic_camera_movement, init_mqtt, Check
 from werkzeug.middleware.shared_data import SharedDataMiddleware
 from clients import motorslib
 
@@ -181,7 +182,7 @@ def forward():
 
         app.logger.info('Move forward')
 
-        return Response(status=201)
+        return Response(status=200)
     else:
         flash("There is something wrong with the module, responsible for movement.")
         return Response(status=500)
@@ -195,7 +196,7 @@ def left():
 
         app.logger.info('Move left')
 
-        return Response(status=201)
+        return Response(status=200)
     else:
         flash("There is something wrong with the module, responsible for movement.")
         return Response(status=500)
@@ -209,7 +210,7 @@ def right():
 
         app.logger.info('Move right')
 
-        return Response(status=201)
+        return Response(status=200)
     else:
         flash("There is something wrong with the module, responsible for movement.")
         return Response(status=500)
@@ -223,7 +224,7 @@ def backward():
 
         app.logger.info('Move backward')
 
-        return Response(status=201)
+        return Response(status=200)
     else:
         flash("There is something wrong with the module, responsible for movement.")
         return Response(status=500)
@@ -236,7 +237,7 @@ def stop():
 
     app.logger.info('Stop motors')
 
-    return Response(status=201)
+    return Response(status=200)
 
 
 @app.route('/snap')
@@ -393,6 +394,32 @@ def motors_on():
         else:
             return Response(status=500)
 
+
+@app.route('/camera/left')
+@login_required
+def camera_left():
+    app.logger.info('Camera left')
+    flask_client.publish(topic_camera_movement, "left")
+
+    return Response(status=200)
+
+
+@app.route('/camera/right')
+@login_required
+def camera_right():
+    app.logger.info('Camera right')
+    flask_client.publish(topic_camera_movement, "right")
+
+    return Response(status=200)
+
+
+@app.route('/camera/stop')
+@login_required
+def camera_right():
+    app.logger.info('Camera stop')
+    flask_client.publish(topic_camera_movement, "stop")
+
+    return Response(status=200)
 
 '''
 @app.route('/save-record', methods=['POST'])

@@ -1,5 +1,7 @@
 import RPi.GPIO as gpio
 import time
+from gpiozero import Servo, AngularServo
+from gpiozero.pins.pigpio import PiGPIOFactory
 
 in1 = 22
 in2 = 23
@@ -8,6 +10,15 @@ in4 = 25
 ena = 12
 enb = 13
 relay_in = 18
+servo_horizontal_pin = 2
+# servo_vertical_pin = 3
+
+factory = PiGPIOFactory()
+servo_horizontal = AngularServo(servo_horizontal_pin, min_angle=-90, max_angle=90, pin_factory=factory)
+# servo_vertical = AngularServo(servo_vertical_pin, min_angle=-90, max_angle=90, pin_factory=factory)
+
+servo_horizontal.angle = 0
+time.sleep(0.2)
 
 gpio.setmode(gpio.BCM)
 gpio.setwarnings(False)
@@ -21,6 +32,18 @@ def power(message):
 
     elif message == 0:
         gpio.output(relay_in, True)
+
+
+def servo_positive(servo):
+    for i in range((servo.angle / 10), 10, 1):
+        servo.angle += 10
+        time.sleep(0.2)
+
+
+def servo_negative(servo):
+    for i in range((servo.angle / 10), -10, -1):
+        servo.angle -= 10
+        time.sleep(0.2)
 
 
 class MotorSide:

@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
-from motorslib import MotorSide, MotorDriver, in1, in2, in3, in4, ena, enb, power
+from motorslib import MotorSide, MotorDriver, in1, in2, in3, in4, ena, enb, power, \
+                        servo_horizontal, servo_positive, servo_negative
 from apscheduler.schedulers.background import BackgroundScheduler
 
 left = MotorSide(ena, in1, in2)
@@ -13,6 +14,7 @@ topics = "pss/movement/+"
 topic_feedback = "pss/feedback"
 topic_mov = "pss/movement/proximity"
 topic_motors_power = "pss/movement/motors_power"
+topic_camera_movement = "pss/movement/camera"
 
 
 class Check:
@@ -116,6 +118,12 @@ def message_decoder(client, userdata, msg):
             Check.obstacle = False
             print("FREE TO MOVE!")
             scheduler.pause()
+
+    elif topic == topic_camera_movement:
+        if message == "left":
+            servo_positive(servo_horizontal)
+        elif message == "right":
+            servo_positive(servo_horizontal)
 
     elif topic == topic_feedback:
         if message == "hl_connected":
