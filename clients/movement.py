@@ -161,4 +161,4 @@ mqttClient.on_message = message_decoder
 mqttClient.will_set(topic_feedback, "mov_disconnected", qos=1, retain=False)
 mqttClient.username_pw_set("pi", "pissi-pissi")
 mqttClient.connect(serverAddress, 1883)
-mqttClient.loop_forever()
+mqttClient.loop_start()
