@@ -1,10 +1,9 @@
 from gpiozero import Servo, AngularServo
+from gpiozero.pins.pigpio import PiGPIOFactory
 from time import sleep
-import RPi.GPIO as GPIO
 
-GPIO.setmode(GPIO.BCM)
-p = GPIO.PWM(2, 50)
-servo = AngularServo(p, min_angle=-90, max_angle=90)
+factory = PiGPIOFactory()
+servo = AngularServo(2, min_angle=-90, max_angle=90, pin_factory=factory)
 
 try:
     while True:
