@@ -1,8 +1,8 @@
 import paho.mqtt.client as mqtt
 from motorslib import MotorSide, MotorDriver, in1, in2, in3, in4, ena, enb, power, \
-                        servo_horizontal, servo_positive, servo_negative
+                        servo_horizontal, ServoTask
 from apscheduler.schedulers.background import BackgroundScheduler
-from multiprocessing import Process
+from threading import Thread
 
 left = MotorSide(ena, in1, in2)
 right = MotorSide(enb, in3, in4)
@@ -122,25 +122,21 @@ def message_decoder(client, userdata, msg):
             scheduler.pause()
 
     elif topic == topic_camera_movement:
+        servo_task = ServoTask()
+
         if message == "left":
-            Check.current_process = Process(target=servo_positive(servo_horizontal))
-            Check.current_process.start()
+            task = Thread(target=servo_task.positive(servo_horizontal))
+            task.start()
             print("Creating left process")
 
         elif message == "right":
-            Check.current_process = Process(target=servo_negative(servo_horizontal))
-            Check.current_process.start()
+            task = Thread(target=servo_task.negative(servo_horizontal))
+            task.start()
             print("Creating right process")
 
         elif message == "stop":
             print("Stop received")
-            if Check.current_process is not None:
-                Check.current_process.terminate()
-                print("Terminating process")
-                Check.current_process.join()
-                Check.current_process = None
-            else:
-                pass
+            servo_task.terminate()
 
     elif topic == topic_feedback:
         if message == "hl_connected":
