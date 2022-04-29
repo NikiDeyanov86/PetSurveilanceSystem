@@ -1,16 +1,16 @@
-from gpiozero import Servo
+from gpiozero import Servo, AngularServo
 from time import sleep
 
-servo = Servo(2)
-val = -1
+servo = AngularServo(2, min_angle=-90, max_angle=90)
 
 try:
     while True:
-        servo.value = val
-        sleep(0.1)
-        val = val + 0.1
-        if val > 1:
-            val = -1
+        servo.angle = 0
+        sleep(2)
+        servo.angle = -90
+        sleep(2)
+        servo.angle = 90
+        sleep(2)
 
 except KeyboardInterrupt:
     print("Program stopped")
