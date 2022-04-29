@@ -41,7 +41,7 @@ def connect(client, userdata, flags, rc):
 def message_decoder(client, userdata, msg):
     message = msg.payload.decode(encoding='UTF-8')
     topic = msg.topic
-    queue.put(message)
+    queue.put(msg)
     # Synchronize auto and manual
 
     if topic == "pss/movement/auto" and Check.manual is False:
@@ -174,18 +174,20 @@ if __name__ == '__main__':
                 continue
 
             if next_message.topic == topic_camera_movement:
-                if next_message == "left":
+                payload = next_message.payload.decode(encoding='UTF-8')
+
+                if payload == "left":
                     print("Creating left process")
                     Check.servo_task = ServoTask()
                     Check.current_process = Thread(target=Check.servo_task.positive(servo_horizontal))
                     Check.current_process.start()
 
-                elif next_message == "right":
+                elif payload == "right":
                     print("Creating right process")
                     Check.servo_task = ServoTask()
                     Check.current_process = Thread(target=Check.servo_task.negative(servo_horizontal))
                     Check.current_process.start()
 
-                elif next_message == "stop":
+                elif payload == "stop":
                     print("Stop received")
                     Check.servo_task.terminate()
