@@ -183,8 +183,6 @@
                     function(data) {
                   //do nothing
                 });
-
-            return false;
         }
 
         $.fn.camera_right = function () {
@@ -192,8 +190,6 @@
                     function(data) {
                   //do nothing
                 });
-
-            return false;
         }
 
         $.fn.camera_up = function () {
@@ -201,8 +197,6 @@
                     function(data) {
                   //do nothing
                 });
-
-            return false;
         }
 
         $.fn.camera_down = function () {
@@ -210,8 +204,6 @@
                     function(data) {
                   //do nothing
                 });
-
-            return false;
         }
 
         $.fn.camera_stop = function () {
@@ -219,42 +211,40 @@
                     function(data) {
                   //do nothing
                 });
-
-            return false;
         }
 
             $(function() {
               $('button#camera-up').on('touchstart mousedown', function(e) {
                 e.preventDefault()
-                $.fn.camera_up()
+                $.fn.camera_up();
               });
             });
 
             $(function() {
               $('button#camera-down').on('touchstart mousedown', function(e) {
                 e.preventDefault()
-                $.fn.camera_down()
+                $.fn.camera_down();
               });
             });
 
             $(function() {
               $('button#camera-left').on('touchstart mousedown', function(e) {
                 e.preventDefault()
-                $.fn.camera_left()
+                $.fn.camera_left();
               });
             });
 
             $(function() {
               $('button#camera-right').on('touchstart mousedown', function(e) {
                 e.preventDefault()
-                $.fn.camera_right()
+                $.fn.camera_right();
               });
             });
 
             $(function() {
               $('button.camera-direction').on('touchend mouseup', function(e) {
                 e.preventDefault()
-                $.fn.camera_stop()
+                $.fn.camera_stop();
               });
             });
 
