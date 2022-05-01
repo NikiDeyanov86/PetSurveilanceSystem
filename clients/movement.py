@@ -1,9 +1,10 @@
 import paho.mqtt.client as mqtt
 from motorslib import MotorSide, MotorDriver, in1, in2, in3, in4, ena, enb, power, \
-                        servo_horizontal, ServoTask
+    servo_horizontal, ServoTask
 from apscheduler.schedulers.background import BackgroundScheduler
 from threading import Thread
 from queue import Queue
+from time import sleep
 
 left = MotorSide(ena, in1, in2)
 right = MotorSide(enb, in3, in4)
@@ -41,7 +42,7 @@ def connect(client, userdata, flags, rc):
 def message_decoder(client, userdata, msg):
     message = msg.payload.decode(encoding='UTF-8')
     topic = msg.topic
-    queue.put(msg)
+
     # Synchronize auto and manual
 
     if topic == "pss/movement/auto" and Check.manual is False:
@@ -124,24 +125,8 @@ def message_decoder(client, userdata, msg):
             scheduler.pause()
 
     elif topic == topic_camera_movement:
-
-        if message == "left":
-            Check.servo_task = ServoTask()
-            Check.current_process = Thread(target=Check.servo_task.positive(servo_horizontal))
-            Check.current_process.start()
-            Check.current_process.join()
-            print("Creating left process")
-
-        elif message == "right":
-            Check.servo_task = ServoTask()
-            Check.current_process = Thread(target=Check.servo_task.negative(servo_horizontal))
-            Check.current_process.start()
-            Check.current_process.join()
-            print("Creating right process")
-
-        elif message == "stop":
-            print("Stop received")
-            Check.servo_task.terminate()
+        print("Putting " + message + " in queue.")
+        camera_queue.put(message)
 
     elif topic == topic_feedback:
         if message == "hl_connected":
@@ -159,7 +144,7 @@ def message_decoder(client, userdata, msg):
 
 
 scheduler = BackgroundScheduler()
-queue = Queue()
+camera_queue = Queue()
 scheduler.add_job(check_for_obstacle, 'interval', seconds=5)
 mqttClient.on_connect = connect
 mqttClient.on_message = message_decoder
@@ -168,36 +153,47 @@ mqttClient.username_pw_set("pi", "pissi-pissi")
 mqttClient.connect(serverAddress, 1883)
 
 
-# def check_for_messages_in_queue():
-#     while True:
-#         if not queue.empty():
-#
-#             next_message = queue.get()
-#             if next_message is None:
-#                 continue
-#
-#             if next_message.topic == topic_camera_movement:
-#                 payload = next_message.payload.decode(encoding='UTF-8')
-#
-#                 if payload == "left":
-#                     print("Creating left process")
-#                     Check.servo_task = ServoTask()
-#                     Check.current_process = Thread(target=Check.servo_task.positive(servo_horizontal))
-#                     Check.current_process.start()
-#
-#                 elif payload == "right":
-#                     print("Creating right process")
-#                     Check.servo_task = ServoTask()
-#                     Check.current_process = Thread(target=Check.servo_task.negative(servo_horizontal))
-#                     Check.current_process.start()
-#
-#                 elif payload == "stop":
-#                     print("Stop received")
-#                     Check.servo_task.terminate()
+def check_for_messages_in_camera_queue():
+    flag = 0  # 0 - no movement; 1 - left; 2 - right; 3 - stop!
+    while True:
+        if not camera_queue.empty():
+            next_message = camera_queue.get()
+            if next_message is None:
+                continue
+
+            if next_message == "left":
+                flag = 1
+
+            elif next_message == "right":
+                flag = 2
+
+            elif next_message == "stop":
+                flag = 0
+
+        if flag == 0:
+            continue
+
+        elif flag == 1:
+            if servo_horizontal.angle <= 80:
+                servo_horizontal.angle += 10
+                print("Angle is: " + str(servo_horizontal.angle))
+                sleep(0.2)
+            else:
+                servo_horizontal.angle = 90
+                continue
+
+        elif flag == 2:
+            if servo_horizontal.angle >= -80:
+                servo_horizontal.angle -= 10
+                print("Angle is: " + str(servo_horizontal.angle))
+                sleep(0.2)
+            else:
+                servo_horizontal.angle = -90
+                continue
 
 
 if __name__ == '__main__':
-    mqttClient.loop_forever()
-    # check_for_messages_in_queue_task = Thread(target=check_for_messages_in_queue())
-    # check_for_messages_in_queue_task.start()
-    # check_for_messages_in_queue_task.join()
+    mqttClient.loop_start()
+    camera_task = Thread(target=check_for_messages_in_camera_queue)
+    camera_task.start()
+    camera_task.join()
