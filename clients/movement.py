@@ -34,7 +34,6 @@ def check_for_obstacle():
 def connect(client, userdata, flags, rc):
     mqttClient.subscribe(topics)
     mqttClient.subscribe(topic_feedback)
-    mqttClient.subscribe("pss/movement/camera/stop")
     print("Connected! Subscribed to <pss/movement/+> and <pss/feedback>")
     mqttClient.publish(topic_feedback, "mov_connected", qos=1)
 
@@ -128,19 +127,17 @@ def message_decoder(client, userdata, msg):
 
         if message == "left":
             Check.servo_task = ServoTask()
-            Check.current_process = Thread(target=Check.servo_task.positive(servo_horizontal))
-            Check.current_process.start()
+            Check.servo_task.positive(servo_horizontal)
             print("Creating left process")
 
         elif message == "right":
             Check.servo_task = ServoTask()
-            Check.current_process = Thread(target=Check.servo_task.negative(servo_horizontal))
-            Check.current_process.start()
+            Check.servo_task.negative(servo_horizontal)
             print("Creating right process")
 
-    elif topic == "pss/movement/camera/stop":
-        print("Stop received")
-        Check.servo_task.terminate()
+        elif message == "stop":
+            print("Stop received")
+            Check.servo_task.terminate()
 
     elif topic == topic_feedback:
         if message == "hl_connected":

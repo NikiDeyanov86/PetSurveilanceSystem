@@ -42,22 +42,37 @@ class ServoTask:
         self._running = False
 
     def positive(self, servo):
-        for i in range(int(servo.angle / 10), 9, 1):
-            if servo.angle <= 80 and self._running:
+        while self._running:
+            if servo.angle <= 80:
                 servo.angle += 10
                 print("Angle is: " + str(servo.angle))
-                time.sleep(0.3)
+                time.sleep(0.2)
             else:
                 break
 
+        # for i in range(int(servo.angle / 10), 9, 1):
+        #     if servo.angle <= 80 and self._running:
+        #         servo.angle += 10
+        #         print("Angle is: " + str(servo.angle))
+        #         time.sleep(0.3)
+        #     else:
+        #         break
+
     def negative(self, servo):
-        for i in range(int(servo.angle / 10), -9, -1):
-            if servo.angle >= -80 and self._running:
+        while self._running:
+            if servo.angle >= -80:
                 servo.angle -= 10
                 print("Angle is: " + str(servo.angle))
-                time.sleep(0.3)
+                time.sleep(0.2)
             else:
                 break
+        # for i in range(int(servo.angle / 10), -9, -1):
+        #     if servo.angle >= -80 and self._running:
+        #         servo.angle -= 10
+        #         print("Angle is: " + str(servo.angle))
+        #         time.sleep(0.3)
+        #     else:
+        #         break
 
 
 class MotorSide:

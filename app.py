@@ -425,7 +425,7 @@ def camera_right():
 def camera_stop():
     if Check.mov_available is True:
         app.logger.info('Camera stop')
-        flask_client.publish("pss/movement/camera/stop", "stop")
+        flask_client.publish(topic_camera_movement, "stop")
 
         return Response(status=200)
     else:
