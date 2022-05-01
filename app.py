@@ -265,15 +265,17 @@ def take_photo():
 @login_required
 def check():
     if Check.hl_available is True:
-        if CheckManual.manual is True and Check.visible is True:
+        if CheckManual.manual is True and Check.visible is True and current_user.auto_switch_choice is True:
             app.logger.info('Switch to auto (AJAX)')
             CheckManual.manual = False
             flask_client.publish(topic_mode, "auto")
+
             return "visible"
         elif CheckManual.manual is False and Check.visible is False:
             app.logger.info('Switch to manual (AJAX)')
             CheckManual.manual = True
             flask_client.publish(topic_mode, "manual")
+
             return "not_visible"
 
         return Response(status=200)
