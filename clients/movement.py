@@ -34,6 +34,7 @@ def check_for_obstacle():
 def connect(client, userdata, flags, rc):
     mqttClient.subscribe(topics)
     mqttClient.subscribe(topic_feedback)
+    mqttClient.subscribe("pss/movement/camera/stop")
     print("Connected! Subscribed to <pss/movement/+> and <pss/feedback>")
     mqttClient.publish(topic_feedback, "mov_connected", qos=1)
 
