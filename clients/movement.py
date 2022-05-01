@@ -139,9 +139,8 @@ def message_decoder(client, userdata, msg):
             print("Creating right process")
 
     elif topic == "pss/movement/camera/stop":
-        if message == "stop":
-            print("Stop received")
-            Check.servo_task.terminate()
+        print("Stop received")
+        Check.servo_task.terminate()
 
     elif topic == topic_feedback:
         if message == "hl_connected":
