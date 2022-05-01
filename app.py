@@ -16,7 +16,7 @@ import cv2
 import requests
 import logging
 from clients.flask_client import topic_feedback, topic_rc, topic_mode, \
-                                topic_motors_power, topic_camera_movement, topic_camera_setting, init_mqtt, Check
+    topic_motors_power, topic_camera_movement, topic_camera_setting, init_mqtt, Check
 from werkzeug.middleware.shared_data import SharedDataMiddleware
 from clients import motorslib
 
@@ -134,7 +134,7 @@ def signup():
             flash('Wrong access key, try again.')
             return redirect(url_for('signup'))
 
-        user = User(username=username, password=password, center_camera_choice=True)
+        user = User(username=username, password=password, center_camera_choice=True, auto_switch_choice=True)
 
         db_session.add(user)
         db_session.commit()
@@ -264,18 +264,22 @@ def take_photo():
 @app.route('/check_status')
 @login_required
 def check():
-    if CheckManual.manual is True and Check.visible is True and Check.hl_available is True:
-        app.logger.info('Switch to auto (AJAX)')
-        CheckManual.manual = False
-        flask_client.publish(topic_mode, "auto")
-        return "visible"
-    elif CheckManual.manual is False and Check.visible is False:
-        app.logger.info('Switch to manual (AJAX)')
-        CheckManual.manual = True
-        flask_client.publish(topic_mode, "manual")
-        return "not_visible"
+    if Check.hl_available is True:
+        if CheckManual.manual is True and Check.visible is True:
+            app.logger.info('Switch to auto (AJAX)')
+            CheckManual.manual = False
+            flask_client.publish(topic_mode, "auto")
+            return "visible"
+        elif CheckManual.manual is False and Check.visible is False:
+            app.logger.info('Switch to manual (AJAX)')
+            CheckManual.manual = True
+            flask_client.publish(topic_mode, "manual")
+            return "not_visible"
 
-    return Response(status=200)
+        return Response(status=200)
+
+    else:
+        return Response(status=500)
 
 
 @app.route('/automated_mode')
@@ -394,11 +398,35 @@ def motors_on():
             return Response(status=500)
 
 
+@app.route('/auto_switch_setting', methods=['GET', 'POST'])
+@login_required
+@csrf.exempt
+def auto_switch():
+    if request.method == 'GET':
+        if current_user.auto_switch_choice is True:
+            return "checked"
+        else:
+            return "unchecked"
+    else:
+        if current_user.auto_switch_choice is False:
+            app.logger.info('Auto switch on')
+            current_user.auto_switch_choice = True
+            db_session.commit()
+
+            return "checked"
+
+        else:
+            app.logger.info('Auto switch off')
+            current_user.auto_switch_choice = False
+            db_session.commit()
+
+            return "unchecked"
+
+
 @app.route('/camera_setting', methods=['GET', 'POST'])
 @login_required
 @csrf.exempt
 def camera_center():
-
     if Check.mov_available is True:
         if request.method == 'GET':
             if current_user.center_camera_choice is True:
@@ -465,6 +493,7 @@ def camera_stop():
     else:
         flash("There is something wrong with the module, responsible for movement.")
         return Response(status=500)
+
 
 '''
 @app.route('/save-record', methods=['POST'])

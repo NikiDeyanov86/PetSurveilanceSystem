@@ -14,6 +14,7 @@ class User(Base):
     password = Column(String(80), nullable=False)
     login_id = Column(String(36), nullable=True)
     center_camera_choice = Column(Boolean, nullable=True)
+    auto_switch_choice = Column(Boolean, nullable=True)
 
     photo = relationship("Photo", back_populates="user",
                          cascade=DELETE_ALL, passive_deletes=True)
