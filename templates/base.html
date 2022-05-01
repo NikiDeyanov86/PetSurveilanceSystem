@@ -97,20 +97,8 @@
 
         $(document).ready(function() {
             motors_check();
+            camera_check();
             setInterval("check_vis()",10000); // call every 10 seconds
-
-            $(function() {
-                if( "{{ camera_setting }}" === "True") {
-                    let checkbox = document.getElementById("CameraCenterSwitchCheck");
-                    checkbox.setAttribute("checked", "checked")
-                    checkbox.checked = true;
-                }
-                else {
-                    let checkbox = document.getElementById("CameraCenterSwitchCheck");
-                    checkbox.removeAttribute("checked");
-                    checkbox.checked = false;
-                }
-            })
         });
 
 
@@ -183,6 +171,26 @@
             });
         }
 
+        function camera_check() {
+            $.ajax({
+                type: "GET",
+                url: '/camera_setting',
+                success: function (data) {
+                     console.log(data);
+
+                     if(data === "checked") {
+                         let checkbox = document.getElementById("CameraCenterSwitchCheck");
+                         checkbox.setAttribute("checked", "checked")
+                         checkbox.checked = true;
+                     }
+                     else if(data === "unchecked") {
+                         let checkbox = document.getElementById("CameraCenterSwitchCheck");
+                         checkbox.removeAttribute("checked");
+                         checkbox.checked = false;
+                     }
+                }
+            });
+        }
 
         function camera_switch() {
             $.ajax({

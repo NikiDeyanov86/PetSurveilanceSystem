@@ -287,8 +287,7 @@ def change_to_auto_mode():
             app.logger.info('Switch to auto')
 
         CheckManual.manual = False
-        return render_template('auto.html', name=current_user.username,
-                               camera_setting=current_user.center_camera_choice)
+        return render_template('auto.html', name=current_user.username)
     else:
         flash("There is something wrong with the module, responsible for object tracking.")
         return redirect(url_for('change_to_manual_mode'))
@@ -302,8 +301,7 @@ def change_to_manual_mode():
         app.logger.info('Switch to manual')
 
     CheckManual.manual = True
-    return render_template('manual.html', name=current_user.username,
-                           camera_setting=current_user.center_camera_choice)
+    return render_template('manual.html', name=current_user.username)
 
 
 @app.route('/gallery')
