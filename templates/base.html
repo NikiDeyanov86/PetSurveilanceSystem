@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
     <link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="/static/css/bootstrap_5_0_2.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="/static/css/bootstrap_5_0_2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/base_stylesheet.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 
@@ -23,7 +23,7 @@
     <!-- JavaScript -->
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-    <script src="/static/js/bootstrap.bundle_5_0_2.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="/static/js/bootstrap.bundle_5_0_2.min.js"></script>
 
     <!-- Additional styles and scripts will go here -->
 	{% block head %}
@@ -98,6 +98,19 @@
         $(document).ready(function() {
             motors_check();
             setInterval("check_vis()",10000); // call every 10 seconds
+
+            $(function() {
+                if( "{{ camera_setting }}" === "True") {
+                    let checkbox = document.getElementById("CameraCenterSwitchCheck");
+                    checkbox.setAttribute("checked", "checked")
+                    checkbox.checked = true;
+                }
+                else {
+                    let checkbox = document.getElementById("CameraCenterSwitchCheck");
+                    checkbox.removeAttribute("checked");
+                    checkbox.checked = false;
+                }
+            })
         });
 
 
@@ -136,12 +149,12 @@
                      //console.log(data);
 
                      if(data === "on") {
-                         let checkbox = document.getElementById("flexSwitchCheck");
+                         let checkbox = document.getElementById("MotorsSwitchCheck");
                          checkbox.setAttribute("checked", "checked")
                          checkbox.checked = true;
                      }
                      else if(data === "off") {
-                         let checkbox = document.getElementById("flexSwitchCheck");
+                         let checkbox = document.getElementById("MotorsSwitchCheck");
                          checkbox.removeAttribute("checked");
                          checkbox.checked = false;
                      }
@@ -157,12 +170,34 @@
                      //console.log(data);
 
                      if(data === "on") {
-                         let checkbox = document.getElementById("flexSwitchCheck");
+                         let checkbox = document.getElementById("MotorsSwitchCheck");
                          checkbox.setAttribute("checked", "checked")
                          checkbox.checked = true;
                      }
                      else if(data === "off") {
-                         let checkbox = document.getElementById("flexSwitchCheck");
+                         let checkbox = document.getElementById("MotorsSwitchCheck");
+                         checkbox.removeAttribute("checked");
+                         checkbox.checked = false;
+                     }
+                }
+            });
+        }
+
+
+        function camera_switch() {
+            $.ajax({
+                type: "POST",
+                url: '/camera_setting',
+                success: function (data) {
+                     console.log(data);
+
+                     if(data === "checked") {
+                         let checkbox = document.getElementById("CameraCenterSwitchCheck");
+                         checkbox.setAttribute("checked", "checked")
+                         checkbox.checked = true;
+                     }
+                     else if(data === "unchecked") {
+                         let checkbox = document.getElementById("CameraCenterSwitchCheck");
                          checkbox.removeAttribute("checked");
                          checkbox.checked = false;
                      }
@@ -171,9 +206,16 @@
         }
 
         $(function() {
-              $('input#flexSwitchCheck').on('click', function(e) {
+              $('input#MotorsSwitchCheck').on('click', function(e) {
                   e.preventDefault()
                   motors_switch();
+              });
+        });
+
+        $(function() {
+              $('input#CameraCenterSwitchCheck').on('click', function(e) {
+                  e.preventDefault()
+                  camera_switch();
               });
         });
 
@@ -369,9 +411,19 @@
       </div>
       <div class="offcanvas-body">
         <div class="form-check form-switch">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <input class="form-check-input" type="checkbox" id="flexSwitchCheck">
-            <label class="form-check-label" for="flexSwitchCheck">Turn motors on/off</label>
+            <input class="form-check-input" type="checkbox" id="MotorsSwitchCheck">
+            <label class="form-check-label" for="MotorsSwitchCheck">
+                Turn motors on/off</label>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="CameraCenterSwitchCheck">
+            <label class="form-check-label" for="CameraCenterSwitchCheck">
+                Automatically center camera on movement</label>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="AutoSwitchCheck">
+            <label class="form-check-label" for="AutoSwitchCheck">
+                Automatically switch to automated mode when the pet is visible</label>
         </div>
       </div>
     </div>

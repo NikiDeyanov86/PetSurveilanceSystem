@@ -16,7 +16,7 @@ import cv2
 import requests
 import logging
 from clients.flask_client import topic_feedback, topic_rc, topic_mode, \
-                                topic_motors_power, topic_camera_movement, init_mqtt, Check
+                                topic_motors_power, topic_camera_movement, topic_camera_setting, init_mqtt, Check
 from werkzeug.middleware.shared_data import SharedDataMiddleware
 from clients import motorslib
 
@@ -134,7 +134,7 @@ def signup():
             flash('Wrong access key, try again.')
             return redirect(url_for('signup'))
 
-        user = User(username=username, password=password)
+        user = User(username=username, password=password, center_camera_choice=True)
 
         db_session.add(user)
         db_session.commit()
@@ -287,7 +287,8 @@ def change_to_auto_mode():
             app.logger.info('Switch to auto')
 
         CheckManual.manual = False
-        return render_template('auto.html', name=current_user.username)
+        return render_template('auto.html', name=current_user.username,
+                               camera_setting=current_user.center_camera_choice)
     else:
         flash("There is something wrong with the module, responsible for object tracking.")
         return redirect(url_for('change_to_manual_mode'))
@@ -301,7 +302,8 @@ def change_to_manual_mode():
         app.logger.info('Switch to manual')
 
     CheckManual.manual = True
-    return render_template('manual.html', name=current_user.username)
+    return render_template('manual.html', name=current_user.username,
+                           camera_setting=current_user.center_camera_choice)
 
 
 @app.route('/gallery')
@@ -392,6 +394,40 @@ def motors_on():
 
         else:
             return Response(status=500)
+
+
+@app.route('/camera_setting', methods=['GET', 'POST'])
+@login_required
+@csrf.exempt
+def camera_center():
+
+    if Check.mov_available is True:
+        if request.method == 'GET':
+            if current_user.center_camera_choice is True:
+                flask_client.publish(topic_camera_setting, "check")
+                return "checked"
+            else:
+                flask_client.publish(topic_camera_setting, "uncheck")
+                return "unchecked"
+
+        else:
+            if current_user.center_camera_choice is False:
+                app.logger.info('Camera center on')
+                flask_client.publish(topic_camera_setting, "check")
+                current_user.center_camera_choice = True
+                db_session.commit()
+
+                return "checked"
+            else:
+                app.logger.info('Camera center off')
+                flask_client.publish(topic_camera_setting, "uncheck")
+                current_user.center_camera_choice = False
+                db_session.commit()
+
+                return "unchecked"
+
+    else:
+        return Response(status=500)
 
 
 @app.route('/camera/left')

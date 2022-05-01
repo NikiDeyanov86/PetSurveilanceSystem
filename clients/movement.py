@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt
 from motorslib import MotorSide, MotorDriver, in1, in2, in3, in4, ena, enb, power, \
-    servo_horizontal, ServoTask
+    servo_horizontal
 from apscheduler.schedulers.background import BackgroundScheduler
 from threading import Thread
 from queue import Queue
@@ -18,13 +18,13 @@ topic_feedback = "pss/feedback"
 topic_mov = "pss/movement/proximity"
 topic_motors_power = "pss/movement/motors_power"
 topic_camera_movement = "pss/movement/camera"
+topic_camera_setting = "pss/movement/camera/center"
 
 
 class Check:
     manual = True
     obstacle = False
-    current_process = None
-    servo_task = None
+    camera_center = None
 
 
 def check_for_obstacle():
@@ -72,6 +72,9 @@ def message_decoder(client, userdata, msg):
         # Data from remote client, ex. "left" ---- time ----> "stop"
         direction = message
         speed = 50
+        if Check.camera_center is True:
+            servo_horizontal.angle = 0  # center the camera
+
         if direction == "forward":
             if Check.obstacle is False:
                 print("MANUAL: forward")
@@ -125,8 +128,13 @@ def message_decoder(client, userdata, msg):
             scheduler.pause()
 
     elif topic == topic_camera_movement:
-        print("Putting " + message + " in queue.")
         camera_queue.put(message)
+
+    elif topic == topic_camera_setting:
+        if message == "check":
+            Check.camera_center = True
+        elif message == "uncheck":
+            Check.camera_center = False
 
     elif topic == topic_feedback:
         if message == "hl_connected":
@@ -176,8 +184,7 @@ def check_for_messages_in_camera_queue():
         elif flag == 1:
             if servo_horizontal.angle <= 80:
                 servo_horizontal.angle += 10
-                print("Angle is: " + str(servo_horizontal.angle))
-                sleep(0.2)
+                sleep(0.1)
             else:
                 servo_horizontal.angle = 90
                 continue
@@ -185,8 +192,7 @@ def check_for_messages_in_camera_queue():
         elif flag == 2:
             if servo_horizontal.angle >= -80:
                 servo_horizontal.angle -= 10
-                print("Angle is: " + str(servo_horizontal.angle))
-                sleep(0.2)
+                sleep(0.1)
             else:
                 servo_horizontal.angle = -90
                 continue

@@ -9,6 +9,7 @@ topic_rc = "pss/movement/manual"
 topic_hl = "pss/huskylens"
 topic_motors_power = "pss/movement/motors_power"
 topic_camera_movement = "pss/movement/camera"
+topic_camera_setting = "pss/movement/camera/center"
 
 
 class Check:
