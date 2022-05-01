@@ -169,36 +169,36 @@ mqttClient.username_pw_set("pi", "pissi-pissi")
 mqttClient.connect(serverAddress, 1883)
 
 
-def check_for_messages_in_queue():
-    while True:
-        if not queue.empty():
-
-            next_message = queue.get()
-            if next_message is None:
-                continue
-
-            if next_message.topic == topic_camera_movement:
-                payload = next_message.payload.decode(encoding='UTF-8')
-
-                if payload == "left":
-                    print("Creating left process")
-                    Check.servo_task = ServoTask()
-                    Check.current_process = Thread(target=Check.servo_task.positive(servo_horizontal))
-                    Check.current_process.start()
-
-                elif payload == "right":
-                    print("Creating right process")
-                    Check.servo_task = ServoTask()
-                    Check.current_process = Thread(target=Check.servo_task.negative(servo_horizontal))
-                    Check.current_process.start()
-
-                elif payload == "stop":
-                    print("Stop received")
-                    Check.servo_task.terminate()
+# def check_for_messages_in_queue():
+#     while True:
+#         if not queue.empty():
+#
+#             next_message = queue.get()
+#             if next_message is None:
+#                 continue
+#
+#             if next_message.topic == topic_camera_movement:
+#                 payload = next_message.payload.decode(encoding='UTF-8')
+#
+#                 if payload == "left":
+#                     print("Creating left process")
+#                     Check.servo_task = ServoTask()
+#                     Check.current_process = Thread(target=Check.servo_task.positive(servo_horizontal))
+#                     Check.current_process.start()
+#
+#                 elif payload == "right":
+#                     print("Creating right process")
+#                     Check.servo_task = ServoTask()
+#                     Check.current_process = Thread(target=Check.servo_task.negative(servo_horizontal))
+#                     Check.current_process.start()
+#
+#                 elif payload == "stop":
+#                     print("Stop received")
+#                     Check.servo_task.terminate()
 
 
 if __name__ == '__main__':
-    mqttClient.loop_start()
-    check_for_messages_in_queue_task = Thread(target=check_for_messages_in_queue())
-    check_for_messages_in_queue_task.start()
-    check_for_messages_in_queue_task.join()
+    mqttClient.loop_forever()
+    # check_for_messages_in_queue_task = Thread(target=check_for_messages_in_queue())
+    # check_for_messages_in_queue_task.start()
+    # check_for_messages_in_queue_task.join()
