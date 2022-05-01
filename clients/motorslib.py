@@ -46,7 +46,7 @@ class ServoTask:
             if servo.angle <= 80 and self._running:
                 servo.angle += 10
                 print("Angle is: " + str(servo.angle))
-                time.sleep(1)
+                time.sleep(0.3)
             else:
                 break
 
@@ -55,7 +55,7 @@ class ServoTask:
             if servo.angle >= -80 and self._running:
                 servo.angle -= 10
                 print("Angle is: " + str(servo.angle))
-                time.sleep(1)
+                time.sleep(0.3)
             else:
                 break
 
