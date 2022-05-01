@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt
 from motorslib import MotorSide, MotorDriver, in1, in2, in3, in4, ena, enb, power, \
-    servo_horizontal
+    servo_horizontal, servo_vertical
 from apscheduler.schedulers.background import BackgroundScheduler
 from threading import Thread
 from queue import Queue
@@ -74,6 +74,7 @@ def message_decoder(client, userdata, msg):
         speed = 50
         if Check.camera_center is True:
             servo_horizontal.angle = 0  # center the camera
+            servo_vertical.angle = 0
 
         if direction == "forward":
             if Check.obstacle is False:
@@ -162,7 +163,7 @@ mqttClient.connect(serverAddress, 1883)
 
 
 def check_for_messages_in_camera_queue():
-    flag = 0  # 0 - no movement; 1 - left; 2 - right; 3 - stop!
+    flag = 0  # 0 - no movement; 1 - left; 2 - right; 3 - up; 4 - down
     while True:
         if not camera_queue.empty():
             next_message = camera_queue.get()
@@ -174,6 +175,12 @@ def check_for_messages_in_camera_queue():
 
             elif next_message == "right":
                 flag = 2
+
+            elif next_message == "up":
+                flag = 3
+
+            elif next_message == "down":
+                flag = 4
 
             elif next_message == "stop":
                 flag = 0
@@ -195,6 +202,22 @@ def check_for_messages_in_camera_queue():
                 sleep(0.1)
             else:
                 servo_horizontal.angle = -90
+                continue
+
+        elif flag == 3:
+            if servo_vertical.angle <= 80:
+                servo_vertical.angle += 10
+                sleep(0.1)
+            else:
+                servo_vertical.angle = 90
+                continue
+
+        elif flag == 4:
+            if servo_vertical.angle >= -80:
+                servo_vertical.angle -= 10
+                sleep(0.1)
+            else:
+                servo_vertical.angle = -90
                 continue
 
 

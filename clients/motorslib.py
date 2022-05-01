@@ -11,13 +11,14 @@ ena = 12
 enb = 13
 relay_in = 18
 servo_horizontal_pin = 2
-# servo_vertical_pin = 3
+servo_vertical_pin = 3
 
 factory = PiGPIOFactory()
 servo_horizontal = AngularServo(servo_horizontal_pin, min_angle=-90, max_angle=90, pin_factory=factory)
-# servo_vertical = AngularServo(servo_vertical_pin, min_angle=-90, max_angle=90, pin_factory=factory)
+servo_vertical = AngularServo(servo_vertical_pin, min_angle=-90, max_angle=90, pin_factory=factory)
 
 servo_horizontal.angle = 0
+servo_vertical.angle = 0
 time.sleep(0.2)
 
 gpio.setmode(gpio.BCM)

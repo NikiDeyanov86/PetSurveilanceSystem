@@ -146,6 +146,9 @@ def signup():
 @app.route('/logout')
 @login_required
 def logout():
+    flask_client.publish(topic_motors_power, "off")
+    MotorsState.on = False
+
     current_user.login_id = None
     db_session.commit()
     logout_user()
@@ -477,6 +480,32 @@ def camera_right():
     if Check.mov_available is True:
         app.logger.info('Camera right')
         flask_client.publish(topic_camera_movement, "right")
+
+        return Response(status=200)
+    else:
+        flash("There is something wrong with the module, responsible for movement.")
+        return Response(status=500)
+
+
+@app.route('/camera/up')
+@login_required
+def camera_up():
+    if Check.mov_available is True:
+        app.logger.info('Camera up')
+        flask_client.publish(topic_camera_movement, "up")
+
+        return Response(status=200)
+    else:
+        flash("There is something wrong with the module, responsible for movement.")
+        return Response(status=500)
+
+
+@app.route('/camera/down')
+@login_required
+def camera_down():
+    if Check.mov_available is True:
+        app.logger.info('Camera down')
+        flask_client.publish(topic_camera_movement, "down")
 
         return Response(status=200)
     else:
