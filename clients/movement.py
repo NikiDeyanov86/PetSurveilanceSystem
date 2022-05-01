@@ -127,12 +127,14 @@ def message_decoder(client, userdata, msg):
 
         if message == "left":
             Check.servo_task = ServoTask()
-            Check.servo_task.positive(servo_horizontal)
+            Check.current_process = Thread(target=Check.servo_task.positive(servo_horizontal))
+            Check.current_process.start()
             print("Creating left process")
 
         elif message == "right":
             Check.servo_task = ServoTask()
-            Check.servo_task.negative(servo_horizontal)
+            Check.current_process = Thread(target=Check.servo_task.negative(servo_horizontal))
+            Check.current_process.start()
             print("Creating right process")
 
         elif message == "stop":
