@@ -71,7 +71,7 @@ def message_decoder(client, userdata, msg):
     elif topic == "pss/movement/manual" and Check.manual is True:
         # Data from remote client, ex. "left" ---- time ----> "stop"
         direction = message
-        speed = 50
+        speed = 65
         if Check.camera_center is True:
             servo_horizontal.angle = 0  # center the camera
             servo_vertical.angle = 0

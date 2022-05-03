@@ -27,9 +27,9 @@ mqttClient.on_message = message_decoder
 mqttClient.will_set(topic_feedback, "hl_disconnected", qos=1, retain=False)
 mqttClient.username_pw_set("pi", "pissi-pissi")
 mqttClient.connect(serverAddress, 1883)
-mqttClient.loop_start()
 
-motorSpeed = 50
+
+motorSpeed = 55
 leftOffset = 80
 rightOffset = 240
 optWidthLow = 40
@@ -46,10 +46,10 @@ hl = None
 
 try:
     hl = HuskyLensLibrary("SERIAL", "/dev/ttyUSB0", 115200)
-except:
+except Exception:
     try:
         hl = HuskyLensLibrary("SERIAL", "/dev/ttyUSB1", 115200)
-    except:
+    except Exception:
         print("Cannot create serial communication, check your hardware connections!")
         mqttClient.publish(topic_feedback, "hl_disconnected")
         sys.exit(1)
@@ -131,6 +131,7 @@ def tracking():
 
 
 if __name__ == '__main__':
+    mqttClient.loop_start()
     try:
         if hl is not None:
             if hl.knock() == "Knock Recieved":
