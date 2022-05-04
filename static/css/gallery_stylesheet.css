@@ -11,11 +11,13 @@ div#logged.col {
    justify-content: center;
 }
 #logged p{
-   margin-top: 1vh;
    color: white;
    font-size: 1.2vw;
    font-family: 'Roboto', sans-serif;
-   float: right;
+   padding-top: 2vh;
+}
+p {
+   margin-bottom: 0.5rem;
 }
 
 .nav-link {
@@ -113,6 +115,32 @@ div#logged.col {
         width: 544px;
         height: 408px;
     }
+    .navbar-brand {
+      font-size: 21px;
+   }
+   .nav-link > button.nav-btn{
+      font-size: 13px;
+   }
+   #logged p{
+      font-size: 15px;
+   }
+   .h5, h5 {
+       font-size: 1rem;
+       font-weight: inherit;
+   }
+   .carousel-caption > p {
+       font-size: 0.8rem;
+        font-weight: lighter;
+       margin-bottom: 0;
+   }
+   .carousel-control-prev-icon {
+       width: 1.8rem;
+       height: 1.8rem;
+   }
+   .carousel-control-next-icon {
+       width: 1.8rem;
+       height: 1.8rem;
+   }
 }
 
 @media only screen and (max-width: 1024px) {
@@ -151,7 +179,6 @@ div#logged.col {
       font-family: 'Roboto', sans-serif;
       float: right;
    }
-
    .nav-link-main {
       margin-right: 5vw;
    }
@@ -159,7 +186,6 @@ div#logged.col {
    .nav-link-main > button.nav-btn{
       font-size: 10px;
    }
-
    .navbar-brand {
       font-size: 18px;
    }
