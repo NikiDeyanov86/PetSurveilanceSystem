@@ -8,7 +8,7 @@
 .controls_holder {
     width: auto;
 }
-div.first, div.second, div.third{
+div.controls_holder > div.first, div.second, div.third{
     justify-content: center;
 }
 button#left, button#right {
