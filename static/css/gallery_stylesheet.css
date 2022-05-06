@@ -145,6 +145,9 @@ p {
    #edit_btn > i, #delete_btn > i {
        font-size: 13px;
    }
+   .carousel-holder {
+       margin-top: 10vh;
+   }
 }
 
 @media only screen and (max-width: 1024px) {
