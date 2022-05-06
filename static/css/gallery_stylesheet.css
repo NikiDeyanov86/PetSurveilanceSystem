@@ -108,6 +108,7 @@ p {
    .carousel-holder {
        margin-top: 16vh;
    }
+
 }
 
 @media only screen and (max-width: 1280px) {
@@ -141,6 +142,9 @@ p {
        width: 1.8rem;
        height: 1.8rem;
    }
+   #edit_btn > i, #delete_btn > i {
+       font-size: 13px;
+   }
 }
 
 @media only screen and (max-width: 1024px) {
@@ -157,6 +161,9 @@ p {
    }
    .carousel-holder {
        margin-top: 13vh;
+   }
+   #edit_btn > i, #delete_btn > i {
+       font-size: 12px;
    }
 }
 
@@ -208,5 +215,8 @@ p {
    .carousel-control-next-icon {
        width: 1.6rem;
        height: 1.6rem;
+   }
+   #edit_btn > i, #delete_btn > i {
+       font-size: 10px;
    }
 }
