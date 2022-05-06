@@ -232,11 +232,11 @@ label {
 @media only screen and (max-width: 1024px) and (min-width: 768px) {
     /* For tablets: */
     .login-box {
-        margin-top: 6vh;
+        margin-top: 15vh;
         width: 50%;
     }
     .login-box#signup-box{
-        margin-top: 2.5vh;
+        margin-top: 12.5vh;
     }
     div.row > div.col-lg-3 {
         width: 25%;
@@ -279,11 +279,11 @@ label {
 @media only screen and (max-width: 768px) {
     /* For mobile: */
     .login-box {
-        margin-top: 5vh;
+        margin-top: 20vh;
         width: 70%;
     }
     .login-box#signup-box{
-        margin-top: 2.5vh;
+        margin-top: 17.5vh;
     }
     div.row > div.col-lg-3 {
         width: 15%;
@@ -320,5 +320,9 @@ label {
     }
     .login-button > button {
          font-size: 13px;
+    }
+    #password_conditions > p {
+        font-size: 10px;
+        margin: 5px;
     }
 }
