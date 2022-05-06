@@ -87,7 +87,7 @@ p {
     font-size: 2vh;
 }
 
-@media only screen and (max-width: 1920px) {
+@media only screen and (max-width: 1920px) and (min-width: 1280px) {
   /* For large monitors: */
    .carousel {
       width: 832px;
@@ -111,7 +111,7 @@ p {
 
 }
 
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 1280px) and (min-width: 1024px) {
     .carousel {
         width: 544px;
         height: 408px;
@@ -150,7 +150,7 @@ p {
    }
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1024px) and (min-width: 768px) {
     .carousel {
         width: 435px;
         height: 326px;

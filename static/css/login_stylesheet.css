@@ -184,3 +184,141 @@ label {
     color: ghostwhite;
     font-family: 'Roboto', sans-serif;
 }
+
+@media only screen and (min-width: 1024px) and (max-width: 1280px) {
+    /* For laptops: */
+    .login-box {
+        margin-top: 5vh;
+        width: 40%;
+    }
+    .login-box#signup-box{
+        margin-top: 2.5vh;
+        width: 40%;
+    }
+    div.row > div.col-lg-3 {
+        width: 30%;
+    }
+    .login-key {
+        font-size: 55px;
+        margin-top: 20px;
+    }
+    .login-title {
+        font-size: 22px;
+        margin-top: 20px;
+    }
+    .login-form {
+        margin-top: 20px;
+    }
+    .form-group.signup-group {
+        margin-bottom: 30px;
+    }
+    .alert > strong {
+        font-size: 14px;
+    }
+    .alert-dismissible .btn-close {
+        padding: 1rem 0.75rem;
+    }
+    .alert {
+        padding: 0.75rem;
+        margin-bottom: 0;
+    }
+    .to-login-message {
+        font-size: 14px;
+    }
+    .login-button {
+        margin-bottom: 20px;
+    }
+}
+@media only screen and (max-width: 1024px) and (min-width: 768px) {
+    /* For tablets: */
+    .login-box {
+        margin-top: 6vh;
+        width: 50%;
+    }
+    .login-box#signup-box{
+        margin-top: 2.5vh;
+    }
+    div.row > div.col-lg-3 {
+        width: 25%;
+    }
+    .login-key {
+        font-size: 45px;
+        margin-top: 15px;
+    }
+    .login-title {
+        font-size: 20px;
+        margin-top: 15px;
+    }
+    .login-form {
+        margin-top: 15px;
+    }
+    .form-group.signup-group {
+        margin-bottom: 25px;
+    }
+    .alert > strong {
+        font-size: 13px;
+    }
+    .alert-dismissible .btn-close {
+        padding: 1rem 0.75rem;
+    }
+    .alert {
+        padding: 0.75rem;
+        margin-bottom: 0;
+    }
+    .to-login-message {
+        font-size: 13px;
+    }
+    .login-button {
+        margin-bottom: 15px;
+    }
+    .login-button > button {
+         font-size: 15px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile: */
+    .login-box {
+        margin-top: 5vh;
+        width: 70%;
+    }
+    .login-box#signup-box{
+        margin-top: 2.5vh;
+    }
+    div.row > div.col-lg-3 {
+        width: 15%;
+    }
+    .login-key {
+        font-size: 50px;
+        margin-top: 20px;
+    }
+    .login-title {
+        font-size: 18px;
+        margin-top: 20px;
+    }
+    .login-form {
+        margin-top: 25px;
+    }
+    .form-group.signup-group {
+        margin-bottom: 20px;
+    }
+    .alert > strong {
+        font-size: 12px;
+    }
+    .alert-dismissible .btn-close {
+        padding: 1rem 0.75rem;
+    }
+    .alert {
+        padding: 0.75rem;
+        margin-bottom: 0;
+    }
+    .to-login-message {
+        font-size: 11px;
+    }
+    .login-button {
+        margin-bottom: 15px;
+    }
+    .login-button > button {
+         font-size: 13px;
+    }
+}
