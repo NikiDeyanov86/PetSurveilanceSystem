@@ -19,12 +19,12 @@ from clients.flask_client import topic_feedback, topic_rc, topic_mode, \
     topic_motors_power, topic_camera_movement, topic_camera_setting, init_mqtt, Check
 from werkzeug.middleware.shared_data import SharedDataMiddleware
 from clients import motorslib
+from cryptography.fernet import Fernet
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'pissi-pissi'
 app.config['UPLOAD_FOLDER'] = './uploads'
 
-access_key = "gain_access"
 login_manager.init_app(app)
 init_db()
 flask_client = init_mqtt()
@@ -42,6 +42,15 @@ jinja_options = ImmutableDict(
     ])
 
 app.jinja_env.autoescape = True
+
+
+with open('authentication_keys.txt', 'r') as file:
+    fernet_key = file.readline().strip()
+    enc_message = file.readline().encode()
+
+fernet = Fernet(fernet_key)
+
+access_key = fernet.decrypt(enc_message).decode()
 
 
 @app.teardown_appcontext
