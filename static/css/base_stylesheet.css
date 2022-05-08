@@ -305,10 +305,10 @@ div.offcanvas-body > div.form-check {
       margin-bottom: 1.5vh;
    }
    #snapBtn {
-      font-size: 13px;
+      font-size: 15px;
       padding: 0.7vh;
       width: 30vw;
-      height: 6vh;
+      height: auto;
    }
    .mode > a > button {
       font-size: 12px;
