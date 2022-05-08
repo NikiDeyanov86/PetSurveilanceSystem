@@ -32,7 +32,7 @@ mqttClient.connect(serverAddress, 1883)
 motorSpeed = 40
 leftOffset = 80
 rightOffset = 240
-optWidthLow = 40
+optWidthLow = 50
 optWidthHigh = 80
 div = 70
 
