@@ -68,9 +68,9 @@ def try_connection(timeout):
 def calculate_div(difference):
     if 0 < difference <= 10:
         return 70
-    elif 0 < difference <= 15:
+    elif 10 < difference <= 15:
         return 100
-    elif 0 < difference <= 20:
+    elif 15 < difference <= 20:
         return 120
 
     return 150
