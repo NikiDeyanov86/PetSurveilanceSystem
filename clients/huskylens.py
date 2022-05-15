@@ -1,7 +1,8 @@
 import sys
 import paho.mqtt.client as mqtt
 import time
-import json
+import serial
+
 from huskylib import HuskyLensLibrary
 
 clientName = "Huskylens"
@@ -46,10 +47,10 @@ hl = None
 
 try:
     hl = HuskyLensLibrary("SERIAL", "/dev/ttyUSB0", 115200)
-except Exception:
+except serial.SerialException:
     try:
         hl = HuskyLensLibrary("SERIAL", "/dev/ttyUSB1", 115200)
-    except Exception:
+    except serial.SerialException:
         print("Cannot create serial communication, check your hardware connections!")
         mqttClient.publish(topic_feedback, "hl_disconnected")
         sys.exit(1)
