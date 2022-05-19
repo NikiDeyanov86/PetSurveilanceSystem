@@ -12,7 +12,7 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/bootstrap_5_0_2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/base_stylesheet.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
@@ -22,7 +22,7 @@
 
     <!-- JavaScript -->
     <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
     <script src="/static/js/bootstrap.bundle_5_0_2.min.js"></script>
 
     <!-- Additional styles and scripts will go here -->
@@ -122,11 +122,23 @@
         $(function() {
               $('button#snapBtn').on('click', function(e) {
                 e.preventDefault()
+                  let toast = document.getElementById("liveToast");
+                  toast.classList.remove("hide");
+                  toast.classList.add("show");
                 $.getJSON('/snap',
                     function(data) {
                   //open drop menu with the taken photo
                 });
                 //return false;
+              });
+        });
+
+        $(function() {
+              $('button#close_alert').on('click', function(e) {
+                  e.preventDefault()
+                  let toast = document.getElementById("liveToast");
+                  toast.classList.remove("show");
+                  toast.classList.add("hide");
               });
         });
 
@@ -419,6 +431,7 @@
                         <a href="/automated_mode" id="auto_link"><button class="rounded btn btn-primary mode_btn" id="auto_btn"> AUTO </button></a>
                         <a href="/manual_mode" id="manual_link"><button class="rounded btn btn-primary mode_btn" id="manual_btn"> MANUAL </button></a>
                 </div>
+
                 <!--
                 <div id="status">
 
@@ -446,7 +459,16 @@
                     {% endblock %}
                 </div>
 
-
+            <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 11">
+                  <div id="liveToast" class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+                      <div class="d-flex">
+                        <div class="toast-body">
+                          Your photo was saved in the gallery!
+                        </div>
+                        <button id="close_alert" type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                      </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
