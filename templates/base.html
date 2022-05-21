@@ -102,18 +102,16 @@
             setInterval("check_vis()",10000); // call every 10 seconds
         });
 
-
         function check_vis() {
             $.ajax({
                 url: '/check_status',
                 success: function (data) {
-                     // console.log(data);
 
                      if(data === "not_visible") {
-                         window.location.replace(location.hostname.toString() + "/manual_mode")
+                         window.location.replace("/manual_mode")
                      }
                      else if(data === "visible") {
-                         window.location.replace(location.hostname.toString() + "/automated_mode")
+                         window.location.replace("/automated_mode")
                      }
                 }
             });
