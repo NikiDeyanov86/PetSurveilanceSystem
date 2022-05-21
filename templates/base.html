@@ -110,10 +110,10 @@
                      // console.log(data);
 
                      if(data === "not_visible") {
-                         window.location.replace("http://petbot.ddns.net/manual_mode")
+                         window.location.replace(location.hostname.toString() + "/manual_mode")
                      }
                      else if(data === "visible") {
-                         window.location.replace("http://petbot.ddns.net/automated_mode")
+                         window.location.replace(location.hostname.toString() + "/automated_mode")
                      }
                 }
             });
