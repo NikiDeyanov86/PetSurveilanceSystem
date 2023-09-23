@@ -13,12 +13,16 @@ motors = MotorDriver(left, right)
 clientName = "Movement"
 serverAddress = "localhost"
 mqttClient = mqtt.Client(clientName)
+
 topics = "pss/movement/#"
 topic_feedback = "pss/feedback"
 topic_mov = "pss/movement/proximity"
 topic_motors_power = "pss/movement/motors_power"
 topic_camera_movement = "pss/movement/camera"
 topic_camera_setting = "pss/movement/camera/center"
+
+scheduler = BackgroundScheduler()
+camera_queue = Queue()
 
 
 class Check:
@@ -32,7 +36,7 @@ def check_for_obstacle():
     mqttClient.publish(topic_feedback, "free?", qos=1)
 
 
-def connect(client, userdata, flags, rc):
+def on_connect(client, userdata, flags, rc):
     mqttClient.subscribe(topics)
     mqttClient.subscribe(topic_feedback)
     print("Connected! Subscribed to <pss/movement/+> and <pss/feedback>")
@@ -152,16 +156,6 @@ def message_decoder(client, userdata, msg):
             Check.obstacle = False
 
 
-scheduler = BackgroundScheduler()
-camera_queue = Queue()
-scheduler.add_job(check_for_obstacle, 'interval', seconds=5)
-mqttClient.on_connect = connect
-mqttClient.on_message = message_decoder
-mqttClient.will_set(topic_feedback, "mov_disconnected", qos=1, retain=False)
-mqttClient.username_pw_set("pi", "pissi-pissi")
-mqttClient.connect(serverAddress, 1883)
-
-
 def check_for_messages_in_camera_queue():
     flag = 0  # 0 - no movement; 1 - left; 2 - right; 3 - up; 4 - down
     while True:
@@ -221,8 +215,18 @@ def check_for_messages_in_camera_queue():
                 continue
 
 
+def init_mqtt_client(client: mqtt.Client):
+    client.on_connect = on_connect
+    client.on_message = message_decoder
+    client.will_set(topic_feedback, "mov_disconnected",
+                    qos=1, retain=False)
+    client.username_pw_set("pi", "pissi-pissi")
+    client.connect(serverAddress, 1883)
+    client.loop_start()
+
+
 if __name__ == '__main__':
-    mqttClient.loop_start()
+    init_mqtt_client(mqttClient)
     camera_task = Thread(target=check_for_messages_in_camera_queue)
     camera_task.start()
     camera_task.join()
